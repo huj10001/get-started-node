@@ -10,26 +10,260 @@
     <!-- Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
+
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Simple markers</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      #legend {
+        font-family: Arial, sans-serif;
+        background: #fff;
+        padding: 10px;
+        margin: 10px;
+        border: 3px solid #000;
+      }
+      #legend h3 {
+        margin-top: 0;
+      }
+      #legend img {
+        vertical-align: middle;
+      }
+
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    #map,
+    #wrapper,
+    #page-content-wrapper {
+      height: 100%;
+      width: 100%;
+    }
+    .container-fluid,
+    .row,
+    .col-lg-12 {
+      height: 100%;
+      width: 100%;
+    }
+    }
+    /* hamburger menu pseudo element */
+
+    .box-shadow-menu {
+      position: relative;
+      padding-left: 1.25em;
+    }
+    .box-shadow-menu:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.25em;
+      width: 1em;
+      height: 0.15em;
+      background: black;
+      box-shadow: 0 0.25em 0 0 black, 0 0.5em 0 0 black;
+    }
+    /* hamburger menu pseudo element gradient */
+
+    .gradient-menu {
+      padding-left: 1.25em;
+      position: relative;
+    }
+    .gradient-menu:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.21em;
+      bottom: 0.21em;
+      width: 1em;
+      background: linear-gradient(to bottom, black, black 20%, white 20%, white 40%, black 40%, black 60%, white 60%, white 80%, black 80%, black 100%);
+    }
+    /* http://www.jqueryscript.net/demo/Bootstrap-Sidebar-Extension-With-jQuery-CSS-CSS3/ */
+
+    /*!
+     * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
+     * Code licensed under the Apache License v2.0.
+     * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+     */
+
+    /* Toggle Styles */
+
+    .nav-tabs>li {
+      float: none;
+    }
+    .nav-tabs {
+      border-bottom: 0;
+    }
+    .nav-tabs>li.active>a,
+    .nav-tabs>li.active>a:focus,
+    .nav-tabs>li.active>a:hover {
+      margin: 0;
+      border-radius: 0;
+    }
+    #wrapper {
+      padding-left: 0;
+      -webkit-transition: all 0.5s ease;
+      -moz-transition: all 0.5s ease;
+      -o-transition: all 0.5s ease;
+      transition: all 0.5s ease;
+    }
+    #wrapper.toggled {
+      padding-left: 250px;
+    }
+    #sidebar-wrapper {
+      z-index: 1000;
+      position: fixed;
+      left: 250px;
+      width: 0;
+      height: 100%;
+      margin-left: -250px;
+      overflow-y: auto;
+      background: #000;
+      -webkit-transition: all 0.5s ease;
+      -moz-transition: all 0.5s ease;
+      -o-transition: all 0.5s ease;
+      transition: all 0.5s ease;
+    }
+    #wrapper.toggled #sidebar-wrapper {
+      width: 250px;
+    }
+    #page-content-wrapper {
+      width: 100%;
+      position: absolute;
+      padding: 15px;
+    }
+    #wrapper.toggled #page-content-wrapper {
+      position: absolute;
+      margin-right: -250px;
+    }
+    /* Sidebar Styles */
+
+    .sidebar-nav {
+      position: absolute;
+      top: 0;
+      width: 250px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .sidebar-nav li {
+      text-indent: 20px;
+      line-height: 40px;
+    }
+    .sidebar-nav li a {
+      display: block;
+      text-decoration: none;
+      color: #999999;
+    }
+    .sidebar-nav li a:hover {
+      text-decoration: none;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .sidebar-nav li a:active,
+    .sidebar-nav li a:focus {
+      text-decoration: none;
+    }
+    .sidebar-nav > .sidebar-brand {
+      height: 65px;
+      font-size: 18px;
+      line-height: 60px;
+    }
+    .sidebar-nav > .sidebar-brand a {
+      color: #999999;
+    }
+    .sidebar-nav > .sidebar-brand a:hover {
+      color: #fff;
+      background: none;
+    }
+    @media(min-width:768px) {
+      #wrapper {
+        padding-left: 250px;
+      }
+      #wrapper.toggled {
+        padding-left: 0;
+      }
+      #sidebar-wrapper {
+        width: 250px;
+      }
+      #wrapper.toggled #sidebar-wrapper {
+        width: 0;
+      }
+      #page-content-wrapper {
+        padding: 20px;
+        position: relative;
+      }
+      #wrapper.toggled #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
+      }
+    }
+    </style>
+
+
 </head>
 
 <body>
     <div class="container">
-        <h1>Welcome.</h1>
-        <div id="nameInput" class="input-group-lg center-block helloInput">
+        <h1>Network Performance Map: Noisy Zone</h1>
+        <!-- <p>my test value is:
+        <script type="text/javascript">
+        var test = localStorage.getItem('myFirstKey');
+        document.write(test);
+        </script>
+        </p> -->
+        <!-- <div id="nameInput" class="input-group-lg center-block helloInput">
             <p class="lead">What is your name?</p>
             <input id="user_name" type="text" class="form-control" placeholder="name" aria-describedby="sizing-addon1" value="" />
         </div>
         <p id="response" class="lead text-center"></p>
 
-        <p id="databaseNames" class="lead text-center"></p>
+        <p id="databaseNames" class="lead text-center"></p> -->
     </div>
+    <div id="wrapper" class="toggled">
+  <!-- Sidebar -->
+  <div id="sidebar-wrapper">
+    <ul class="sidebar-nav" id="side_bar">
+      <li class="sidebar-brand" style="font-weight: bold; color: #FFFFFF;">
+        <h1>Summary</h1>
+
+      </li>
+      <hr>
+    </ul>
+  </div>
+  <!-- /#sidebar-wrapper -->
+  <!-- Page Content -->
+  <div id="page-content-wrapper">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12">
+          <h1>
+        <a href="#menu-toggle" class="gradient-menu" id="menu-toggle"></a>
+          <!-- &nbsp;Network Map&nbsp;a href="#menu-toggle" class="btn btn-default" >Toggle Sidebar</a -->
+          </h1>
+          <!-- you can use tables or divs for the overall layout -->
+          <div id="map"></div>
+          <!-- <h1>Simple Sidebar</h1> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /#page-content-wrapper -->
+</div>
+<!-- /#wrapper -->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="antixss.js" type="text/javascript"></script>
 
-    <script>
+    <!-- <script>
     	//Submit data when enter key is pressed
         $('#user_name').keydown(function(e) {
         	var name = $('#user_name').val();
@@ -66,7 +300,442 @@
           getNames();
 
 
+    </script> -->
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+
+
+    <!-- <div id="map"></div> -->
+    <div id="legend"><h3>Status</h3></div>
+
+    <script>
+    var marker;
+    var markers = [];
+
+
+      function initMap() {
+
+        var myWrapper = $("#wrapper");
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+            myWrapper.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
+                google.maps.event.trigger(map, 'resize');
+            });
+        });
+
+        var node1 = new google.maps.LatLng(32.925167, -96.757725);
+        var node3 = new google.maps.LatLng(32.92515, -96.75778);
+        var node4 = new google.maps.LatLng(32.925150, -96.757650);
+        var node5 = new google.maps.LatLng(32.9250795, -96.757841);
+        var node6 = new google.maps.LatLng(32.9252, -96.75752);
+        var node7 = new google.maps.LatLng(32.925078, -96.75749);
+        var node8 = new google.maps.LatLng(32.92540, -96.757743);
+        var node9 = new google.maps.LatLng(32.9255, -96.7575);
+        var node10 = new google.maps.LatLng(32.9255, -96.7573);
+        var node11 = new google.maps.LatLng(32.92519, -96.75780);
+        var node12 = new google.maps.LatLng(32.925000, -96.757700);
+        var node13 = new google.maps.LatLng(32.925000, -96.757750);
+        var node14 = new google.maps.LatLng(32.924790, -96.757800);
+        var node15 = new google.maps.LatLng(32.924840, -96.757820);
+        var node16 = new google.maps.LatLng(32.924790, -96.75763);
+        var node17 = new google.maps.LatLng(32.92483, -96.75758);
+        var node18 = new google.maps.LatLng(32.924695, -96.757495);
+        var node19 = new google.maps.LatLng(32.924705, -96.757385);
+        var node20 = new google.maps.LatLng(32.92481, -96.75758);
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 20,
+          center: node1
+          // mapTypeControl: true,
+          // mapTypeControlOptions: {
+          //   style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+          // },
+          // navigationControl: true
+        });
+
+        google.maps.event.addListener(map, 'click', function() {
+            infowindow.close();
+            for(var i=0;i<markers.length;i++){
+                if(markers[i]){
+                    var li = document.getElementById("newid"+i);
+                    li.style.backgroundColor="black";
+                }
+            }
+            // infoWindow.close();
+        });
+
+        var iconBase = 'http://labs.google.com/ridefinder/images/';
+
+        var icons = {
+          active: {
+            name: 'Active',
+            icon: iconBase + 'mm_20_green.png'
+          },
+          warning: {
+            name: 'Warning',
+            icon: iconBase + 'mm_20_orange.png'
+          },
+          critical: {
+            name: 'Critical',
+            icon: iconBase + 'mm_20_red.png'
+          }
+        };
+
+        var contentString = '<div id="content">'+
+            '<div id="siteNotice">'+
+            '</div>'+
+            '<h1 id="firstHeading" class="firstHeading">PER</h1>'+
+            '<div id="bodyContent">'+
+            '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
+            'sandstone rock formation in the southern part of the '+
+            'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
+            'south west of the nearest large town, Alice Springs; 450&#160;km '+
+            '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
+            'features of the Uluru - Kata Tjuta National Park. Uluru is '+
+            'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
+            'Aboriginal people of the area. It has many springs, waterholes, '+
+            'rock caves and ancient paintings. Uluru is listed as a World '+
+            'Heritage Site.</p>'+
+            '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
+            'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
+            '(last visited June 22, 2009).</p>'+
+            '</div>'+
+            '</div>';
+
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString,
+        });
+        // var infoWindow = new google.maps.InfoWindow({
+        //     content: contentString,
+        // });
+
+        addMarker(node1,'1',"active",'0');
+        addMarker(node3,'3',"active",'1');
+        addMarker(node4,'4',"active",'1');
+        addMarker(node5,'5',"active",'3');
+        addMarker(node6,'6',"active",'4');
+        addMarker(node7,'7',"active",'4');
+        addMarker(node8,'8',"active",'1');
+        addMarker(node9,'9',"active",'8');
+        addMarker(node10,'10',"active",'8');
+        addMarker(node11,'11',"active",'1');
+        addMarker(node12,'12',"active",'1');
+        addMarker(node13,'13',"active",'1');
+        addMarker(node14,'14',"active",'12');
+        addMarker(node15,'15',"active",'13');
+        addMarker(node16,'16',"active",'12');
+        addMarker(node17,'17',"active",'13');
+        addMarker(node18,'18',"active",'17');
+        addMarker(node19,'19',"active",'18');
+        addMarker(node20,'20',"active",'16');
+
+  //       function drawChart(marker) {
+
+  //   // Create the data table.
+  //   var data = new google.visualization.DataTable();
+  //   data.addColumn('string', 'Topping');
+  //   data.addColumn('number', 'Slices');
+  //   data.addRows([
+  //     ['Mushrooms', 3],
+  //     ['Onions', 1],
+  //     ['Olives', 1],
+  //     ['Zucchini', 1],
+  //     ['Pepperoni', 2]
+  //   ]);
+
+  //   // Set chart options
+  //   var options = {'title':'Pizza sold @ '+
+  //                          marker.getPosition().toString(),
+  //                  'width':300,
+  //                  'height':200};
+
+  //   var node        = document.createElement('div'),
+  //       infoWindow  = new google.maps.InfoWindow(),
+  //       chart       = new google.visualization.PieChart(node);
+
+  //       chart.draw(data, options);
+  //       infoWindow.setContent(node);
+  //       infoWindow.open(marker.getMap(),marker);
+  // }
+  function getCustomInfo(marker){
+    return marker.customInfo;
+  }
+  function getMarker(id){
+    return markers[parseInt(id)];
+  }
+  function generateRandom(){
+    return Math.random() * (0.06 - 0.00) + 0.00;
+  }
+  function calcMid(marker){
+    var parent_id = marker.parentInfo;
+    var parent_marker = getMarker(parent_id);
+    if(parent_marker){
+        var x = (marker.getPosition().lat() + parent_marker.getPosition().lat())/2;
+        var y = (marker.getPosition().lng() + parent_marker.getPosition().lng())/2;
+        var midpoint = new google.maps.LatLng(x, y);
+        return midpoint;
+    }
+  }
+  function calcDistance(marker1,marker2){
+    var x = marker1.getPosition().lat() - marker2.getPosition().lat();
+    var y = marker1.getPosition().lng() - marker2.getPosition().lng();
+    var distance = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+    return distance;
+  }
+  function getParent(marker){
+    var parent_id = marker.parentInfo;
+    var parent_marker = getMarker(parent_id);
+    return parent_marker;
+  }
+  function markRegion(){
+    var cluster = [];
+    for(var i=0;i<markers.length;i++){
+        current_marker = markers[i];
+        if(current_marker && current_marker.isCritical==1){
+            cluster.push(current_marker.getPosition());
+            while(getParent(current_marker) && getParent(current_marker).isCritical==1){
+                current_marker = getParent(current_marker);
+                cluster.push(current_marker.getPosition());
+            }
+            if(cluster.length > 2){
+                var shape = new google.maps.Polygon({
+                    paths: cluster,
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 0,
+                    strokeWeight: 0,
+                    fillColor: '#FF0000',
+                    fillOpacity: 0.35
+                });
+                shape.setMap(map);
+            }
+        }
+    }
+  }
+  function drawAdditionalHAxis(chart,dataTable){
+    var layout = chart.getChartLayoutInterface();
+    var chartArea = layout.getChartAreaBoundingBox();
+
+    var svg = chart.getContainer().getElementsByTagName('svg')[0];
+    var lastVal = 0.05;
+    var yLoc = layout.getYLocation(lastVal);
+    svg.appendChild(createLine(chartArea.left,yLoc,chartArea.width + chartArea.left,yLoc,'#FF0000',3,2)); // axis line
+    svg.appendChild(createText(chartArea.width + chartArea.left + 20 ,yLoc + 5,'Arial','13','red',lastVal)); // axis label 
+}
+function createLine(x1, y1, x2, y2, color, w, dash) {
+    var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', x1);
+    line.setAttribute('y1', y1);
+    line.setAttribute('x2', x2);
+    line.setAttribute('y2', y2);
+    line.setAttribute('stroke', color);
+    line.setAttribute('stroke-width', w);
+    line.setAttribute('stroke-dasharray', dash);
+    return line;
+}
+
+function createText(x, y, fontFamily, fontSize,fontColor,value) {
+    var text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    text.setAttribute('x', x);
+    text.setAttribute('y', y);
+    text.setAttribute('font-family', fontFamily);
+    text.setAttribute('font-size', fontSize);
+    text.setAttribute('fill', fontColor);
+    text.innerHTML = value;
+    return text;
+}
+
+function createInfoWindow(poly, content) {  
+    google.maps.event.addListener(poly, 'click', function(event) {
+        infowindow.setContent(content);
+        infowindow.setPosition(event.latLng);
+        infowindow.open(map);
+    });
+}
+
+
+
+  function drawChart(marker) {
+        var data = google.visualization.arrayToDataTable([
+          ['Date', 'PER'],
+          ['7/13',  getCustomInfo(marker)[0]],
+          ['7/14',  getCustomInfo(marker)[1]],
+          ['7/15',  getCustomInfo(marker)[2]],
+          ['7/16',  getCustomInfo(marker)[3]],
+          ['7/17',  getCustomInfo(marker)[4]],
+          ['7/18',  getCustomInfo(marker)[5]]
+        ]);
+
+        var options = {
+          title: 'PER',
+          // curveType: 'function',
+          legend: { position: 'bottom' },
+        };
+
+        var node = document.createElement('div'),
+        // infowindow  = new google.maps.InfoWindow(),
+        chart       = new google.visualization.LineChart(node);
+
+        chart.draw(data, options);
+        drawAdditionalHAxis(chart, data);
+        infowindow.setContent(node);
+        infowindow.open(marker.getMap(),marker);
+        // google.maps.event.addListener(marker.getMap(), 'click', function() {
+        //     infoWindow.close();
+        // });
+      }
+
+
+      function addMarker(location,label,active,parent){
+        var array = [generateRandom(),generateRandom(),generateRandom(),generateRandom(),generateRandom(),generateRandom()];
+        var sum = 0;
+        for(var i=0;i<array.length;i++){
+            sum += array[i];
+        }
+        var avg = sum / array.length;
+
+        /** analysis **/
+        // var timeseries = require("timeseries-analysis");
+        // var t     = new timeseries.main(timeseries.adapter.fromArray(data));
+        // t.ma().lwma();
+        // var processed = t.ma().output();
+        // var chart_url = t.ma({period: 14}).chart();
+        // var min = t.min();
+        // var max = t.max(); 
+        // var mean = t.mean();
+        // var stdev = t.stdev();
+        // var forecastDatapoint   = 7;   
+        // var coeffs = t.ARMaxEntropy({
+        //     data:   t.data.slice(0,6)
+        // });
+        // console.log(coeffs);
+        // var forecast    = 0;    // Init the value at 0.
+        // for (var i=0;i<coeffs.length;i++) { // Loop through the coefficients
+        //     forecast -= t.data[6-i][1]*coeffs[i];
+        // }
+        // console.log("forecast",forecast);
+        /**************/
+
+        var marker = new google.maps.Marker({
+            map: map,
+            icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 15,
+            strokeWeight:2,
+            fillColor: '#008000',
+            fillOpacity: 1.0
+            },
+            position: location,
+            label: label,
+            id: label,
+            status: active,
+            customInfo: array,
+            parentInfo: parent,
+            isCritical: 0
+        });
+        markers[parseInt(label)] = marker;
+        // $('#side_bar').append("<li>node" + label + "</li>");
+        var sidebar = $('#side_bar');
+        var sidebar_entry = $('<li/>', {
+            'html': '<a href="#">Node '+label
+            +'<ul>Parent: '+parent+'</ul>'
+            +'<ul>Avg. PER: '+avg.toFixed(6)+'</ul>'
+            +'<ul>Avg. RSSI: '+generateRandom().toFixed(6)+'</ul>'
+            +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
+            +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>',
+            // jQuery(this).attr("id","newId"),
+            'click': function() {
+                google.maps.event.trigger(marker, 'click');
+                $(this).css('color','red');
+                // $(this).attr("id","newid");
+            },
+            'mouseenter': function() {
+                $(this).css('color', 'red');
+            },
+            'mouseleave': function() {
+                $(this).css('color', '#999999');
+            },
+            'focus': function() {
+                $(this).css('color', '#999999');
+            },
+            function() {
+                $(this).attr("id","newid"+label);
+                // alert($(this).attr('id'));
+                // alert($(this).attr('id'));
+            }
+        }).appendTo(sidebar);
+        for(var i=0;i<array.length;i++){
+            if(array[i]>0.05){  //orange
+                // marker.setAnimation(google.maps.Animation.BOUNCE);
+                marker.icon.fillColor = ' #FFA500 ';
+                marker.isCritical = 1;
+            }
+            if(array[i]>0.055){ //red
+                // marker.setAnimation(google.maps.Animation.BOUNCE);
+                marker.icon.fillColor = ' #FF0000 ';
+                marker.isCritical = 1;
+            }
+        }
+        marker.addListener('click', function(){
+            drawChart(this);
+            var li = document.getElementById("newid"+label);
+            // alert(li.id);
+            li.style.backgroundColor="DarkBlue";
+            li.scrollIntoView();
+            // alert(getCustomInfo(this));
+        });
+        // marker.addListener('click', function() {
+        //     infowindow.open(map, marker);
+        // });
+
+        var link_info = generateRandom();
+        if(marker.parentInfo != '0'){
+            var parentMarker = markers[parseInt(marker.parentInfo)];
+            // var lat = parentMarker.getPosition().lat();
+            // var lng = parentMarker.getPosition().lng();
+            var path = [
+            {lat: marker.getPosition().lat(), lng: marker.getPosition().lng()},
+            {lat: parentMarker.getPosition().lat(), lng: parentMarker.getPosition().lng()}
+            ];
+            var link = new google.maps.Polyline({
+            path: path,
+            // geodesic: true,
+            strokeColor: '#000080',
+            strokeOpacity: 1.0,
+            strokeWeight: 1 + link_info * 100,
+            customInfo: link_info
+        });
+        if(link_info > 0.04){
+            link.strokeColor = '#800000';
+        }
+        createInfoWindow(link, "Link traffic : " + link.customInfo);
+        link.setMap(map);
+        }
+      }
+      var legend = document.getElementById('legend');
+        for (var key in icons) {
+          var type = icons[key];
+          var name = type.name;
+          var icon = type.icon;
+          var div = document.createElement('div');
+          div.innerHTML = '<img src="' + icon + '"> ' + name;
+          legend.appendChild(div);
+        }
+        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
+        markRegion();
+  }
+
+  google.load('visualization', '1.0', {'packages':['corechart']});
+
     </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpPgcU1vPIge5zzD50cfVkL7DVpIVKac0&callback=initMap">
+    </script>
+
+
+
 </body>
 
 </html>
