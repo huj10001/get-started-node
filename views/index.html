@@ -204,6 +204,9 @@
         margin-right: 0;
       }
     }
+    ul {
+    text-align: left;
+    }
     </style>
 
 
@@ -235,6 +238,7 @@
 
       </li>
       <hr>
+      <div id="demo" class="collapse"></div>
     </ul>
   </div>
   <!-- /#sidebar-wrapper -->
@@ -308,7 +312,10 @@
 
 
     <!-- <div id="map"></div> -->
-    <div id="legend"><h3>Status</h3></div>
+    <div id="legend"><h3>Status</h3>
+    <canvas id="myCanvas" width="150" height="30">
+    </div>
+
 
     <script>
     var marker;
@@ -432,6 +439,9 @@
         addMarker(node19,'19',"active",'18');
         addMarker(node20,'20',"active",'16');
 
+        addNetwork(markers,1);
+        // addNetwork(markers,2);
+
   //       function drawChart(marker) {
 
   //   // Create the data table.
@@ -491,22 +501,25 @@
     return parent_marker;
   }
   function markRegion(){
-    var cluster = [];
-    for(var i=0;i<markers.length;i++){
-        current_marker = markers[i];
+    // var cluster = [];
+    while(markers.length > 0){
+        current_marker = markers.pop();
         if(current_marker && current_marker.isCritical==1){
+            var cluster = [];
             cluster.push(current_marker.getPosition());
+            // markers.shift();
             while(getParent(current_marker) && getParent(current_marker).isCritical==1){
                 current_marker = getParent(current_marker);
                 cluster.push(current_marker.getPosition());
+                // markers.splice(current_marker,1);
             }
             if(cluster.length > 2){
                 var shape = new google.maps.Polygon({
                     paths: cluster,
-                    strokeColor: '#FF0000',
+                    strokeColor: ' #FF5733 ',
                     strokeOpacity: 0,
                     strokeWeight: 0,
-                    fillColor: '#FF0000',
+                    fillColor: ' #FF5733 ',
                     fillOpacity: 0.35
                 });
                 shape.setMap(map);
@@ -587,6 +600,93 @@ function createInfoWindow(poly, content) {
         // });
       }
 
+      function drawGaugeChart(data) {
+
+        // var data = google.visualization.arrayToDataTable([
+        //   ['Label', 'Value'],
+        //   ['Memory', 80],
+        //   ['CPU', 55],
+        //   ['Network', 68]
+        // ]);
+
+        var options = {
+          width: 400, height: 120,
+          redFrom: 90, redTo: 100,
+          yellowFrom:75, yellowTo: 90,
+          minorTicks: 5
+        };
+
+        var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+
+        chart.draw(data, options);
+
+        setInterval(function() {
+          data.setValue(0, 1, 40 + Math.round(60 * Math.random()));
+          chart.draw(data, options);
+        }, 13000);
+        setInterval(function() {
+          data.setValue(1, 1, 40 + Math.round(60 * Math.random()));
+          chart.draw(data, options);
+        }, 5000);
+        setInterval(function() {
+          data.setValue(2, 1, 60 + Math.round(20 * Math.random()));
+          chart.draw(data, options);
+        }, 26000);
+      }
+
+      function getSum(total, num) {
+        return total + num;
+      }
+
+      function addNetwork(markers,label){
+        var sum_network = 0;
+        // var network_data = [];
+        for(var i=0;i<markers.length;i++){
+            if(markers[i]){
+                var sum_node = markers[i].customInfo.reduce(getSum);
+                sum_network += sum_node;
+            }
+        }
+        var avg_network = sum_network / markers.length;
+        var sidebar = $('#demo');
+        var sidebar_entry = $('<li/>', {
+            'html': '<a href="#demo" class="btn btn-link" data-toggle="collapse">Network '+label
+            +'<ul>Num. Nodes: '+(markers.length - 1 )+'</ul>'
+            +'<ul>Avg. PER: '+avg_network.toFixed(6)+'</ul>'
+            +'<ul>Avg. RSSI: '+generateRandom().toFixed(6)+'</ul>'
+            // +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
+            // +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>'
+            +'<ul>Stability status: '+(Math.round(Math.random()*100) + 0)+'%'+'</ul>'
+            +'<ul>Performance status: '+(Math.round(Math.random()*100) + 0)+'%'+'</ul>'
+            +'<ul>Security status: '+(Math.round(Math.random()*100) + 0)+'%'+'</ul>',
+            //  'click': function() {
+            //     // $(this).css('color', 'red');
+            //     drawGaugeChart(this);
+            // },
+            // jQuery(this).attr("id","newId"),
+            // 'click': function() {
+            //     google.maps.event.trigger(marker, 'click');
+            //     $(this).css('color','red');
+            //     // $(this).attr("id","newid");
+            // },
+            // 'mouseenter': function() {
+            //     $(this).css('color', 'red');
+            // },
+            // 'mouseleave': function() {
+            //     $(this).css('color', '#999999');
+            // },
+            // 'focus': function() {
+            //     $(this).css('color', '#999999');
+            // },
+            // function() {
+            //     $(this).attr("id","newid"+label);
+            //     // alert($(this).attr('id'));
+            //     // alert($(this).attr('id'));
+            // }
+        }).insertBefore(sidebar);
+        // insertBefore( ".network1" );
+      }
+
 
       function addMarker(location,label,active,parent){
         var array = [generateRandom(),generateRandom(),generateRandom(),generateRandom(),generateRandom(),generateRandom()];
@@ -637,7 +737,7 @@ function createInfoWindow(poly, content) {
         });
         markers[parseInt(label)] = marker;
         // $('#side_bar').append("<li>node" + label + "</li>");
-        var sidebar = $('#side_bar');
+        var sidebar = $('#demo');
         var sidebar_entry = $('<li/>', {
             'html': '<a href="#">Node '+label
             +'<ul>Parent: '+parent+'</ul>'
@@ -662,6 +762,7 @@ function createInfoWindow(poly, content) {
             },
             function() {
                 $(this).attr("id","newid"+label);
+                $(this).addClass('network1');
                 // alert($(this).attr('id'));
                 // alert($(this).attr('id'));
             }
@@ -723,6 +824,15 @@ function createInfoWindow(poly, content) {
           div.innerHTML = '<img src="' + icon + '"> ' + name;
           legend.appendChild(div);
         }
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        ctx.fillText("Noisy zone (PER)",30,25);
+        var grd = ctx.createLinearGradient(0, 0, 170, 0);
+        grd.addColorStop(0, "white");
+        grd.addColorStop(1, " #ff5733");
+        ctx.fillStyle = grd;
+        ctx.fillRect(2, 2, 150, 10);
+
         map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
         markRegion();
   }
