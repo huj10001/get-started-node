@@ -18,8 +18,9 @@ var kilby_data = [];
 //   localStorage = new LocalStorage('./scratch');
 // }
  
-// localStorage.setItem('myFirstKey', 100);
-// console.log(localStorage.getItem('myFirstKey'));
+// localStorage.setItem('test', 100);
+// console.log("local storage : "+localStorage);
+// console.log("test : "+localStorage.getItem('test'));
 // localStorage.setItem("test",test);
 // console.log(localStorage.getItem("test"));
 // localStorage.setItem('favoriteflavor','vanilla');  
@@ -74,7 +75,7 @@ var kilby_data = [];
 * 	"name": "Bob"
 * }
 */
-app.post("/api/visitors", function (request, response) {
+app.post("/api/visitorsss", function (request, response) {
   var userName = request.body.name;
   if(!mydb) {
     console.log("No database.");
@@ -82,12 +83,12 @@ app.post("/api/visitors", function (request, response) {
     return;
   }
   // insert the username as a document
-  mydb.insert({ "name" : userName }, function(err, body, header) {
-    if (err) {
-      return console.log('[mydb.insert] ', err.message);
-    }
-    response.send("Hello " + userName + "! I added you to the database.");
-  });
+  // mydb.insert({ "name" : userName }, function(err, body, header) {
+  //   if (err) {
+  //     return console.log('[mydb.insert] ', err.message);
+  //   }
+  //   response.send("Hello " + userName + "! I added you to the database.");
+  // });
 });
 
 /**
@@ -101,20 +102,22 @@ app.post("/api/visitors", function (request, response) {
  * [ "Bob", "Jane" ]
  * @return An array of all the visitor names
  */
-app.get("/api/visitors", function (request, response) {
-  var names = [];
-  if(!mydb) {
-    response.json(names);
+app.get("/api/visitorsss", function (request, response) {
+  // var names = [];
+  if(!mydb_kilby) {
+    response.json(kilby_data);
     return;
   }
 
   mydb.list({ include_docs: true }, function(err, body) {
     if (!err) {
-      body.rows.forEach(function(row) {
-        if(row.doc.name)
-          names.push(row.doc.name);
-      });
-      response.json(names);
+      // body.rows.forEach(function(row) {
+        // if(row.doc.name)
+          // names.push(row.doc.name);
+          // json = [];
+          // names.push(kilby_data);
+      // });
+      response.json(kilby_data);
     }
   });
 });
@@ -182,34 +185,112 @@ if (appEnv.services['cloudantNoSQLDB']) {
   console.log('All my databases: %s', allDbs.join(', '))
 });
   mydb_kilby = cloudant.db.use(dbName_kilby);
+  // console.log('data fetch start');
+  // setTimeout(query1, 1000);
+  query1();
+  setTimeout(query2, 3000);
+  setTimeout(query3, 6000);
+  setTimeout(query4, 9000);
+  // console.log('data fetch complete');
+  // fetchData('1');
+  // fetchData('3');
+  // fetchData('4');
+  // fetchData('5');
+  // fetchData('6');
+  // fetchData('7');
+  // fetchData('8');
+  // fetchData('9');
+  // fetchData('10');
+  // fetchData('11');
+  // fetchData('12');
+  // fetchData('13');
+  // fetchData('14');
+  // fetchData('15');
+  // fetchData('16');
+  // fetchData('17');
+  // fetchData('18');
+  // fetchData('19');
+  // fetchData('20');
+
+
   
-  mydb_kilby.find({selector:{id:'3'}}, function(er, result) {
-  if (er) {
-    throw er;
-  }
+//   mydb_kilby.find({selector:{id:'3'}}, function(er, result) {
+//   if (er) {
+//     throw er;
+//   }
 
-  console.log('Found %d documents with id 3', result.docs.length);
-  // for (var i = 0; i < result.docs.length; i++) {
-    for (var i = 0; i < 5; i++) {
-    console.log('  app per: %s', result.docs[i].app_per);
-    // kilby_data.push([result.docs[i].ts, result.docs[i].app_per]);
-  }
-  // console.log("all settttt");
-  // var ts = require("timeseries-analysis");
-  // var t     = new ts.main(ts.adapter.fromArray(kilby_data));
-  // console.log(t);
-  // var forecastDatapoint = 11; 
-// var coeffs = t.ARMaxEntropy({
-//     data: t.data.slice(0,10)
+//   console.log('Found %d documents with id 3', result.docs.length);
+//   // for (var i = 0; i < result.docs.length; i++) {
+//     var kilby_data_temp = [];
+//     for (var i = 0; i < result.docs.length; i++) {
+//     // console.log('  app per: %s', result.docs[i].app_per);
+    
+//     kilby_data_temp.push([result.docs[i].ts, result.docs[i].app_per]);
+//     kilby_data[3] = kilby_data_temp;
+//     // console.log('  time: %s, per: %s', result.docs[i].ts, result.docs[i].app_per);
+//     console.log(kilby_data[i]);
+//   }
+//   // console.log("all settttt");
+//   // var ts = require("timeseries-analysis");
+//   // var t     = new ts.main(ts.adapter.fromArray(kilby_data));
+//   // console.log(t);
+//   // var forecastDatapoint = 11; 
+// // var coeffs = t.ARMaxEntropy({
+// //     data: t.data.slice(0,10)
+// // });
+// // console.log(coeffs);
+// // var forecast  = 0;  
+// // for (var i=0;i<coeffs.length;i++) { 
+// //     forecast -= t.data[10-i][1]*coeffs[i];
+// // }
+// // console.log("forecast",forecast);
 // });
-// console.log(coeffs);
-// var forecast  = 0;  
-// for (var i=0;i<coeffs.length;i++) { 
-//     forecast -= t.data[10-i][1]*coeffs[i];
-// }
-// console.log("forecast",forecast);
-});
 
+}
+
+function fetchData(node_id){
+  mydb_kilby.find({selector:{id:node_id}}, function(er, result){
+    if(er){
+      throw er;
+    }
+    console.log('Found %d documents with id %s', result.docs.length, node_id);
+    var kilby_data_temp = [];
+    // var per = 'app_per';
+    for (var i=0;i<result.docs.length;i++){
+      kilby_data_temp.push([result.docs[i].ts, result.docs[i].app_per]);
+      kilby_data[parseInt(node_id)] = kilby_data_temp;
+    }
+    // var output = result.docs.length;
+    // return output;
+  });
+}
+
+function query1(){
+  fetchData('1');
+  fetchData('3');
+  fetchData('4');
+  fetchData('5');
+  fetchData('6');
+  fetchData('7');
+}
+function query2(){
+  fetchData('8');
+  fetchData('9');
+  fetchData('10');
+  fetchData('11');
+  fetchData('12');
+  fetchData('13');
+}
+function query3(){
+  fetchData('14');
+  fetchData('15');
+  fetchData('16');
+  fetchData('17');
+  fetchData('18');
+}
+function query4(){
+  fetchData('19');
+  fetchData('20');
 }
 
 /******** forecasting ******/
