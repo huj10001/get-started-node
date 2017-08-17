@@ -510,8 +510,83 @@
   //       infoWindow.setContent(node);
   //       infoWindow.open(marker.getMap(),marker);
   // }
+  function convertTime(timestamp_string){
+    var timestamp = parseInt(timestamp_string);
+    var date = new Date(timestamp);
+    var year = date.getFullYear();
+    var month = date.getMonth()+1;
+    var day = date.getDate();
+    var hours = date.getHours();
+    var minutes = "0" + date.getMinutes();
+    var seconds = "0" + date.getSeconds();
+    var formattedTime = year + '/' + month + '/' + day + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+    return formattedTime;
+  }
+  function findLineByLeastSquares(values_x, values_y) {
+    var sum_x = 0;
+    var sum_y = 0;
+    var sum_xy = 0;
+    var sum_xx = 0;
+    var count = 0;
+
+    /*
+     * We'll use those variables for faster read/write access.
+     */
+    var x = 0;
+    var y = 0;
+    var values_length = values_x != null ? values_x.length : 0;
+
+    // if (values_length != values_y.length) {
+    //     throw new Error('The parameters values_x and values_y need to have same size!');
+    // }
+
+    /*
+     * Nothing to do.
+     */
+    if (values_length === 0) {
+        return [ [], [] ];
+    }
+
+    /*
+     * Calculate the sum for each of the parts necessary.
+     */
+    for (var v = 0; v < values_length; v++) {
+        x = values_x[v];
+        y = values_y[v];
+        sum_x += x;
+        sum_y += y;
+        sum_xx += x*x;
+        sum_xy += x*y;
+        count++;
+    }
+
+    /*
+     * Calculate m and b for the formular:
+     * y = x * m + b
+     */
+    var m = (count*sum_xy - sum_x*sum_y) / (count*sum_xx - sum_x*sum_x);
+    var b = (sum_y/count) - (m*sum_x)/count;
+
+    /*
+     * We will make the x and y result line now
+     */
+    var result_values_x = [];
+    var result_values_y = [];
+
+    for (var v = 0; v < values_length; v++) {
+        x = values_x[v];
+        y = x * m + b;
+        result_values_x.push(x);
+        result_values_y.push(y);
+    }
+
+    return [result_values_x, result_values_y];
+}
   function getCustomInfo(marker){
     return marker.customInfo;
+  }
+  function getCustomInfoTime(marker){
+    return marker.customInfoTime;
   }
   function getMarker(id){
     return markers[parseInt(id)];
@@ -549,7 +624,9 @@
             cluster.push(current_marker.getPosition());
             // markers.shift();
             while(getParent(current_marker) && getParent(current_marker).isCritical==1){
+                var first_marker = current_marker;
                 current_marker = getParent(current_marker);
+                var second_marker = current_marker;
                 cluster.push(current_marker.getPosition());
                 // markers.splice(current_marker,1);
             }
@@ -560,9 +637,22 @@
                     strokeOpacity: 0,
                     strokeWeight: 0,
                     fillColor: ' #FF5733 ',
-                    fillOpacity: 0.5
+                    fillOpacity: 0.35
                 });
                 shape.setMap(map);
+            }
+            else if(cluster.length == 2){
+                var cityCircle = new google.maps.Circle({
+                strokeColor: '#FF5733',
+                strokeOpacity: 0,
+                strokeWeight: 0,
+                fillColor: '#FF5733',
+                fillOpacity: 0.35,
+                map: map,
+                center: calcMid(first_marker),
+                radius: calcDistance(first_marker,second_marker)/2*100000+4
+          });
+
             }
         }
     }
@@ -573,6 +663,7 @@
 
     var svg = chart.getContainer().getElementsByTagName('svg')[0];
     var lastVal = 0.05;
+    // var lastVal_temp = 0.1;
     var yLoc = layout.getYLocation(lastVal);
     svg.appendChild(createLine(chartArea.left,yLoc,chartArea.width + chartArea.left,yLoc,'#FF0000',3,2)); // axis line
     svg.appendChild(createText(chartArea.width + chartArea.left + 20 ,yLoc + 5,'Arial','13','red',lastVal)); // axis label 
@@ -610,7 +701,7 @@ function createInfoWindow(poly, content) {
 
 
 
-  function drawChart(marker) {
+  function drawChart(marker,current,predict) {
         // var data = google.visualization.arrayToDataTable([
         //   ['Time', 'PER'],
         //   ['7/13',  parseFloat(getCustomInfo(marker)[0])],
@@ -622,19 +713,23 @@ function createInfoWindow(poly, content) {
         // ]);
         var node_id = parseInt(marker.label);
         var node_data = getCustomInfo(marker);
+        var node_time = getCustomInfoTime(marker);
         // alert(node_data.length);
         var data = new google.visualization.DataTable();
         data.addColumn('string','TIME');
         data.addColumn('number','PER');
         for(var i=0;i<node_data.length;i++){
-            data.addRow([i.toString(), parseFloat(node_data[i])]);
+            // data.addRow([new Date(parseInt(node_time[i])).toString(), parseFloat(node_data[i])]);
             // data.addRow(['123', 0.001]);
+            data.addRow([convertTime(node_time[i]), parseFloat(node_data[i])]);
         }
 
         var options = {
-          title: 'PER',
+          title: 'PER'+'\n'+'current: '+(parseFloat(current)*100).toFixed(2)+'%'+'\xa0\xa0\xa0\xa0\xa0\xa0\xa0'+'predicted: '+(parseFloat(predict)*100).toFixed(2)+'%',
+          // subtitle: 'hello',
           // curveType: 'function',
-          legend: { position: 'bottom' },
+          legend: { position: 'none' },
+          // legend: 
         };
 
         var node = document.createElement('div'),
@@ -752,11 +847,24 @@ function createInfoWindow(poly, content) {
         if(data_test[node_id]){
             var node_data_length = data_test[node_id].length;
             var array = [];
+            var array_time = [];
+            var array_x = [];
+            var array_y = [];
             for(var i=0;i<node_data_length;i++){
                 array[i] = data_test[node_id][i][1];
+                array_time[i] = data_test[node_id][i][0];
+
+                array_x.push(parseInt(array_time[i]));
+                array_y.push(parseFloat(array[i]));
             }
+            var current = array[array.length-1];
+            var result = findLineByLeastSquares(array_x, array_y);
+            var predict_y = result[1][0];
         }else{
-            var array = ['0.0'];
+            var array = ['0'];
+            var array_time = ['0'];
+            var current = ['0'];
+            var predict_y = ['0'];
         }
         // alert(data_test);
         var sum = 0;
@@ -803,6 +911,7 @@ function createInfoWindow(poly, content) {
             id: label,
             status: active,
             customInfo: array,
+            customInfoTime: array_time,
             parentInfo: parent,
             isCritical: 0,
             batteryInfo: Math.random() * (0.8 - 0.1) + 0.1
@@ -841,19 +950,19 @@ function createInfoWindow(poly, content) {
             }
         }).appendTo(sidebar);
         for(var i=0;i<array.length;i++){
-            if(array[i]>0.05){  //orange
+            if(predict_y>0.05){  //orange
                 // marker.setAnimation(google.maps.Animation.BOUNCE);
                 marker.icon.fillColor = ' #FFA500 ';
                 marker.isCritical = 1;
             }
-            if(array[i]>0.1){ //red
+            if(array[i]>0.05){ //red
                 // marker.setAnimation(google.maps.Animation.BOUNCE);
                 marker.icon.fillColor = ' #FF0000 ';
                 marker.isCritical = 1;
             }
         }
         marker.addListener('click', function(){
-            drawChart(this);
+            drawChart(this,current,predict_y);
             var sidebar = document.getElementById("demo");;
             // sidebar.style.backgroundColor="Black";
             var li = document.getElementById("newid"+label);

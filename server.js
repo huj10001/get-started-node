@@ -211,7 +211,17 @@ if (appEnv.services['cloudantNoSQLDB']) {
   // fetchData('18');
   // fetchData('19');
   // fetchData('20');
+//   var known_x = [1, 2, 3, 4, 5];
+// var known_y = [5.2, 5.4, 5.6, 5.8, 6.0];
+// var result = findLineByLeastSquares(known_x, known_y);
+// console.log('predicted next PER: '+result[1][0]);
 
+// var lr = linearRegression(known_y, known_x);
+// console.log('slope: '+lr.slope);
+// console.log(lr.intercept);
+// console.log(lr.r2);
+// var predict = (known_y.length + 1) / lr.slope;
+// console.log('predicted: '+ predict);
 
   
 //   mydb_kilby.find({selector:{id:'3'}}, function(er, result) {
@@ -256,10 +266,27 @@ function fetchData(node_id){
     console.log('Found %d documents with id %s', result.docs.length, node_id);
     var kilby_data_temp = [];
     // var per = 'app_per';
+    var data_x = [];
+    var data_y = [];
     for (var i=0;i<result.docs.length;i++){
       kilby_data_temp.push([result.docs[i].ts, result.docs[i].app_per]);
       kilby_data[parseInt(node_id)] = kilby_data_temp;
+      
+      data_x.push(parseInt(result.docs[i].ts));
+      data_y.push(parseFloat(result.docs[i].app_per));
     }
+    // if(kilby_data_temp[0]){
+    //   console.log(typeof(parseFloat(kilby_data_temp[0][1])));
+    // }
+    // if(node_id == '3'){
+    var result = findLineByLeastSquares(data_x, data_y);
+    // var result = linearRegression(data_y, data_x);
+    // var result_x = result[0];
+    // var result_y = result[1];
+    // var size = data_y.length;
+    console.log('predicted next PER: '+result[1][0]);
+  // }
+
     // var output = result.docs.length;
     // return output;
   });
@@ -293,6 +320,91 @@ function query4(){
   fetchData('20');
 }
 
+function findLineByLeastSquares(values_x, values_y) {
+    var sum_x = 0;
+    var sum_y = 0;
+    var sum_xy = 0;
+    var sum_xx = 0;
+    var count = 0;
+
+    /*
+     * We'll use those variables for faster read/write access.
+     */
+    var x = 0;
+    var y = 0;
+    var values_length = values_x != null ? values_x.length : 0;
+
+    // if (values_length != values_y.length) {
+    //     throw new Error('The parameters values_x and values_y need to have same size!');
+    // }
+
+    /*
+     * Nothing to do.
+     */
+    if (values_length === 0) {
+        return [ [], [] ];
+    }
+
+    /*
+     * Calculate the sum for each of the parts necessary.
+     */
+    for (var v = 0; v < values_length; v++) {
+        x = values_x[v];
+        y = values_y[v];
+        sum_x += x;
+        sum_y += y;
+        sum_xx += x*x;
+        sum_xy += x*y;
+        count++;
+    }
+
+    /*
+     * Calculate m and b for the formular:
+     * y = x * m + b
+     */
+    var m = (count*sum_xy - sum_x*sum_y) / (count*sum_xx - sum_x*sum_x);
+    var b = (sum_y/count) - (m*sum_x)/count;
+
+    /*
+     * We will make the x and y result line now
+     */
+    var result_values_x = [];
+    var result_values_y = [];
+
+    for (var v = 0; v < values_length; v++) {
+        x = values_x[v];
+        y = x * m + b;
+        result_values_x.push(x);
+        result_values_y.push(y);
+    }
+
+    return [result_values_x, result_values_y];
+}
+
+function linearRegression(y,x){
+    var lr = {};
+    var n = y.length;
+    var sum_x = 0;
+    var sum_y = 0;
+    var sum_xy = 0;
+    var sum_xx = 0;
+    var sum_yy = 0;
+    
+    for (var i = 0; i < y.length; i++) {
+      
+      sum_x += x[i];
+      sum_y += y[i];
+      sum_xy += (x[i]*y[i]);
+      sum_xx += (x[i]*x[i]);
+      sum_yy += (y[i]*y[i]);
+    } 
+    
+    lr['slope'] = (n * sum_xy - sum_x * sum_y) / (n*sum_xx - sum_x * sum_x);
+    lr['intercept'] = (sum_y - lr.slope * sum_x)/n;
+    lr['r2'] = Math.pow((n*sum_xy - sum_x*sum_y)/Math.sqrt((n*sum_xx-sum_x*sum_x)*(n*sum_yy-sum_y*sum_y)),2);
+    
+    return lr;
+}
 /******** forecasting ******/
 // var ts = require("timeseries-analysis");
 // var t       = new ts.main(ts.adapter.sin({cycles:4}));
