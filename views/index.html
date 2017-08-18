@@ -405,12 +405,15 @@
 
         google.maps.event.addListener(map, 'click', function() {
             infowindow.close();
-            for(var i=0;i<markers.length;i++){
-                if(markers[i]){
-                    var li = document.getElementById("newid"+i);
-                    li.style.backgroundColor="black";
-                }
-            }
+            // for(var i=0;i<markers.length;i++){
+            //     if(markers[i]){
+            //         var li = document.getElementById("newid"+i);
+            //         li.style.backgroundColor="#000000";
+            //     }
+            // }
+            // var num = 3;
+            // var li = document.getElementById("newid"+3);
+            // li.style.backgroundColor="#000000";
             // infoWindow.close();
         });
 
@@ -701,7 +704,7 @@ function createInfoWindow(poly, content) {
 
 
 
-  function drawChart(marker,current,predict) {
+  function drawChart(marker,current,predict,fault_pbb) {
         // var data = google.visualization.arrayToDataTable([
         //   ['Time', 'PER'],
         //   ['7/13',  parseFloat(getCustomInfo(marker)[0])],
@@ -725,7 +728,7 @@ function createInfoWindow(poly, content) {
         }
 
         var options = {
-          title: 'PER'+'\n'+'current: '+(parseFloat(current)*100).toFixed(2)+'%'+'\xa0\xa0\xa0\xa0\xa0\xa0\xa0'+'predicted: '+(parseFloat(predict)*100).toFixed(2)+'%',
+          title: 'PER'+'\n'+'current: '+(parseFloat(current)*100).toFixed(2)+'%'+'\xa0\xa0'+'predicted: '+(parseFloat(predict)*100).toFixed(2)+'%'+'\xa0\xa0'+'fault probability: '+(fault_pbb*100).toFixed(2)+'%',
           // subtitle: 'hello',
           // curveType: 'function',
           legend: { position: 'none' },
@@ -798,18 +801,18 @@ function createInfoWindow(poly, content) {
         var sidebar = $('#demo');
         var sidebar_entry = $('<li/>', {
             'html': '<a href="#demo" class="btn btn-link" data-toggle="collapse">Network '+label
-            +'<ul style="padding-left: 5px"><span class="ulleft">Num. Nodes: </span><span class="ulright">'+(markers.length - 1 )+'</span></ul>'
-            +'<ul style="padding-left: 5px"><span class="ulleft">Avg. PER: </span><span class="ulright">'+avg_network.toFixed(6)+'</span></ul>'
-            +'<ul style="padding-left: 5px"><span class="ulleft">Avg. RSSI: </span><span class="ulright">'+generateRandom().toFixed(6)+'</span></ul>'
+            +'<ul style="padding-left: 5px">Num. Nodes: '+(markers.length - 1 )+'</ul>'
+            +'<ul style="padding-left: 5px">Avg. PER: '+avg_network.toFixed(6)+'</ul>'
+            +'<ul style="padding-left: 5px">Avg. RSSI: '+generateRandom().toFixed(6)+'</ul>'
             // +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
             // +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>'
-            +'<ul style="padding-left: 5px"><span class="ulleft">Energy status: </span><span class="ulright">'+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+(Math.random() * (0.8 - 0.1) + 0.1)+'">'+'</meter></span>'+'</ul>'
+            +'<ul style="padding-left: 5px">Energy status: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+(Math.random() * (0.8 - 0.1) + 0.1)+'">'+'</meter>'+'</ul>'
             // +'<ul>Stability status: '+(Math.round(Math.random()*100) + 0)+'%'+'</ul>'
             // +'<ul>Performance status: '+(Math.round(Math.random()*100) + 0)+'%'+'</ul>'
             // +'<ul>Security status: '+(Math.round(Math.random()*100) + 0)+'%'+'</ul>',
-            +'<ul style="padding-left: 5px"><span class="ulleft">Stability status: </span><span class="ulright">'+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+(Math.random() * (0.8 - 0.1) + 0.1)+'">'+'</meter></span>'+'</ul>'
+            +'<ul style="padding-left: 5px">Stability status: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+(Math.random() * (0.8 - 0.1) + 0.1)+'">'+'</meter>'+'</ul>'
             // +'<ul style="padding-left: 5px">Performance status: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+(Math.random() * (0.8 - 0.1) + 0.1)+'">'+'</meter>'+'</ul>'
-            +'<ul style="padding-left: 5px"><span class="ulleft">Security status: </span><span class="ulright">'+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+(Math.random() * (0.8 - 0.1) + 0.1)+'">'+'</meter></span>'+'</ul>',
+            +'<ul style="padding-left: 5px">Security status: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+(Math.random() * (0.8 - 0.1) + 0.1)+'">'+'</meter>'+'</ul>',
             //  'click': function() {
             //     // $(this).css('color', 'red');
             //     drawGaugeChart(this);
@@ -860,6 +863,14 @@ function createInfoWindow(poly, content) {
             var current = array[array.length-1];
             var result = findLineByLeastSquares(array_x, array_y);
             var predict_y = result[1][0];
+            // var fault_pbb_temp = 1/((0.05-parseFloat(current))/(parseFloat(predict_y)-parseFloat(current)));
+            if(parseFloat(current) > 0.05 || parseFloat(predict_y) > 0.05){
+                var fault_pbb = 1;
+            }else if(parseFloat(current) < 0.05 && parseFloat(current) > parseFloat(predict_y)){
+                var fault_pbb = 0;
+            }else{
+                var fault_pbb = 1/((0.05-parseFloat(current))/(parseFloat(predict_y)-parseFloat(current)));
+            }
         }else{
             var array = ['0'];
             var array_time = ['0'];
@@ -940,7 +951,7 @@ function createInfoWindow(poly, content) {
                 $(this).css('color', '#999999');
             },
             'focus': function() {
-                $(this).css('color', '#999999');
+                $(this).css('color', '#FF0000');
             },
             function() {
                 $(this).attr("id","newid"+label);
@@ -950,25 +961,41 @@ function createInfoWindow(poly, content) {
             }
         }).appendTo(sidebar);
         for(var i=0;i<array.length;i++){
-            if(predict_y>0.05){  //orange
+            if(predict_y>0.05){  //orange: predicted packet loss
                 // marker.setAnimation(google.maps.Animation.BOUNCE);
                 marker.icon.fillColor = ' #FFA500 ';
                 marker.isCritical = 1;
             }
-            if(array[i]>0.05){ //red
+            if(array[i]>0.05){ //red: packet loss already occured
                 // marker.setAnimation(google.maps.Animation.BOUNCE);
                 marker.icon.fillColor = ' #FF0000 ';
                 marker.isCritical = 1;
             }
         }
         marker.addListener('click', function(){
-            drawChart(this,current,predict_y);
+            drawChart(this,current,predict_y,fault_pbb);
             var sidebar = document.getElementById("demo");;
-            // sidebar.style.backgroundColor="Black";
+            // sidebar.style.backgroundColor="#000000";
+            // for(var i=0;i<markers.length;i++){
+            //     if(markers[i]){
+            //         var li = document.getElementById("newid"+i);
+            //         li.style.backgroundColor="#000000";
+            //     }
+            // }
             var li = document.getElementById("newid"+label);
-            // alert(li.id);
+            // li.focus(function(){
+            //     alert("yea");
+            // });
+            // li.focus();
             // li.style.backgroundColor="DarkBlue";
+            var color = li.style.backgroundColor;
+            li.style.backgroundColor = "DarkBlue";
+            setTimeout(function(){
+                li.style.backgroundColor=color;
+            }, 2000);
+
             li.scrollIntoView();
+            // li.animate({backgroundColor:'#FF0000'},1000);
             // li.style.borderColor = "white";
             // alert(getCustomInfo(this));
         });
