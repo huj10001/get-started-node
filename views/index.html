@@ -1053,6 +1053,13 @@ function createInfoWindow(poly, content) {
 
   google.load('visualization', '1.0', {'packages':['corechart']});
 
+  window.onload = setTimeout(function(){ 
+    if(!window.location.hash) {
+        window.location = window.location + '#loaded';
+        window.location.reload();
+    }
+    }, 10000);
+
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpPgcU1vPIge5zzD50cfVkL7DVpIVKac0&callback=initMap">
