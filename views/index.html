@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hello World</title>
+    <title>IoT</title>
 
     <!-- Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -219,6 +219,47 @@
         display: inline;
         float: right;
     }
+    #overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    filter:alpha(opacity=50);
+    -moz-opacity:0.5;
+    -khtml-opacity: 0.5;
+    opacity: 0.8;
+    z-index: 10000;
+    }
+    #text{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 50px;
+    color: white;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    }
+    #myBtn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  left: 250px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 40px;
+}
+
+#myBtn:hover {
+  background-color: #555;
+}
     </style>
 
 
@@ -244,6 +285,7 @@
     <div id="wrapper" class="toggled">
   <!-- Sidebar -->
   <div id="sidebar-wrapper">
+  <button onclick="topFunction()" id="myBtn" title="Go to top">&#x2912;</button>
     <ul class="sidebar-nav" id="side_bar">
       <li class="sidebar-brand" style="font-weight: bold; color: #FFFFFF;">
         <h1>Summary</h1>
@@ -931,7 +973,7 @@ function createInfoWindow(poly, content) {
         // $('#side_bar').append("<li>node" + label + "</li>");
         var sidebar = $('#demo');
         var sidebar_entry = $('<li/>', {
-            'html': '<a href="#">Node '+label
+            'html': '<a href="#infolist">Node '+label
             +'<ul>Parent: '+parent+'</ul>'
             +'<ul>Avg. PER: '+avg.toFixed(6)+'</ul>'
             +'<ul>Avg. RSSI: '+generateRandom().toFixed(6)+'</ul>'
@@ -1052,6 +1094,35 @@ function createInfoWindow(poly, content) {
   }
 
   google.load('visualization', '1.0', {'packages':['corechart']});
+  var elmnt = document.getElementById("sidebar-wrapper");
+  elmnt.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (elmnt.scrollTop > 0) {
+        document.getElementById("myBtn").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    elmnt.scrollTop = 0;
+    // document.documentElement.scrollTop = 0;
+}
+
+  var timeleft = 10;
+    var downloadTimer = setInterval(function(){
+    timeleft--;
+    document.getElementById("countdowntimer").textContent = timeleft;
+    if(timeleft <= 0)
+        clearInterval(downloadTimer);
+    },1000);
+
+  if(!window.location.hash){
+    var overlay = jQuery('<div id="overlay"><div id="text">Data loaded in <span id="countdowntimer">10 </span> seconds</div></div>');
+    overlay.appendTo(document.body)
+  }
 
   window.onload = setTimeout(function(){ 
     if(!window.location.hash) {
@@ -1059,6 +1130,8 @@ function createInfoWindow(poly, content) {
         window.location.reload();
     }
     }, 10000);
+
+  // alert("Loading...");
 
     </script>
     <script async defer

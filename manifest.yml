@@ -1,5 +1,7 @@
 ---
 applications:
- - name: GetStartedNode
-   random-route: true
+ - name: kilby311
+   # random-route: true
+   host: kilby311
+   domain: mybluemix.net
    memory: 256M

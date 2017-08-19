@@ -179,7 +179,7 @@ if (appEnv.services['cloudantNoSQLDB']) {
   var cloudant = Cloudant(appEnv.services['cloudantNoSQLDB'][0].credentials);
 
   //database name
-  var dbName_kilby = 'kilby_network_07_13_07_17_nobeacon_update_801_csv';
+  var dbName_kilby = 'kilby_test';
 
   cloudant.db.list(function(err, allDbs) {
   console.log('All my databases: %s', allDbs.join(', '))
@@ -271,7 +271,7 @@ function fetchData(node_id){
     for (var i=0;i<result.docs.length;i++){
       kilby_data_temp.push([result.docs[i].ts, result.docs[i].app_per]);
       kilby_data[parseInt(node_id)] = kilby_data_temp;
-      
+
       data_x.push(parseInt(result.docs[i].ts));
       data_y.push(parseFloat(result.docs[i].app_per));
     }
