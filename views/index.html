@@ -660,21 +660,53 @@
     var parent_marker = getMarker(parent_id);
     return parent_marker;
   }
+  function searchArea(position, area){
+    if(area.shapeType == 1){ // is a circle
+        var center = area.getCenter();
+        var radius = area.getRadius();
+        // alert(radius+"   "+google.maps.geometry.spherical.computeDistanceBetween(position, center));
+        // console.log(google.maps.geometry.spherical.computeDistanceBetween(position, center));
+        if(google.maps.geometry.spherical.computeDistanceBetween(position, center) < radius){
+            // alert("overlap");
+            return true;
+
+        }else{
+            return false;
+        }
+    }else if(area.shapeType == 0){ // is a polygon
+        return google.maps.geometry.poly.containsLocation(position, area);
+    }else{
+        return false;
+    }
+  }
+  var shapes = [];
   function markRegion(){
     // var cluster = [];
+    
     while(markers.length > 0){
-        current_marker = markers.pop();
+        var current_marker = markers.pop();
         if(current_marker && current_marker.isCritical==1){
             var cluster = [];
+            var affected = [];
+            var sum_lossRate_mult = current_marker.lossRate;
+            var sum_lossRate = current_marker.lossRate*0.05;
+            affected.push(current_marker.label);
             cluster.push(current_marker.getPosition());
             // markers.shift();
             while(getParent(current_marker) && getParent(current_marker).isCritical==1){
                 var first_marker = current_marker;
+                sum_lossRate_mult += current_marker.lossRate;
+                sum_lossRate += current_marker.lossRate*0.05;
                 current_marker = getParent(current_marker);
                 var second_marker = current_marker;
+                sum_lossRate_mult += current_marker.lossRate;
+                sum_lossRate += current_marker.lossRate*0.05;
+                affected.push(current_marker.label);
                 cluster.push(current_marker.getPosition());
                 // markers.splice(current_marker,1);
             }
+            var avg_lossRate_mult = sum_lossRate_mult / cluster.length;
+            var avg_lossRate = sum_lossRate / cluster.length;
             if(cluster.length > 2){
                 var shape = new google.maps.Polygon({
                     paths: cluster,
@@ -682,9 +714,38 @@
                     strokeOpacity: 0,
                     strokeWeight: 0,
                     fillColor: ' #FF5733 ',
-                    fillOpacity: 0.35
+                    fillOpacity: 0.2 * avg_lossRate_mult,
+                    lossInfo: avg_lossRate,
+                    shapeType: 0,
+                    affected: affected
                 });
+                
                 shape.setMap(map);
+                // google.maps.geometry.poly.containsLocation(event.latLng, bermudaTriangle)
+                // createInfoWindow(shape, "PER: " + avg_lossRate);
+                // google.maps.event.addListener(shape, 'mouseover', function(event) {
+                //     var prev_loss = 0;
+                //     var curr_loss = shape.lossInfo;
+                //     for(var i=0;i<shapes.length;i++){
+                //         if(searchArea(event.latLng, shapes[i]) == true){
+                //             // var prev_loss = shapes[i].customInfo;
+                //             // prev_loss = shapes[i].lossInfo;
+                //             // curr_loss += prev_loss;
+                //             prev_loss += shapes[i].lossInfo;
+                //         }
+                //     }
+                //     curr_loss += prev_loss;
+                //     infowindow.setContent("Avg. PER: " + curr_loss.toFixed(6));
+                //     infowindow.setPosition(event.latLng);
+                //     infowindow.open(map);
+                //     // shape.setOptions({strokeWeight: 2.0, fillColor: 'green'});
+                // });
+                // google.maps.event.addListener(shape, 'mouseout', function(event){
+                //     infowindow.close();
+                //     // shape.setOptions({strokeWeight: 0, fillColor: '#FF5733'});
+                // });
+                // shape.setMap(map);
+                shapes.push(shape);
             }
             else if(cluster.length == 2){
                 var cityCircle = new google.maps.Circle({
@@ -692,11 +753,41 @@
                 strokeOpacity: 0,
                 strokeWeight: 0,
                 fillColor: '#FF5733',
-                fillOpacity: 0.35,
+                fillOpacity: 0.2 * avg_lossRate_mult,
                 map: map,
                 center: calcMid(first_marker),
-                radius: calcDistance(first_marker,second_marker)/2*100000+4
-          });
+                radius: calcDistance(first_marker,second_marker)/2*100000+4,
+                lossInfo: avg_lossRate,
+                shapeType: 1,
+                affected: affected
+                });
+                shapes.push(cityCircle);
+                // createInfoWindow(cityCircle, "PER: " + avg_lossRate);
+
+                // cityCircle = shapes[shapes.length-1];
+                // google.maps.event.addListener(cityCircle, 'mouseover', function(event) {
+                //     var curr_loss = cityCircle.lossInfo;
+                //     var prev_loss = 0; 
+                //     for(var i=0;i<shapes.length;i++){    
+                //         if(searchArea(event.latLng, shapes[i]) == true){
+                //             // var prev_loss = shapes[i].customInfo;
+                //             prev_loss += shapes[i].lossInfo;
+                //             // curr_loss += prev_loss;
+                //             // alert("overlap"+prev_loss+"klasdjf"+curr);
+                //         }
+                //         // alert("not overlap");
+                //     }
+                //     curr_loss += prev_loss;
+                //     infowindow.setContent("Avg. PER: " + curr_loss.toFixed(6));
+                //     infowindow.setPosition(event.latLng);
+                //     infowindow.open(map);
+                //     cityCircle.setOptions({strokeWeight: 2.0, fillColor: 'green'});
+                // });
+                // google.maps.event.addListener(cityCircle, 'mouseout', function(event){
+                //     infowindow.close();
+                //     cityCircle.setOptions({strokeWeight: 0, fillColor: '#FF5733'});
+                // });
+                // shapes.push(cityCircle);
 
             }
         }
@@ -967,6 +1058,7 @@ function createInfoWindow(poly, content) {
             customInfoTime: array_time,
             parentInfo: parent,
             isCritical: 0,
+            lossRate: 0,
             batteryInfo: Math.random() * (0.8 - 0.1) + 0.1
         });
         markers[parseInt(label)] = marker;
@@ -1008,12 +1100,15 @@ function createInfoWindow(poly, content) {
                 marker.icon.fillColor = ' #FFA500 ';
                 marker.isCritical = 1;
             }
-            if(array[i]>0.05){ //red: packet loss already occured
-                // marker.setAnimation(google.maps.Animation.BOUNCE);
-                marker.icon.fillColor = ' #FF0000 ';
-                marker.isCritical = 1;
-            }
         }
+        // var loss_rate = 1;
+        if(avg>0.05){ //red: avg packet loss 
+                // marker.setAnimation(google.maps.Animation.BOUNCE);
+            marker.icon.fillColor = ' #FF0000 ';
+            marker.isCritical = 1;
+            marker.lossRate = avg/0.05;
+        }
+        
         marker.addListener('click', function(){
             drawChart(this,current,predict_y,fault_pbb);
             var sidebar = document.getElementById("demo");;
@@ -1080,8 +1175,8 @@ function createInfoWindow(poly, content) {
         }
         var c = document.getElementById("myCanvas");
         var ctx = c.getContext("2d");
-        ctx.fillText("low",5,12);
-        ctx.fillText("high",125,12);
+        ctx.fillText("Low",5,12);
+        ctx.fillText("High",125,12);
         ctx.fillText("Noisy zone (PER)",30,35);
         var grd = ctx.createLinearGradient(0, 0, 170, 0);
         grd.addColorStop(0, "white");
@@ -1091,6 +1186,93 @@ function createInfoWindow(poly, content) {
 
         map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
         markRegion();
+        // alert(shapes[0].shapeType+' '+shapes[1].shapeType+' '+shapes[2].shapeType+' '+shapes[3].shapeType);
+        // for(var i=0;i<shapes.length;i++){
+        //     alert(shapes[i].shapeType);
+        // }
+        // map.addListener('click', function(e) {
+        //     for(var i=0;i<shapes.length;i++){
+        //         if(searchArea(e.latLng, shapes[i])){
+        //             // createInfoWindow(e.latLng,"overlap");
+        //             alert("overlap with shape "+shapes[i]);
+        //         }
+        //     }
+        // });
+        function shapeMouse(current_shape, index){
+            google.maps.event.addListener(current_shape, 'mouseover', function(event) {
+                var dup_array = shapes.slice();
+                dup_array.splice(index, 1);
+                var overlap = 0;
+                for(var i=0; i<dup_array.length; i++){
+                    if(searchArea(event.latLng, dup_array[i])){
+                        overlap += dup_array[i].lossInfo;
+                    }
+                }
+                var areainfo = '<h4>Avg. PER: ' + (parseFloat(current_shape.lossInfo + overlap)*100).toFixed(2)+'%' + '<br />' + 'Affected nodes: ';
+                for(var i=current_shape.affected.length-1; i>=0;i--){
+                    areainfo += (current_shape.affected[i]);
+                    if(current_shape.affected[i-1]){
+                        areainfo += ', ';
+                    }
+                }
+                areainfo += '</h4>'
+                infowindow.setContent(areainfo);
+                infowindow.setPosition(event.latLng);
+                infowindow.open(map);
+                current_shape.setOptions({strokeWeight: 5.0, fillColor: 'blue'});
+            });
+            google.maps.event.addListener(current_shape, 'mouseout', function(event){
+                    // if(searchArea(e.latLng, shapes[i])){
+                        infowindow.close();
+                        current_shape.setOptions({strokeWeight: 0, fillColor: '#FF5733'});
+                    // }
+            });
+        }
+        function createAreaInfo(){
+            for(var i=0;i<shapes.length;i++){
+                var current_shape = shapes[i];
+                shapeMouse(current_shape, i);
+            }
+        }
+        // alert("total " + shapes.length + " shapes");
+        createAreaInfo();
+        // shapes[0].addListener('click', function(){
+        //     // if(searchArea(e.latLng, shapes[0])){
+        //         // alert("shape 0"  + " is clicked!")
+        //         createInfoWindow(shapes[0],shapes[0].lossInfo.toString());
+        //     // }
+        // });
+        // shapes[1].addListener('click', function(e){
+        //     if(searchArea(e.latLng, shapes[1])){
+        //         // alert("shape 1"  + " is clicked!")
+        //         createInfoWindow(shapes[1],shapes[1].lossInfo.toString());
+        //     }
+        // });
+        // shapes[2].addListener('click', function(e){
+        //     if(searchArea(e.latLng, shapes[2])){
+        //         // alert("shape 2"  + " is clicked!")
+        //         createInfoWindow(shapes[2],shapes[2].lossInfo.toString());
+        //     }
+        // });
+        // shapes[3].addListener('click', function(e){
+        //     if(searchArea(e.latLng, shapes[3])){
+        //         // alert("shape 3"  + " is clicked!")
+        //         createInfoWindow(shapes[3],shapes[3].lossInfo.toString());
+        //     }
+        // });
+        // for(var i=0;i<shapes.length;i++){
+        //     var current_shape = shapes[i];
+        //     google.maps.event.addListener(current_shape,'click',function(e){
+        //         if(searchArea(e.latLng, current_shape)){
+        //             // current_shape.setOptions({strokeWeight: 2.0, fillColor: 'green'});
+        //             alert("shape " + i + " is clicked!")
+        //         }
+        //     });
+        //     // google.maps.event.addListener(current_shape,'click',function(e){
+        //     //     current_shape.setOptions({strokeWeight: 0, fillColor: '#FF5733'});
+        //     // });
+        // }
+
   }
 
   google.load('visualization', '1.0', {'packages':['corechart']});
