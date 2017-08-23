@@ -124,7 +124,7 @@
       height: 100%;
       margin-left: -250px;
       overflow-y: auto;
-      background: #000;
+      background: #a9cce3;
       -webkit-transition: all 0.5s ease;
       -moz-transition: all 0.5s ease;
       -o-transition: all 0.5s ease;
@@ -159,11 +159,11 @@
     .sidebar-nav li a {
       display: block;
       text-decoration: none;
-      color: #999999;
+      color: #000000;
     }
     .sidebar-nav li a:hover {
       text-decoration: none;
-      color: #fff;
+      color: #000080;
       background: rgba(255, 255, 255, 0.2);
     }
     .sidebar-nav li a:active,
@@ -260,6 +260,14 @@
 #myBtn:hover {
   background-color: #555;
 }
+hr {
+    display: block;
+    border: 2px solid;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0; 
+    border-color: #000000;
+}
     </style>
 
 
@@ -287,7 +295,7 @@
   <div id="sidebar-wrapper">
   <button onclick="topFunction()" id="myBtn" title="Go to top">&#x2912;</button>
     <ul class="sidebar-nav" id="side_bar">
-      <li class="sidebar-brand" style="font-weight: bold; color: #FFFFFF;">
+      <li class="sidebar-brand" style="font-weight: bold; color: #000000;">
         <h1>Summary</h1>
 
       </li>
@@ -559,13 +567,16 @@
     var timestamp = parseInt(timestamp_string);
     var date = new Date(timestamp);
     var year = date.getFullYear();
-    var month = date.getMonth()+1;
+    var month = date.getMonth();
     var day = date.getDate();
     var hours = date.getHours();
     var minutes = "0" + date.getMinutes();
     var seconds = "0" + date.getSeconds();
     var formattedTime = year + '/' + month + '/' + day + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-    return formattedTime;
+    var result_time = new Date(year, month, day, hours, minutes.substr(-2), seconds.substr(-2));
+    // return formattedTime;
+    return result_time;
+
   }
   function findLineByLeastSquares(values_x, values_y) {
     var sum_x = 0;
@@ -852,7 +863,7 @@ function createInfoWindow(poly, content) {
         var node_time = getCustomInfoTime(marker);
         // alert(node_data.length);
         var data = new google.visualization.DataTable();
-        data.addColumn('string','TIME');
+        data.addColumn('date','TIME');
         data.addColumn('number','PER');
         for(var i=0;i<node_data.length;i++){
             // data.addRow([new Date(parseInt(node_time[i])).toString(), parseFloat(node_data[i])]);
@@ -860,21 +871,37 @@ function createInfoWindow(poly, content) {
             data.addRow([convertTime(node_time[i]), parseFloat(node_data[i])]);
         }
 
+        var titlestring = '<div id="content">'+
+            '<h1 id="firstHeading" class="firstHeading">PER</h1>'+
+            '<div id="bodyContent">'+
+            '<p><b>Current: </b>'+(parseFloat(current)*100).toFixed(2)+'%'+'</p>'+
+            '<p><b>Predicted: </b>'+(parseFloat(predict)*100).toFixed(2)+'%'+'</p>'+
+            '<p><b>Fault probability: </b>'+(fault_pbb*100).toFixed(2)+'%'+'</p>'+
+            '</div>'+
+            '</div>';
+
         var options = {
           title: 'PER'+'\n'+'current: '+(parseFloat(current)*100).toFixed(2)+'%'+'\xa0\xa0'+'predicted: '+(parseFloat(predict)*100).toFixed(2)+'%'+'\xa0\xa0'+'fault probability: '+(fault_pbb*100).toFixed(2)+'%',
           // subtitle: 'hello',
           // curveType: 'function',
+          // width: 900,
+          // height: 200,
           legend: { position: 'none' },
+          displayAnnotations: true,
           // legend: 
         };
 
         var node = document.createElement('div'),
         // infowindow  = new google.maps.InfoWindow(),
-        chart       = new google.visualization.LineChart(node);
+        chart       = new google.visualization.AnnotatedTimeLine(node);
 
         chart.draw(data, options);
-        drawAdditionalHAxis(chart, data);
-        infowindow.setContent(node);
+        // drawAdditionalHAxis(chart, data);
+        var div = document.createElement('div');
+        div.innerHTML = titlestring;
+        // node.appendChild(div);
+        div.appendChild(node);
+        infowindow.setContent(div);
         infowindow.open(marker.getMap(),marker);
         // google.maps.event.addListener(marker.getMap(), 'click', function() {
         //     infoWindow.close();
@@ -1126,7 +1153,7 @@ function createInfoWindow(poly, content) {
             // li.focus();
             // li.style.backgroundColor="DarkBlue";
             var color = li.style.backgroundColor;
-            li.style.backgroundColor = "DarkBlue";
+            li.style.backgroundColor = " #5499c7 ";
             setTimeout(function(){
                 li.style.backgroundColor=color;
             }, 2000);
@@ -1199,7 +1226,7 @@ function createInfoWindow(poly, content) {
         //     }
         // });
         function shapeMouse(current_shape, index){
-            google.maps.event.addListener(current_shape, 'mouseover', function(event) {
+            google.maps.event.addListener(current_shape, 'click', function(event) {
                 var dup_array = shapes.slice();
                 dup_array.splice(index, 1);
                 var overlap = 0;
@@ -1219,14 +1246,21 @@ function createInfoWindow(poly, content) {
                 infowindow.setContent(areainfo);
                 infowindow.setPosition(event.latLng);
                 infowindow.open(map);
+                for(var i=0;i<shapes.length;i++){
+                    shapes[i].setOptions({strokeWeight: 0, fillColor: '#FF5733'});
+                }
                 current_shape.setOptions({strokeWeight: 5.0, fillColor: 'blue'});
             });
-            google.maps.event.addListener(current_shape, 'mouseout', function(event){
-                    // if(searchArea(e.latLng, shapes[i])){
-                        infowindow.close();
-                        current_shape.setOptions({strokeWeight: 0, fillColor: '#FF5733'});
-                    // }
+            google.maps.event.addListener(map, 'click', function() {
+                infowindow.close();
+                current_shape.setOptions({strokeWeight: 0, fillColor: '#FF5733'});
             });
+            // google.maps.event.addListener(current_shape, 'mouseout', function(event){
+            //         // if(searchArea(e.latLng, shapes[i])){
+            //             infowindow.close();
+            //             current_shape.setOptions({strokeWeight: 0, fillColor: '#FF5733'});
+            //         // }
+            // });
         }
         function createAreaInfo(){
             for(var i=0;i<shapes.length;i++){
@@ -1275,7 +1309,9 @@ function createInfoWindow(poly, content) {
 
   }
 
-  google.load('visualization', '1.0', {'packages':['corechart']});
+  // google.load('visualization', '1.0', {'packages':['corechart']});
+  google.charts.load('current', {'packages':['annotatedtimeline']});
+
   var elmnt = document.getElementById("sidebar-wrapper");
   elmnt.onscroll = function() {scrollFunction()};
 
