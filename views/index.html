@@ -244,7 +244,7 @@
     #myBtn {
   display: none;
   position: fixed;
-  bottom: 20px;
+  bottom: 5px;
   left: 250px;
   z-index: 99;
   border: none;
@@ -252,9 +252,11 @@
   background-color: black;
   color: white;
   cursor: pointer;
-  padding: 15px;
-  border-radius: 10px;
+  padding: 5px;
+  border-radius: 50px;
   font-size: 40px;
+  height: 50px;
+  width: 50px;
 }
 
 #myBtn:hover {
@@ -343,7 +345,7 @@ hr {
     <div id="wrapper" class="toggled">
   <!-- Sidebar -->
   <div id="sidebar-wrapper">
-  <button onclick="topFunction()" id="myBtn" title="Go to top">&#x2912;</button>
+  <button onclick="topFunction()" id="myBtn" title="Go to top">&#8963;</button>
     <ul class="sidebar-nav" id="side_bar">
       <li class="sidebar-brand" style="font-weight: bold; color: #000000;">
         <h1>Summary</h1>
@@ -540,6 +542,10 @@ hr {
         $("#menu-toggle").click(function(e) {
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
+            // alert($("#wrapper").hasClass("toggled"));
+            if($("#wrapper").hasClass("toggled")){
+                document.getElementById("myBtn").style.display = "none";
+            }
             myWrapper.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
                 google.maps.event.trigger(map, 'resize');
             });
@@ -1440,7 +1446,7 @@ function createInfoWindow(poly, content) {
   elmnt.onscroll = function() {scrollFunction()};
 
 function scrollFunction() {
-    if (elmnt.scrollTop > 0) {
+    if (elmnt.scrollTop > 20) {
         document.getElementById("myBtn").style.display = "block";
     } else {
         document.getElementById("myBtn").style.display = "none";
