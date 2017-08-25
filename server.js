@@ -211,6 +211,8 @@ if (appEnv.services['cloudantNoSQLDB']) {
   // fetchData('18');
   // fetchData('19');
   // fetchData('20');
+  // setTimeout(polynomialRegression, 12000);
+  
 //   var known_x = [1, 2, 3, 4, 5];
 // var known_y = [5.2, 5.4, 5.6, 5.8, 6.0];
 // var result = findLineByLeastSquares(known_x, known_y);
@@ -404,6 +406,16 @@ function linearRegression(y,x){
     lr['r2'] = Math.pow((n*sum_xy - sum_x*sum_y)/Math.sqrt((n*sum_xx-sum_x*sum_x)*(n*sum_yy-sum_y*sum_y)),2);
     
     return lr;
+}
+
+function polynomialRegression(){
+  var data = kilby_data[15];
+  var regression = require("regression");
+  const result = regression.polynomial(data, { order: 8 });
+  var last = data.length-1;
+  var last_time = parseInt(data[last][0]);
+  console.log("current: " + data[last]);
+  console.log("next: "+ result.predict(last_time+1));
 }
 /******** forecasting ******/
 // var ts = require("timeseries-analysis");
