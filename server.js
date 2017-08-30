@@ -182,15 +182,66 @@ if (appEnv.services['cloudantNoSQLDB']) {
   var dbName_kilby = 'kilby_test';
 
   cloudant.db.list(function(err, allDbs) {
-  console.log('All my databases: %s', allDbs.join(', '))
+  console.log('All my databases: %s', allDbs.join(', '));
+
 });
+
   mydb_kilby = cloudant.db.use(dbName_kilby);
+
+
+  var num_doc = 0;
+  var last_ts = null;
+  cloudant.db.get('kilby_test', function(err, data) {
+    console.log('Num of doc: %d', data.doc_count);
+    num_doc = num_doc<data.doc_count ? data.doc_count : num_doc;
+    // console.log('doc at line 16636 is: %s', data[16636]);
+  });
   // console.log('data fetch start');
   // setTimeout(query1, 1000);
+
   query1();
   setTimeout(query2, 3000);
   setTimeout(query3, 6000);
   setTimeout(query4, 9000);
+
+  setTimeout(function(){
+    // last_ts = data_x[data_x.length-1].toString();
+    console.log('final ts is %s', ts_temp);
+    last_ts = ts_temp;
+    // fetchData('3',last_ts);
+  },12000);
+
+  setInterval(function(){
+  query1();
+  setTimeout(query2, 3000);
+  setTimeout(query3, 6000);
+  setTimeout(query4, 9000);
+
+  setTimeout(function(){
+    // last_ts = data_x[data_x.length-1].toString();
+    console.log('final ts is %s', ts_temp);
+    last_ts = ts_temp;
+    // fetchData('3',last_ts);
+  },12000);
+
+},15000);
+
+  // console.log('last ts is %s', last_ts);
+
+  // setTimeout(setInterval(function(){
+  //   cloudant.db.get('kilby_test', function(err, data) {
+  //   console.log('Num of doc: %d', data.doc_count);
+  //   // var num_doc = data.doc_count;
+  //   if(data.doc_count > num_doc){
+  //     query1();
+  //     setTimeout(query2, 3000);
+  //     setTimeout(query3, 6000);
+  //     setTimeout(query4, 9000);
+  //   }
+  // });
+  // }, 3000), 12000);
+
+  // while()
   // console.log('data fetch complete');
   // fetchData('1');
   // fetchData('3');
@@ -260,8 +311,12 @@ if (appEnv.services['cloudantNoSQLDB']) {
 
 }
 
-function fetchData(node_id){
-  mydb_kilby.find({selector:{id:node_id}}, function(er, result){
+// var last_ts = null;
+var ts_temp = 0;
+function fetchData(node_id, ts){
+  mydb_kilby.find({"selector":{"id":node_id, 
+                              "ts":{"$gt":ts}
+                            }}, function(er, result){
     if(er){
       throw er;
     }
@@ -270,8 +325,14 @@ function fetchData(node_id){
     // var per = 'app_per';
     var data_x = [];
     var data_y = [];
+    if(result.docs.length <= 0){
+      // last_ts = null;
+      console.log('No new data for node %s', node_id);
+    }
+    else{
+      console.log('New data for node %s', node_id);
     for (var i=0;i<result.docs.length;i++){
-      kilby_data_temp.push([result.docs[i].ts, result.docs[i].app_per]);
+      kilby_data_temp.push([result.docs[i].ts, result.docs[i].app_per]); // ["msg/PER"]
       kilby_data[parseInt(node_id)] = kilby_data_temp;
 
       data_x.push(parseInt(result.docs[i].ts));
@@ -281,12 +342,17 @@ function fetchData(node_id){
     //   console.log(typeof(parseFloat(kilby_data_temp[0][1])));
     // }
     // if(node_id == '3'){
-    var result = findLineByLeastSquares(data_x, data_y);
+    var predict_result = findLineByLeastSquares(data_x, data_y);
     // var result = linearRegression(data_y, data_x);
     // var result_x = result[0];
     // var result_y = result[1];
     // var size = data_y.length;
-    console.log('predicted next PER: '+result[1][0]);
+    console.log('predicted next PER: '+ predict_result[1][0]);
+    ts_temp = result.docs[result.docs.length-1].ts>ts_temp ? result.docs[result.docs.length-1].ts : ts_temp;
+    console.log('current ts is %s', ts_temp);
+    // setTimeout(fetchData(node_id,last_ts), 15000);
+  }
+    
   // }
 
     // var output = result.docs.length;
@@ -295,31 +361,31 @@ function fetchData(node_id){
 }
 
 function query1(){
-  fetchData('1');
-  fetchData('3');
-  fetchData('4');
-  fetchData('5');
-  fetchData('6');
-  fetchData('7');
+  fetchData('1',last_ts);
+  fetchData('3',last_ts);
+  fetchData('4',last_ts);
+  fetchData('5',last_ts);
+  fetchData('6',last_ts);
+  fetchData('7',last_ts);
 }
 function query2(){
-  fetchData('8');
-  fetchData('9');
-  fetchData('10');
-  fetchData('11');
-  fetchData('12');
-  fetchData('13');
+  fetchData('8',last_ts);
+  fetchData('9',last_ts);
+  fetchData('10',last_ts);
+  fetchData('11',last_ts);
+  fetchData('12',last_ts);
+  fetchData('13',last_ts);
 }
 function query3(){
-  fetchData('14');
-  fetchData('15');
-  fetchData('16');
-  fetchData('17');
-  fetchData('18');
+  fetchData('14',last_ts);
+  fetchData('15',last_ts);
+  fetchData('16',last_ts);
+  fetchData('17',last_ts);
+  fetchData('18',last_ts);
 }
 function query4(){
-  fetchData('19');
-  fetchData('20');
+  fetchData('19',last_ts);
+  fetchData('20',last_ts);
 }
 
 function findLineByLeastSquares(values_x, values_y) {
