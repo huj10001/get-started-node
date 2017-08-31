@@ -199,31 +199,27 @@ if (appEnv.services['cloudantNoSQLDB']) {
   // console.log('data fetch start');
   // setTimeout(query1, 1000);
 
+/* first data fetch, 0 sec delay */
   query1();
   setTimeout(query2, 3000);
   setTimeout(query3, 6000);
   setTimeout(query4, 9000);
-
   setTimeout(function(){
-    // last_ts = data_x[data_x.length-1].toString();
     console.log('final ts is %s', ts_temp);
     last_ts = ts_temp;
-    // fetchData('3',last_ts);
   },12000);
 
+
+/* recursive data fetch, 3 sec delay from last fetch */
   setInterval(function(){
   query1();
   setTimeout(query2, 3000);
   setTimeout(query3, 6000);
   setTimeout(query4, 9000);
-
   setTimeout(function(){
-    // last_ts = data_x[data_x.length-1].toString();
     console.log('final ts is %s', ts_temp);
     last_ts = ts_temp;
-    // fetchData('3',last_ts);
   },12000);
-
 },15000);
 
   // console.log('last ts is %s', last_ts);

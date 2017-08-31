@@ -994,11 +994,20 @@ function createInfoWindow(poly, content) {
         var data = new google.visualization.DataTable();
         data.addColumn('date','TIME');
         data.addColumn('number','PER');
+        var temp_length = node_data.length;
         for(var i=0;i<node_data.length;i++){
             // data.addRow([new Date(parseInt(node_time[i])).toString(), parseFloat(node_data[i])]);
             // data.addRow(['123', 0.001]);
             data.addRow([convertTime(node_time[i]), parseFloat(node_data[i])]);
         }
+        setInterval(function(){
+            if(node_data.length > temp_length){
+                for(var i=temp_length;i<node_data.length;i++){
+                    data.addRow([convertTime(node_time[i]), parseFloat(node_data[i])]);
+                }
+                temp_length = node_data.length;
+            }
+        },2000);
 
         var titlestring = '<div id="content">'+
             '<h1 id="firstHeading" class="firstHeading">PER</h1>'+
@@ -1269,7 +1278,12 @@ function createInfoWindow(poly, content) {
         }
         
         marker.addListener('click', function(){
-            drawChart(this,avg,current,predict_y,fault_pbb);
+            google.charts.setOnLoadCallback(drawChart(this,avg,current,predict_y,fault_pbb));
+            // setInterval(function(){
+            //     drawChart(this,avg,current,predict_y,fault_pbb);
+            //     alert('draw');
+            // }, 3000);
+            // drawChart(this,avg,current,predict_y,fault_pbb);
             var sidebar = document.getElementById("demo");;
             // sidebar.style.backgroundColor="#000000";
             // for(var i=0;i<markers.length;i++){
