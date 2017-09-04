@@ -198,7 +198,9 @@ if (appEnv.services['cloudantNoSQLDB']) {
   });
   // console.log('data fetch start');
   // setTimeout(query1, 1000);
-
+  // var array1 = [1,2,3];
+  // var array2 = [0,4,5];
+  // console.log('similarity is: ' + checkSimilarity(array1, array2));
 /* first data fetch, 0 sec delay */
   query1();
   setTimeout(query2, 3000);
@@ -207,6 +209,16 @@ if (appEnv.services['cloudantNoSQLDB']) {
   setTimeout(function(){
     console.log('final ts is %s', ts_temp);
     last_ts = ts_temp;
+    // for(var i=4;i<21;i++){
+    //   console.log('similarity between %s and %s is: %s', 3, i, (checkSimilarity(3, i)*100).toFixed(2) + '%');
+    // }
+    for(var i=3;i<21;i++){
+      console.log(i + ':');
+      var curr_dict = checkSimilarity(i);
+      Object.keys(curr_dict).forEach(function(currentKey) {
+      console.log(curr_dict[currentKey]);
+      });
+    }
   },12000);
 
 
@@ -382,6 +394,39 @@ function query3(){
 function query4(){
   fetchData('19',last_ts);
   fetchData('20',last_ts);
+}
+function checkSimilarity(id1){
+  var similarity_dict = [];
+  var sorted = [];
+  for(var id2 = 3;id2<21;id2++){
+    if(kilby_data[id1] && kilby_data[id2] && id2!=id1){
+      var arrayA = [];
+      var arrayB = [];
+      for(var i=0;i<kilby_data[id1].length;i++){
+        arrayA[i] = kilby_data[id1][i][1];
+      }
+      for(var j=0;j<kilby_data[id2].length;j++){
+        arrayB[j] = kilby_data[id2][j][1];
+      }
+      // arrayA.filter(function(el){
+      //   return arrayB.indexOf(el) >= 0;
+      // }).length;
+      var matches = 0;
+        for (i=0;i<arrayA.length;i++) {
+            if (arrayB[i] == arrayA[i])
+                matches++;
+        }
+        var similarity_rate = matches/Math.min(arrayA.length, arrayB.length);
+        if(similarity_rate > 0.2){
+          similarity_dict.push({
+          key: id2,
+          value: similarity_rate
+        });
+        }
+        // return similarity_rate;
+    }
+  }
+  return similarity_dict;
 }
 
 function findLineByLeastSquares(values_x, values_y) {
