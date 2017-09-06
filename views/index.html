@@ -420,8 +420,10 @@ hr {
           <hr>
 
           <div style="padding:30px">
-            <textarea id="mytext" rows="20" cols="20">Result goes here.</textarea>
-            <input type="reset" value="Reset">
+            <textarea id="mytext" rows="20" cols="35">Result goes here.</textarea>
+
+            <input type="button" value="Reset" onclick="javascript:eraseText();"> 
+            
           </div>
 
         </div>
@@ -444,12 +446,16 @@ hr {
 
     <script type="text/javascript">
         function openNav() {
-            document.getElementById("mySidenav").style.width = "250px";
+            document.getElementById("mySidenav").style.width = "350px";
             // google.maps.event.trigger(map, 'resize');
             }
 
         function closeNav() {
             document.getElementById("mySidenav").style.width = "0";
+        }
+
+        function eraseText(){
+            document.getElementById('mytext').value = "";
         }
 
         function analyze(){
@@ -465,9 +471,36 @@ hr {
                 //   });
                 }
                 
-                document.getElementById('mytext').value = 'Task assignment recomm.: \n' + 'Group1: ' + group.toString() + '\n' + 'Similarity rate: ' + (similarity_rate_sum/group.length*100).toFixed(2)+'%';
+                document.getElementById('mytext').value = 'Task assignment recommendation: \n' + 'Group1: ' + group.toString() + '\n' + 'Similarity rate: ' + (similarity_rate_sum/group.length*100).toFixed(2)+'%';
+            }
+            else if($("#box1").val()=="fault" && $("#box2").val()=="network1"){
+                faultDetection();
+                var time_string = "Fault time period: \n";
+                // alert(array_time.length);
+                for(var i=0;i<array_time.length;i++){
+                    // var day = convertTime2(array_time[i][0]);
+                    var current_string = convertTime2(array_time[i][0]) + " - " + convertTime2(array_time[i][1]) + "\n";
+                    time_string += current_string;
+                }
+                document.getElementById('mytext').value = time_string;
             }
         }
+
+        function convertTime2(timestamp_string){
+            var timestamp = parseInt(timestamp_string);
+            var date = new Date(timestamp);
+            var year = date.getFullYear();
+            var month = date.getMonth();
+            var day = date.getDate();
+            var hours = date.getHours();
+            var minutes = "0" + date.getMinutes();
+            var seconds = "0" + date.getSeconds();
+            var formattedTime = year + '/' + month + '/' + day + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+            // var result_time = new Date(year, month, day, hours, minutes.substr(-2), seconds.substr(-2));
+            // return day;
+            return formattedTime;
+
+          }
 
         var group = [];
         var similarity_rate_sum = 0;
@@ -505,13 +538,41 @@ hr {
                 // return similarity_rate;
             }
           }
-        //   for(var i=3;i<21;i++){
-        //     // var curr_dict = checkSimilarity(i);
-        //     Object.keys(curr_dict).forEach(function(currentKey) {
-        //         group.push(curr_dict[currentKey]);
-        //     });
-        // }
           return group;
+        }
+
+        var array_time = [];
+        function faultDetection(){
+            var min_length = 0;
+            var time_start = null;
+            var time_end = null;
+            for(var id=3;id<19;id++){
+                min_length = Math.min(data_test[id].length, data_test[id+1].length);
+            }
+            // var fault_count = 0;
+            for(var i=0;i<min_length;i++){
+                var fault_count = 0;
+                for(var id=3;id<20;id++){
+                    if(data_test[id][i][1] > 0.05){
+                        fault_count++;
+                    }
+                }
+                if(fault_count >= 7){ // one third of the entire network
+                    if(time_start){
+                        time_end = data_test[id][i][0];
+                    }
+                    else{
+                        time_start = data_test[id][i][0];
+                    }
+                }
+                if(time_start && time_end){
+                    if(array_time.indexOf([time_start, time_end]) == -1){
+                        array_time.push([time_start, time_end]);
+                        time_start = null;
+                        time_end = null;
+                    }
+                }
+            }
         }
     </script>
 

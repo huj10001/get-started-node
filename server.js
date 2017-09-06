@@ -413,7 +413,7 @@ function checkSimilarity(id1){
       // }).length;
       var matches = 0;
         for (i=0;i<arrayA.length;i++) {
-            if (arrayB[i] == arrayA[i])
+            if (Math.abs(arrayA[i]-arrayB[i])/arrayB[i] < 0.2)
                 matches++;
         }
         var similarity_rate = matches/Math.min(arrayA.length, arrayB.length);
