@@ -419,12 +419,40 @@ hr {
 
           <hr>
 
-          <div style="padding:30px">
-            <textarea id="mytext" rows="20" cols="35">Result goes here.</textarea>
-
-            <input type="button" value="Reset" onclick="javascript:eraseText();"> 
-            
+          <div id="numbox" style="padding: 10px; display: none">
+          <p>
+          <select id="box3" name="num" style="max-width:90%;" onchange="selectfunction()">
+              <option selected="selected" value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option>
+              <option value="17">17</option>
+              <option value="18">18</option>
+          </select>
+          </p>
           </div>
+
+          <div id="result" style="padding:10px; width: 450px; height: 240px;">
+            <textarea id="mytext" rows="20" cols="35">Result goes here.</textarea>  
+          </div>
+
+          <div id="reset" style="padding:10px; position: absolute; bottom: 0; right: 0">
+              <input type="button" value="Reset" onclick="javascript:eraseText();"> 
+          </div>
+          
 
         </div>
           <!-- you can use tables or divs for the overall layout -->
@@ -446,7 +474,7 @@ hr {
 
     <script type="text/javascript">
         function openNav() {
-            document.getElementById("mySidenav").style.width = "350px";
+            document.getElementById("mySidenav").style.width = "450px";
             // google.maps.event.trigger(map, 'resize');
             }
 
@@ -461,8 +489,17 @@ hr {
         function analyze(){
             // document.getElementById('mytext').value = $("#box1 option:selected").text();;
             if($("#box1").val()=="giwsns" && $("#box2").val()=="network1"){
+                var similarity_string = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 Event similarity \n\n";
                 for(var i=3;i<21;i++){
-                    checkSimilarity(i);
+                  // console.log(i + ':');
+                  similarity_string += "Node" + i + ": \n"
+                  var curr_dict = checkSimilarity(i);
+                  for(var j=0;j<curr_dict.length;j++){
+                    curr_dict.sort(compare_rate);
+                    // console.log(curr_dict[j][0] + " " + curr_dict[j][1]);
+                    similarity_string += "\xa0\xa0 Node " + curr_dict[j][0] + "\xa0\xa0\xa0\xa0\xa0\xa0 similarity rate " + (curr_dict[j][1]*100).toFixed(2) + "% \n";
+                  }
+                  similarity_string += "\n";
                 //   // console.log(i + ':');
                 //   var curr_dict = checkSimilarity(i);
                 //   Object.keys(curr_dict).forEach(function(currentKey) {
@@ -470,21 +507,86 @@ hr {
                 //   document.getElementById('mytext').value = curr_dict[currentKey];
                 //   });
                 }
-                
-                document.getElementById('mytext').value = 'Task assignment recommendation: \n' + 'Group1: ' + group.toString() + '\n' + 'Similarity rate: ' + (similarity_rate_sum/group.length*100).toFixed(2)+'%';
+                document.getElementById('mytext').value = similarity_string;
             }
             else if($("#box1").val()=="fault" && $("#box2").val()=="network1"){
-                faultDetection();
-                var time_string = "Fault time period: \n";
+                document.getElementById('numbox').style.display = "block";
+                var fault_val = $("#box3").val();
+                faultDetection(parseInt(fault_val));
+                var time_string = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 Fault time period \n\n";
                 // alert(array_time.length);
                 for(var i=0;i<array_time.length;i++){
                     // var day = convertTime2(array_time[i][0]);
                     var current_string = convertTime2(array_time[i][0]) + " - " + convertTime2(array_time[i][1]) + "\n";
                     time_string += current_string;
                 }
-                document.getElementById('mytext').value = time_string;
+                // document.getElementById('mytext').value = time_string;
+                // alert(array_time_all[0][1]);
+                google.charts.load('current', {'packages':['annotatedtimeline']});
+                google.charts.setOnLoadCallback(drawHistogram);
+
             }
         }
+
+        function selectfunction(){
+            var fault_val = $("#box3").val();
+            array_time_all = [];
+                faultDetection(parseInt(fault_val));
+                // var time_string = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 Fault time period \n\n";
+                // // alert(array_time.length);
+                // for(var i=0;i<array_time.length;i++){
+                //     // var day = convertTime2(array_time[i][0]);
+                //     var current_string = convertTime2(array_time[i][0]) + " - " + convertTime2(array_time[i][1]) + "\n";
+                //     time_string += current_string;
+                // }
+                // document.getElementById('mytext').value = time_string;
+                // alert(array_time_all[0][1]);
+                google.charts.load('current', {'packages':['annotatedtimeline']});
+                google.charts.setOnLoadCallback(drawHistogram);
+        }
+
+        function drawHistogram(){
+            var data_hist = new google.visualization.DataTable();
+            data_hist.addColumn('date','TIME');
+            data_hist.addColumn('number','FREQ');
+            // var temp_length = node_data.length;
+            for(var i=0;i<array_time_all.length;i++){
+                // data.addRow([new Date(parseInt(node_time[i])).toString(), parseFloat(node_data[i])]);
+                // data.addRow(['123', 0.001]);
+                data_hist.addRow([convertTime3(array_time_all[i][0].toString()), parseInt(array_time_all[i][1])]);
+            }
+
+            var options = {
+              title: 'Fault detection',
+              legend: { position: 'none' },
+              displayAnnotations: true,
+              // legend: 
+            };
+
+            var chart_hist = new google.visualization.AnnotatedTimeLine(document.getElementById('result'));
+
+            chart_hist.draw(data_hist, options);
+
+            // var chart_hist = new google.visualization.Histogram(document.getElementById('result'));
+            // chart_hist.draw(data_hist, {});
+
+        }
+
+        function convertTime3(timestamp_string){
+            var timestamp = parseInt(timestamp_string);
+            var date = new Date(timestamp);
+            var year = date.getFullYear();
+            var month = date.getMonth();
+            var day = date.getDate();
+            var hours = date.getHours();
+            var minutes = "0" + date.getMinutes();
+            var seconds = "0" + date.getSeconds();
+            var formattedTime = year + '/' + month + '/' + day + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+            var result_time = new Date(year, month, day, hours, minutes.substr(-2), seconds.substr(-2));
+            // return formattedTime;
+            return result_time;
+
+          }
 
         function convertTime2(timestamp_string){
             var timestamp = parseInt(timestamp_string);
@@ -502,8 +604,7 @@ hr {
 
           }
 
-        var group = [];
-        var similarity_rate_sum = 0;
+        // var similarity_rate_sum = 0;
         function checkSimilarity(id1){
           var similarity_dict = [];
           for(var id2 = 3;id2<21;id2++){
@@ -521,28 +622,26 @@ hr {
               // }).length;
               var matches = 0;
                 for (i=0;i<arrayA.length;i++) {
-                    if (arrayB[i] == arrayA[i])
+                    if (Math.abs(arrayA[i]-arrayB[i])/arrayB[i] < 0.2)
                         matches++;
                 }
                 var similarity_rate = matches/Math.min(arrayA.length, arrayB.length);
                 if(similarity_rate > 0.2){
-                  similarity_dict.push({
-                  key: id2,
-                  value: similarity_rate
-                });
-                  if(!group.includes(id2)){
-                    group.push(id2);
-                    similarity_rate_sum += similarity_rate;
-                  }
+                    similarity_dict.push([id2, similarity_rate]);
                 }
                 // return similarity_rate;
             }
           }
-          return group;
+          return similarity_dict;
+        }
+
+        function compare_rate(a,b){
+          return b[1] - a[1];
         }
 
         var array_time = [];
-        function faultDetection(){
+        var array_time_all = [];
+        function faultDetection(num){
             var min_length = 0;
             var time_start = null;
             var time_end = null;
@@ -565,6 +664,10 @@ hr {
                         time_start = data_test[id][i][0];
                     }
                 }
+
+                if(fault_count >= num){
+                    array_time_all.push([data_test[id][i][0].toString(), fault_count]);
+                }
                 if(time_start && time_end){
                     if(array_time.indexOf([time_start, time_end]) == -1){
                         array_time.push([time_start, time_end]);
@@ -573,6 +676,9 @@ hr {
                     }
                 }
             }
+            // var data = google.visualization.arrayToDataTable();
+            // data.addColumn('date','TIME');
+            // data.addColumn('number','PER');
         }
     </script>
 

@@ -212,13 +212,14 @@ if (appEnv.services['cloudantNoSQLDB']) {
     // for(var i=4;i<21;i++){
     //   console.log('similarity between %s and %s is: %s', 3, i, (checkSimilarity(3, i)*100).toFixed(2) + '%');
     // }
-    for(var i=3;i<21;i++){
-      console.log(i + ':');
-      var curr_dict = checkSimilarity(i);
-      Object.keys(curr_dict).forEach(function(currentKey) {
-      console.log(curr_dict[currentKey]);
-      });
-    }
+    // for(var i=3;i<21;i++){
+    //   console.log(i + ':');
+    //   var curr_dict = checkSimilarity(i);
+    //   for(var j=0;j<curr_dict.length;j++){
+    //     curr_dict.sort(compare_rate);
+    //     console.log(curr_dict[j][0] + " " + curr_dict[j][1]);
+    //   }
+    // }
   },12000);
 
 
@@ -418,15 +419,16 @@ function checkSimilarity(id1){
         }
         var similarity_rate = matches/Math.min(arrayA.length, arrayB.length);
         if(similarity_rate > 0.2){
-          similarity_dict.push({
-          key: id2,
-          value: similarity_rate
-        });
+          similarity_dict.push([id2, similarity_rate]);
         }
         // return similarity_rate;
     }
   }
   return similarity_dict;
+}
+
+function compare_rate(a,b){
+  return a[1] - b[1];
 }
 
 function findLineByLeastSquares(values_x, values_y) {
