@@ -12,6 +12,7 @@ app.use(bodyParser.json())
 var mydb;
 var mydb_kilby;
 var kilby_data = [];
+var kilby_all= [];
 
 // if (typeof localStorage === "undefined" || localStorage === null) {
 //   var LocalStorage = require('node-localstorage').LocalStorage;
@@ -222,18 +223,34 @@ if (appEnv.services['cloudantNoSQLDB']) {
     // }
   },12000);
 
+  /*** fault detection test ***/
+  // setTimeout(function(){
+  //   for(var i=0;i<kilby_all.length; i++){
+  //     if(kilby_all[i]){
+  //       // console.log(kilby_all[i][1][1]);
+  //       console.log("node " + i);
+  //       for(var j=0;j<kilby_all[i].length;j++){
+  //         if(parseFloat(kilby_all[i][j][1]) > 0.05){
+  //           console.log(kilby_all[i][j]);
+  //         }
+  //       }
+  //     }
+  //   }
+  // },15000);
+  /***************************/
+
 
 /* recursive data fetch, 3 sec delay from last fetch */
-  setInterval(function(){
-  query1();
-  setTimeout(query2, 3000);
-  setTimeout(query3, 6000);
-  setTimeout(query4, 9000);
-  setTimeout(function(){
-    console.log('final ts is %s', ts_temp);
-    last_ts = ts_temp;
-  },12000);
-},15000);
+//   setInterval(function(){
+//   query1();
+//   setTimeout(query2, 3000);
+//   setTimeout(query3, 6000);
+//   setTimeout(query4, 9000);
+//   setTimeout(function(){
+//     console.log('final ts is %s', ts_temp);
+//     last_ts = ts_temp;
+//   },12000);
+// },15000);
 
   // console.log('last ts is %s', last_ts);
 
@@ -331,17 +348,34 @@ function fetchData(node_id, ts){
     }
     console.log('Found %d documents with id %s', result.docs.length, node_id);
     var kilby_data_temp = [];
+    var kilby_all_temp = [];
     // var per = 'app_per';
     var data_x = [];
     var data_y = [];
     if(result.docs.length <= 0){
       // last_ts = null;
-      console.log('No new data for node %s', node_id);
+      console.log('No new data for node %s\n', node_id);
     }
     else{
       console.log('New data for node %s', node_id);
     for (var i=0;i<result.docs.length;i++){
       kilby_data_temp.push([result.docs[i].ts, result.docs[i].app_per]); // ["msg/PER"]
+
+
+      /*** fault detection test ***/
+      kilby_all_temp.push([
+        result.docs[i].ts, 
+        result.docs[i].app_per, 
+        result.docs[i]["msg/PER"],
+        result.docs[i]["msg/avgRSSI"],
+        result.docs[i]["msg/avgDrift"],
+        result.docs[i]["msg/numSyncLost"]
+                            ]);
+
+      kilby_all[parseInt(node_id)] = kilby_all_temp;
+      /*****************************/
+
+
       kilby_data[parseInt(node_id)] = kilby_data_temp;
 
       data_x.push(parseInt(result.docs[i].ts));
@@ -359,6 +393,82 @@ function fetchData(node_id, ts){
     console.log('predicted next PER: '+ predict_result[1][0]);
     ts_temp = result.docs[result.docs.length-1].ts>ts_temp ? result.docs[result.docs.length-1].ts : ts_temp;
     console.log('current ts is %s', ts_temp);
+
+    var time_start = null;
+    var time_end = null;
+    var fault_array = [];
+    for(var i=0;i<kilby_all_temp.length;i++){
+      if(kilby_all_temp[i][1] > 0.05){ //app_per
+        if(time_start){
+          time_end = kilby_all_temp[i][0];
+        }
+        else {
+          time_start = kilby_all_temp[i][0];
+        }
+        if(kilby_all_temp[i][2] > 0.05){ //mac_per
+          // if(Math.pow(kilby_all_temp[i][2],4) == kilby_all_temp[i][1]){
+            // if(Math.pow(kilby_all_temp[i][2],4) == kilby_all_temp[i][1]){ 
+            if(kilby_all_temp[i][3] < -90 || kilby_all_temp[i][3] > -60){ //rssi 90
+              if(time_start && time_end){
+                fault_array.pop();
+                fault_array.push([time_start,time_end,"channel rssi issue"]);
+              }
+              else if(time_start && !time_end){
+                fault_array.push([time_start,time_end,"channel rssi issue"]);
+              }
+            }
+            else{
+              if(kilby_all_temp[i][4] > 20){ //clockdrift 200
+                if(time_start && time_end){
+                  fault_array.pop();
+                  fault_array.push([time_start,time_end,"hardware clockdrift defective"]);
+                }
+                else if(time_start && !time_end){
+                  fault_array.push([time_start,time_end,"hardware clockdrift defective"]);
+                }
+              }
+            }
+          // }
+        }
+        else{
+          if(kilby_all_temp[i][5] > 0){ //sync_lost
+            if(time_start && time_end){
+              fault_array.pop();
+              fault_array.push([time_start,time_end,"too many reconnections by interference"]);
+            }
+            else if(time_start && !time_end){
+              fault_array.push([time_start,time_end,"too many reconnections by interference"]);
+            }
+          }
+          else{ //buffer overflow
+            if(time_start && time_end){
+              fault_array.pop();
+              fault_array.push([time_start,time_end,"insufficient bandwidth"]);
+            }
+            else if(time_start && !time_end){
+              fault_array.push([time_start,time_end,"insufficient bandwidth"]);
+            }
+          }
+        }
+      }
+      else{
+        time_start = null;
+        time_end = null;
+      }
+    }
+    // console.log(fault_array);
+    for(var i=0;i<fault_array.length;i++){
+      if(fault_array[i][1]){ //period
+        var start_time = convertTime(fault_array[i][0]);
+        var end_time = convertTime(fault_array[i][1]);
+        console.log("%s - %s: %s", start_time, end_time, fault_array[i][2]);
+      } 
+      else{ //moment
+        var start_time = convertTime(fault_array[i][0]);
+        console.log("%s: %s", start_time, fault_array[i][2]);
+      }
+    }
+    console.log('\n');
     // setTimeout(fetchData(node_id,last_ts), 15000);
   }
     
@@ -368,6 +478,19 @@ function fetchData(node_id, ts){
     // return output;
   });
 }
+
+function convertTime(timestamp_string){
+    var timestamp = parseInt(timestamp_string);
+            var date = new Date(timestamp);
+            var year = date.getFullYear();
+            var month = date.getMonth();
+            var day = date.getDate();
+            var hours = date.getHours();
+            var minutes = "0" + date.getMinutes();
+            var seconds = "0" + date.getSeconds();
+            var formattedTime = year + '/' + month + '/' + day + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+            return formattedTime;
+  }
 
 function query1(){
   fetchData('1',last_ts);

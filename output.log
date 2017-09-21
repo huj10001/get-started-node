@@ -1,0 +1,586 @@
+
+> get-started-node@0.1.1 start /home/ubuntu/Documents/get-started-node
+> node server.js
+
+Loaded local VCAP { services: { cloudantNoSQLDB: [ [Object] ] } }
+To view your app, open this link in your browser: http://localhost:3000
+All my databases: _replicator, kilby_test, mydb, nodered
+Num of doc: 16636
+Found 1018 documents with id 6
+New data for node 6
+predicted next PER: 0.0005113082941994307
+current ts is 1500303648559
+
+
+Found 943 documents with id 5
+New data for node 5
+predicted next PER: 0.04335851623292797
+current ts is 1500303648559
+2017/6/14 15:35:02: insufficient bandwidth
+2017/6/14 15:47:04 - 2017/6/14 16:27:45: insufficient bandwidth
+2017/6/14 16:39:06 - 2017/6/14 18:11:03: insufficient bandwidth
+2017/6/14 18:39:42: insufficient bandwidth
+2017/6/14 19:02:00 - 2017/6/14 21:27:34: insufficient bandwidth
+2017/6/14 21:39:02 - 2017/6/14 22:08:22: insufficient bandwidth
+2017/6/14 22:19:06 - 2017/6/14 22:42:42: insufficient bandwidth
+2017/6/14 22:54:51 - 2017/6/15 0:39:07: insufficient bandwidth
+2017/6/15 0:50:59 - 2017/6/15 1:43:44: insufficient bandwidth
+2017/6/15 2:01:49 - 2017/6/15 3:10:44: insufficient bandwidth
+2017/6/15 3:23:28 - 2017/6/15 6:57:47: insufficient bandwidth
+2017/6/15 7:21:03 - 2017/6/15 7:44:05: insufficient bandwidth
+2017/6/15 8:37:05 - 2017/6/15 9:05:08: insufficient bandwidth
+2017/6/15 9:17:01 - 2017/6/15 9:40:03: insufficient bandwidth
+2017/6/15 9:57:42 - 2017/6/15 10:03:07: insufficient bandwidth
+2017/6/15 10:14:46 - 2017/6/15 10:56:09: insufficient bandwidth
+2017/6/15 11:13:26 - 2017/6/15 12:17:23: insufficient bandwidth
+2017/6/15 12:34:53 - 2017/6/15 13:15:23: insufficient bandwidth
+2017/6/15 14:02:50 - 2017/6/15 14:25:45: insufficient bandwidth
+2017/6/15 14:37:50: insufficient bandwidth
+
+
+Found 1030 documents with id 4
+New data for node 4
+predicted next PER: 0.000250055769094204
+current ts is 1500303648559
+
+
+Found 0 documents with id 1
+No new data for node 1
+
+Found 1021 documents with id 7
+New data for node 7
+predicted next PER: 0.0015797120314777757
+current ts is 1500303667618
+
+
+Found 1041 documents with id 3
+New data for node 3
+predicted next PER: 0.0008430804488703814
+current ts is 1500303667618
+
+
+Found 1008 documents with id 11
+New data for node 11
+predicted next PER: 0.0023905840529838684
+current ts is 1500303747679
+
+
+Found 1013 documents with id 10
+New data for node 10
+predicted next PER: 0.002097625411579429
+current ts is 1500303747679
+
+
+Found 877 documents with id 13
+New data for node 13
+predicted next PER: 0.14548730518561115
+current ts is 1500303747679
+2017/6/13 14:54:46 - 2017/6/13 16:53:59: insufficient bandwidth
+2017/6/13 17:05:55 - 2017/6/13 17:28:58: insufficient bandwidth
+2017/6/13 17:40:59 - 2017/6/13 17:52:14: insufficient bandwidth
+2017/6/13 18:10:18 - 2017/6/13 18:21:58: insufficient bandwidth
+2017/6/13 18:51:56 - 2017/6/13 19:03:38: insufficient bandwidth
+2017/6/13 19:21:14 - 2017/6/13 21:20:56: insufficient bandwidth
+2017/6/13 21:32:36 - 2017/6/13 22:21:09: insufficient bandwidth
+2017/6/13 22:32:38: insufficient bandwidth
+2017/6/13 22:44:51 - 2017/6/14 0:55:59: insufficient bandwidth
+2017/6/14 1:13:36 - 2017/6/14 2:18:38: insufficient bandwidth
+2017/6/14 2:30:36 - 2017/6/14 2:43:00: insufficient bandwidth
+2017/6/14 2:54:19 - 2017/6/14 3:24:14: insufficient bandwidth
+2017/6/14 3:36:16 - 2017/6/14 8:47:42: insufficient bandwidth
+2017/6/14 9:05:19 - 2017/6/14 10:29:20: insufficient bandwidth
+2017/6/14 10:41:19 - 2017/6/14 13:03:44: insufficient bandwidth
+2017/6/14 13:15:40 - 2017/6/14 14:20:00: insufficient bandwidth
+2017/6/14 14:32:34 - 2017/6/14 14:38:01: insufficient bandwidth
+2017/6/14 14:56:01 - 2017/6/14 15:20:03: insufficient bandwidth
+2017/6/14 15:38:15 - 2017/6/14 15:49:43: insufficient bandwidth
+2017/6/14 16:07:44: insufficient bandwidth
+2017/6/14 16:24:23 - 2017/6/14 18:47:21: insufficient bandwidth
+2017/6/14 18:58:45 - 2017/6/14 19:05:14: insufficient bandwidth
+2017/6/14 19:21:58: insufficient bandwidth
+2017/6/14 19:34:02 - 2017/6/14 19:46:22: insufficient bandwidth
+2017/6/14 20:03:58 - 2017/6/14 21:01:20: insufficient bandwidth
+2017/6/14 21:12:23 - 2017/6/14 21:30:32: insufficient bandwidth
+2017/6/14 21:47:50 - 2017/6/14 22:22:25: insufficient bandwidth
+2017/6/14 22:33:44 - 2017/6/14 23:03:21: insufficient bandwidth
+2017/6/14 23:21:20: insufficient bandwidth
+2017/6/14 23:50:19 - 2017/6/15 0:41:42: insufficient bandwidth
+2017/6/15 0:59:21 - 2017/6/15 1:40:23: insufficient bandwidth
+2017/6/15 1:52:44 - 2017/6/15 2:50:20: insufficient bandwidth
+2017/6/15 3:13:28 - 2017/6/15 4:46:59: insufficient bandwidth
+2017/6/15 4:58:02 - 2017/6/15 6:31:03: insufficient bandwidth
+2017/6/15 7:01:02 - 2017/6/15 8:56:22: insufficient bandwidth
+2017/6/15 9:18:39: insufficient bandwidth
+2017/6/15 9:37:18 - 2017/6/15 10:11:49: insufficient bandwidth
+2017/6/15 10:23:25 - 2017/6/15 10:36:03: insufficient bandwidth
+2017/6/15 10:47:20 - 2017/6/15 12:13:03: insufficient bandwidth
+2017/6/15 12:25:43 - 2017/6/15 12:55:26: insufficient bandwidth
+2017/6/15 13:23:48 - 2017/6/15 13:53:06: insufficient bandwidth
+2017/6/15 14:10:44: insufficient bandwidth
+2017/6/15 14:28:27 - 2017/6/15 15:26:42: too many reconnections by interference
+2017/6/15 15:38:44 - 2017/6/15 16:02:48: too many reconnections by interference
+2017/6/15 16:15:17 - 2017/6/15 18:00:49: too many reconnections by interference
+2017/6/15 18:24:06 - 2017/6/15 18:42:24: too many reconnections by interference
+2017/6/15 18:59:02 - 2017/6/15 19:04:55: too many reconnections by interference
+2017/6/15 19:16:03: too many reconnections by interference
+2017/6/15 19:55:44 - 2017/6/15 20:07:04: too many reconnections by interference
+2017/6/15 20:18:20: too many reconnections by interference
+2017/6/15 20:29:41 - 2017/6/15 20:35:25: too many reconnections by interference
+2017/6/15 22:28:43 - 2017/6/15 22:45:44: too many reconnections by interference
+2017/6/15 23:02:42: too many reconnections by interference
+2017/6/16 4:36:46: too many reconnections by interference
+2017/6/16 4:48:05 - 2017/6/16 4:53:45: too many reconnections by interference
+2017/6/16 5:05:04: too many reconnections by interference
+2017/6/16 5:22:07 - 2017/6/16 5:27:46: too many reconnections by interference
+2017/6/16 7:21:09 - 2017/6/16 7:26:47: too many reconnections by interference
+2017/6/16 7:38:05 - 2017/6/16 8:23:36: too many reconnections by interference
+2017/6/16 8:34:03 - 2017/6/16 9:13:48: too many reconnections by interference
+2017/6/16 9:25:09 - 2017/6/16 9:59:02: too many reconnections by interference
+2017/6/16 11:06:47 - 2017/6/16 11:23:47: too many reconnections by interference
+2017/6/16 11:46:26 - 2017/6/16 12:20:07: too many reconnections by interference
+2017/6/16 12:54:06 - 2017/6/16 13:05:27: too many reconnections by interference
+2017/6/16 13:56:10 - 2017/6/16 14:07:29: too many reconnections by interference
+2017/6/16 14:18:45: too many reconnections by interference
+2017/6/16 14:30:06: too many reconnections by interference
+2017/6/16 15:55:09 - 2017/6/16 16:17:48: too many reconnections by interference
+2017/6/16 16:29:06: too many reconnections by interference
+2017/6/16 16:57:27 - 2017/6/16 17:25:50: too many reconnections by interference
+2017/6/16 20:38:27 - 2017/6/16 20:44:49: too many reconnections by interference
+2017/6/16 21:06:56: too many reconnections by interference
+2017/6/16 21:18:12 - 2017/6/16 21:23:49: too many reconnections by interference
+2017/6/16 21:40:51: too many reconnections by interference
+2017/6/16 22:03:29 - 2017/6/16 23:16:56: too many reconnections by interference
+
+
+Found 1003 documents with id 9
+New data for node 9
+predicted next PER: 0.0057522718513922655
+current ts is 1500303747679
+2017/6/13 14:53:14 - 2017/6/13 15:53:13: hardware clockdrift defective
+
+
+Found 792 documents with id 12
+New data for node 12
+predicted next PER: 0.13788902210217202
+current ts is 1500303768002
+2017/6/13 13:48:35: channel rssi issue
+2017/6/13 15:06:24: too many reconnections by interference
+2017/6/13 15:24:21 - 2017/6/13 16:24:00: too many reconnections by interference
+2017/6/13 16:59:39 - 2017/6/13 20:14:38: too many reconnections by interference
+2017/6/13 20:32:39: too many reconnections by interference
+2017/6/13 20:50:39 - 2017/6/13 21:08:39: too many reconnections by interference
+2017/6/13 21:20:45 - 2017/6/13 21:56:14: too many reconnections by interference
+2017/6/13 22:20:18 - 2017/6/13 22:44:21: too many reconnections by interference
+2017/6/13 22:56:21 - 2017/6/13 23:26:21: too many reconnections by interference
+2017/6/13 23:37:59 - 2017/6/13 23:44:00: too many reconnections by interference
+2017/6/14 0:08:18 - 2017/6/14 0:49:41: too many reconnections by interference
+2017/6/14 1:01:39 - 2017/6/14 1:07:20: too many reconnections by interference
+2017/6/14 1:19:20 - 2017/6/14 1:25:04: too many reconnections by interference
+2017/6/14 1:48:42 - 2017/6/14 2:48:07: too many reconnections by interference
+2017/6/14 2:59:58 - 2017/6/14 3:17:57: too many reconnections by interference
+2017/6/14 3:35:58 - 2017/6/14 3:48:46: too many reconnections by interference
+2017/6/14 4:29:57 - 2017/6/14 5:41:40: too many reconnections by interference
+2017/6/14 5:59:20 - 2017/6/14 6:47:21: too many reconnections by interference
+2017/6/14 7:11:23 - 2017/6/14 7:41:26: too many reconnections by interference
+2017/6/14 7:53:18 - 2017/6/14 8:11:22: too many reconnections by interference
+2017/6/14 8:35:23: too many reconnections by interference
+2017/6/14 8:47:21: too many reconnections by interference
+2017/6/14 9:05:00 - 2017/6/14 9:11:06: too many reconnections by interference
+2017/6/14 9:35:03 - 2017/6/14 9:41:06: too many reconnections by interference
+2017/6/14 10:29:11 - 2017/6/14 12:21:47: too many reconnections by interference
+2017/6/14 12:33:42 - 2017/6/14 16:59:43: too many reconnections by interference
+2017/6/14 17:17:05 - 2017/6/14 18:58:23: too many reconnections by interference
+2017/6/14 19:10:41 - 2017/6/14 19:46:04: too many reconnections by interference
+2017/6/14 20:20:44: too many reconnections by interference
+2017/6/14 20:32:02 - 2017/6/14 21:00:28: too many reconnections by interference
+2017/6/14 21:17:44 - 2017/6/14 21:41:33: too many reconnections by interference
+2017/6/14 21:59:26 - 2017/6/14 22:10:47: too many reconnections by interference
+2017/6/14 22:21:28 - 2017/6/14 23:32:33: too many reconnections by interference
+2017/6/15 0:24:25 - 2017/6/15 1:11:01: too many reconnections by interference
+2017/6/15 1:34:16 - 2017/6/15 2:27:49: too many reconnections by interference
+2017/6/15 2:50:06 - 2017/6/15 3:31:05: too many reconnections by interference
+2017/6/15 4:11:06 - 2017/6/15 4:17:09: too many reconnections by interference
+2017/6/15 4:34:25 - 2017/6/15 4:40:37: too many reconnections by interference
+2017/6/15 4:52:05 - 2017/6/15 5:22:09: too many reconnections by interference
+2017/6/15 5:39:48 - 2017/6/15 6:25:05: too many reconnections by interference
+2017/6/15 6:36:25: too many reconnections by interference
+2017/6/15 6:54:07 - 2017/6/15 7:58:59: too many reconnections by interference
+2017/6/15 8:21:51 - 2017/6/15 9:24:23: too many reconnections by interference
+2017/6/15 9:36:58 - 2017/6/15 10:23:13: too many reconnections by interference
+2017/6/15 10:58:26 - 2017/6/15 11:09:50: too many reconnections by interference
+2017/6/15 11:44:47 - 2017/6/15 12:49:06: too many reconnections by interference
+2017/6/15 13:05:31 - 2017/6/15 13:47:06: too many reconnections by interference
+2017/6/15 14:10:27 - 2017/6/15 14:51:50: channel rssi issue
+2017/6/15 15:08:44 - 2017/6/15 15:44:24: too many reconnections by interference
+2017/6/15 16:08:23: too many reconnections by interference
+2017/6/15 16:20:23 - 2017/6/15 16:26:26: too many reconnections by interference
+2017/6/15 16:38:27 - 2017/6/15 17:13:28: too many reconnections by interference
+2017/6/15 17:54:05 - 2017/6/15 19:38:26: too many reconnections by interference
+2017/6/15 20:35:05: too many reconnections by interference
+2017/6/15 21:26:08: too many reconnections by interference
+2017/6/15 21:37:27 - 2017/6/15 21:48:51: too many reconnections by interference
+2017/6/16 0:16:04 - 2017/6/16 0:21:54: too many reconnections by interference
+2017/6/16 0:33:05: too many reconnections by interference
+2017/6/16 0:50:06 - 2017/6/16 1:18:24: too many reconnections by interference
+2017/6/16 4:30:47 - 2017/6/16 4:36:27: too many reconnections by interference
+2017/6/16 4:53:25 - 2017/6/16 5:33:18: too many reconnections by interference
+2017/6/16 5:44:24 - 2017/6/16 5:50:05: too many reconnections by interference
+2017/6/16 7:09:26: too many reconnections by interference
+2017/6/16 7:54:46: too many reconnections by interference
+2017/6/16 8:50:50 - 2017/6/16 9:02:11: too many reconnections by interference
+2017/6/16 9:24:47: too many reconnections by interference
+2017/6/16 11:17:46 - 2017/6/16 11:23:28: too many reconnections by interference
+2017/6/16 12:59:25: too many reconnections by interference
+2017/6/16 13:55:48: too many reconnections by interference
+2017/6/16 14:24:10 - 2017/6/16 14:52:30: too many reconnections by interference
+2017/6/16 15:15:14 - 2017/6/16 15:26:33: too many reconnections by interference
+2017/6/16 15:43:31 - 2017/6/16 15:54:50: too many reconnections by interference
+2017/6/16 16:57:09 - 2017/6/16 17:08:28: too many reconnections by interference
+2017/6/16 17:19:50 - 2017/6/16 18:33:29: too many reconnections by interference
+2017/6/16 18:44:50 - 2017/6/16 20:21:11: too many reconnections by interference
+2017/6/16 20:32:29 - 2017/6/16 20:38:17: too many reconnections by interference
+2017/6/16 20:49:29: too many reconnections by interference
+2017/6/16 22:20:08 - 2017/6/16 22:37:49: too many reconnections by interference
+2017/6/16 22:48:31: too many reconnections by interference
+
+
+Found 1015 documents with id 8
+New data for node 8
+predicted next PER: 0.0018323313090187199
+current ts is 1500303768002
+
+
+Found 989 documents with id 16
+New data for node 16
+predicted next PER: 0.007578168756523951
+current ts is 1500303768002
+2017/6/13 14:55:32 - 2017/6/13 15:07:41: channel rssi issue
+2017/6/13 20:45:52 - 2017/6/13 20:51:52: hardware clockdrift defective
+2017/6/14 14:50:58: too many reconnections by interference
+
+
+Found 875 documents with id 15
+New data for node 15
+predicted next PER: 0.09206551739578117
+current ts is 1500303768002
+2017/6/13 12:55:40 - 2017/6/13 13:01:38: channel rssi issue
+2017/6/13 15:07:27 - 2017/6/13 15:25:15: too many reconnections by interference
+2017/6/13 15:37:21 - 2017/6/13 15:43:18: too many reconnections by interference
+2017/6/13 16:00:57 - 2017/6/13 16:42:22: too many reconnections by interference
+2017/6/13 16:54:41: too many reconnections by interference
+2017/6/13 17:12:48 - 2017/6/13 18:34:42: too many reconnections by interference
+2017/6/13 19:51:40 - 2017/6/13 20:09:38: too many reconnections by interference
+2017/6/13 20:21:36: too many reconnections by interference
+2017/6/13 20:51:36 - 2017/6/13 21:51:22: too many reconnections by interference
+2017/6/13 22:15:29 - 2017/6/13 22:39:18: too many reconnections by interference
+2017/6/13 22:57:26 - 2017/6/13 23:39:03: too many reconnections by interference
+2017/6/13 23:50:41 - 2017/6/14 2:25:20: too many reconnections by interference
+2017/6/14 2:37:21 - 2017/6/14 3:43:19: too many reconnections by interference
+2017/6/14 4:01:10 - 2017/6/14 4:06:39: too many reconnections by interference
+2017/6/14 4:43:08 - 2017/6/14 4:49:14: too many reconnections by interference
+2017/6/14 5:30:38 - 2017/6/14 8:06:59: too many reconnections by interference
+2017/6/14 8:36:18 - 2017/6/14 8:48:25: too many reconnections by interference
+2017/6/14 8:54:18 - 2017/6/14 9:06:00: too many reconnections by interference
+2017/6/14 9:18:49 - 2017/6/14 9:59:59: too many reconnections by interference
+2017/6/14 10:24:05: too many reconnections by interference
+2017/6/14 10:42:38 - 2017/6/14 11:23:47: too many reconnections by interference
+2017/6/14 12:05:27 - 2017/6/14 12:17:12: too many reconnections by interference
+2017/6/14 12:35:04 - 2017/6/14 14:03:02: too many reconnections by interference
+2017/6/14 14:15:23: too many reconnections by interference
+2017/6/14 14:38:57 - 2017/6/14 15:32:46: too many reconnections by interference
+2017/6/14 15:50:32 - 2017/6/14 18:48:14: too many reconnections by interference
+2017/6/14 19:05:32 - 2017/6/14 19:11:06: too many reconnections by interference
+2017/6/14 19:29:02 - 2017/6/14 20:16:18: too many reconnections by interference
+2017/6/14 20:38:08 - 2017/6/14 21:08:00: too many reconnections by interference
+2017/6/14 21:24:50 - 2017/6/14 21:42:33: too many reconnections by interference
+2017/6/14 21:59:51 - 2017/6/14 22:05:59: too many reconnections by interference
+2017/6/14 22:22:30 - 2017/6/14 23:56:27: too many reconnections by interference
+2017/6/15 0:14:22 - 2017/6/15 0:36:54: too many reconnections by interference
+2017/6/15 0:54:26: too many reconnections by interference
+2017/6/15 1:23:20 - 2017/6/15 1:53:10: too many reconnections by interference
+2017/6/15 2:11:06: too many reconnections by interference
+2017/6/15 2:33:49 - 2017/6/15 2:34:08: too many reconnections by interference
+2017/6/15 3:02:53 - 2017/6/15 3:37:33: too many reconnections by interference
+2017/6/15 3:49:08 - 2017/6/15 5:17:08: too many reconnections by interference
+2017/6/15 5:29:04 - 2017/6/15 5:34:58: too many reconnections by interference
+2017/6/15 5:45:54 - 2017/6/15 6:15:07: too many reconnections by interference
+2017/6/15 6:43:07 - 2017/6/15 6:49:31: too many reconnections by interference
+2017/6/15 7:18:35 - 2017/6/15 8:23:03: too many reconnections by interference
+2017/6/15 8:34:24 - 2017/6/15 9:02:57: too many reconnections by interference
+2017/6/15 9:19:26 - 2017/6/15 10:06:34: too many reconnections by interference
+2017/6/15 10:17:47 - 2017/6/15 11:50:27: too many reconnections by interference
+2017/6/15 12:44:10: too many reconnections by interference
+2017/6/15 13:24:25 - 2017/6/15 15:04:15: too many reconnections by interference
+2017/6/15 17:02:45 - 2017/6/15 17:26:35: too many reconnections by interference
+2017/6/15 18:01:24 - 2017/6/15 18:42:45: too many reconnections by interference
+2017/6/16 2:27:26: too many reconnections by interference
+2017/6/16 8:34:47: too many reconnections by interference
+2017/6/16 9:25:48 - 2017/6/16 9:31:26: too many reconnections by interference
+2017/6/16 23:33:06: too many reconnections by interference
+
+
+Found 886 documents with id 17
+New data for node 17
+predicted next PER: 0.1156396271234712
+current ts is 1500303768002
+2017/6/13 15:02:41 - 2017/6/13 15:49:57: insufficient bandwidth
+2017/6/13 16:07:43: insufficient bandwidth
+2017/6/13 16:19:37 - 2017/6/13 17:59:45: insufficient bandwidth
+2017/6/13 18:11:44 - 2017/6/13 21:16:18: insufficient bandwidth
+2017/6/13 21:28:38 - 2017/6/13 21:46:52: insufficient bandwidth
+2017/6/13 22:10:09 - 2017/6/13 23:33:43: insufficient bandwidth
+2017/6/13 23:51:29 - 2017/6/14 0:03:20: insufficient bandwidth
+2017/6/14 0:21:21 - 2017/6/14 0:45:28: insufficient bandwidth
+2017/6/14 0:57:20: insufficient bandwidth
+2017/6/14 1:15:16 - 2017/6/14 2:08:06: insufficient bandwidth
+2017/6/14 2:20:08 - 2017/6/14 3:07:45: insufficient bandwidth
+2017/6/14 3:19:47 - 2017/6/14 3:43:40: insufficient bandwidth
+2017/6/14 4:01:43 - 2017/6/14 4:55:41: insufficient bandwidth
+2017/6/14 5:31:22: insufficient bandwidth
+2017/6/14 5:49:04 - 2017/6/14 5:55:00: insufficient bandwidth
+2017/6/14 6:07:01 - 2017/6/14 7:25:15: insufficient bandwidth
+2017/6/14 7:37:01 - 2017/6/14 7:43:03: insufficient bandwidth
+2017/6/14 7:55:00 - 2017/6/14 8:37:01: insufficient bandwidth
+2017/6/14 8:49:03 - 2017/6/14 9:00:49: insufficient bandwidth
+2017/6/14 9:18:56 - 2017/6/14 10:36:46: insufficient bandwidth
+2017/6/14 10:54:24 - 2017/6/14 11:12:23: insufficient bandwidth
+2017/6/14 11:30:35 - 2017/6/14 11:48:08: insufficient bandwidth
+2017/6/14 12:00:12: insufficient bandwidth
+2017/6/14 12:29:23 - 2017/6/14 12:59:31: insufficient bandwidth
+2017/6/14 13:16:45 - 2017/6/14 14:15:33: insufficient bandwidth
+2017/6/14 14:40:08 - 2017/6/14 17:23:43: insufficient bandwidth
+2017/6/14 17:36:07 - 2017/6/14 18:26:21: insufficient bandwidth
+2017/6/14 18:54:27 - 2017/6/14 19:06:03: insufficient bandwidth
+2017/6/14 19:17:43 - 2017/6/14 19:23:44: insufficient bandwidth
+2017/6/14 19:47:44 - 2017/6/14 20:10:24: insufficient bandwidth
+2017/6/14 20:22:25 - 2017/6/14 20:56:04: insufficient bandwidth
+2017/6/14 21:13:54 - 2017/6/15 0:32:11: insufficient bandwidth
+2017/6/15 0:43:11 - 2017/6/15 2:17:06: insufficient bandwidth
+2017/6/15 2:34:44 - 2017/6/15 4:12:48: insufficient bandwidth
+2017/6/15 4:30:08 - 2017/6/15 4:53:52: insufficient bandwidth
+2017/6/15 5:11:45 - 2017/6/15 5:46:22: insufficient bandwidth
+2017/6/15 5:58:32 - 2017/6/15 6:55:55: insufficient bandwidth
+2017/6/15 7:07:56 - 2017/6/15 7:25:08: insufficient bandwidth
+2017/6/15 7:42:05 - 2017/6/15 10:01:22: insufficient bandwidth
+2017/6/15 10:18:50 - 2017/6/15 10:48:27: insufficient bandwidth
+2017/6/15 11:17:40 - 2017/6/15 12:03:33: insufficient bandwidth
+2017/6/15 12:20:27 - 2017/6/15 12:50:48: insufficient bandwidth
+2017/6/15 13:02:06 - 2017/6/15 14:53:44: hardware clockdrift defective
+2017/6/15 15:52:10 - 2017/6/15 16:22:02: too many reconnections by interference
+2017/6/15 16:34:08 - 2017/6/15 16:45:26: too many reconnections by interference
+2017/6/15 17:55:49 - 2017/6/15 18:13:23: too many reconnections by interference
+2017/6/15 23:49:22: too many reconnections by interference
+2017/6/16 2:50:43 - 2017/6/16 2:56:28: too many reconnections by interference
+2017/6/16 4:21:09 - 2017/6/16 5:34:45: too many reconnections by interference
+2017/6/16 7:16:48 - 2017/6/16 7:33:51: too many reconnections by interference
+2017/6/16 9:03:44: too many reconnections by interference
+2017/6/16 9:15:04: too many reconnections by interference
+2017/6/16 10:51:25: too many reconnections by interference
+2017/6/16 13:23:50 - 2017/6/16 14:48:31: too many reconnections by interference
+2017/6/16 15:11:09 - 2017/6/16 15:39:27: too many reconnections by interference
+2017/6/16 16:19:07: too many reconnections by interference
+2017/6/16 16:41:50 - 2017/6/16 17:04:26: too many reconnections by interference
+2017/6/16 19:26:10 - 2017/6/16 19:31:50: too many reconnections by interference
+2017/6/16 22:16:21 - 2017/6/16 22:21:52: too many reconnections by interference
+2017/6/16 23:19:12: too many reconnections by interference
+
+
+Found 1005 documents with id 14
+New data for node 14
+predicted next PER: 0.00854289630249383
+current ts is 1500303768002
+2017/6/13 14:19:13 - 2017/6/13 14:31:12: channel rssi issue
+2017/6/13 14:43:05 - 2017/6/13 14:43:49: channel rssi issue
+2017/6/13 15:25:00 - 2017/6/13 16:54:10: channel rssi issue
+2017/6/13 17:06:25: channel rssi issue
+2017/6/13 17:17:57: channel rssi issue
+2017/6/17 2:22:53 - 2017/6/17 2:56:45: too many reconnections by interference
+2017/6/17 10:13:30 - 2017/6/17 10:58:31: too many reconnections by interference
+
+
+Found 849 documents with id 18
+New data for node 18
+predicted next PER: 0.1440159992308736
+current ts is 1500303768002
+2017/6/13 11:33:15: hardware clockdrift defective
+2017/6/13 11:56:58: too many reconnections by interference
+2017/6/13 12:27:20 - 2017/6/13 13:26:42: hardware clockdrift defective
+2017/6/13 14:26:41 - 2017/6/13 14:32:35: hardware clockdrift defective
+2017/6/13 14:56:46: hardware clockdrift defective
+2017/6/13 15:14:43 - 2017/6/13 15:20:27: hardware clockdrift defective
+2017/6/13 15:32:22 - 2017/6/13 16:14:04: too many reconnections by interference
+2017/6/13 16:26:59 - 2017/6/13 21:58:27: too many reconnections by interference
+2017/6/13 22:10:27 - 2017/6/13 22:22:30: too many reconnections by interference
+2017/6/13 22:34:40 - 2017/6/13 23:04:44: too many reconnections by interference
+2017/6/13 23:16:37 - 2017/6/13 23:58:00: too many reconnections by interference
+2017/6/14 0:15:48 - 2017/6/14 2:08:22: too many reconnections by interference
+2017/6/14 2:27:09 - 2017/6/14 2:32:39: too many reconnections by interference
+2017/6/14 2:50:04 - 2017/6/14 3:56:07: too many reconnections by interference
+2017/6/14 4:08:05 - 2017/6/14 4:50:02: too many reconnections by interference
+2017/6/14 5:01:44 - 2017/6/14 6:37:45: too many reconnections by interference
+2017/6/14 6:49:31 - 2017/6/14 7:08:01: too many reconnections by interference
+2017/6/14 7:19:20: too many reconnections by interference
+2017/6/14 7:37:36 - 2017/6/14 7:43:24: too many reconnections by interference
+2017/6/14 8:01:21 - 2017/6/14 10:19:29: too many reconnections by interference
+2017/6/14 10:37:44 - 2017/6/14 14:40:44: too many reconnections by interference
+2017/6/14 14:52:04 - 2017/6/14 16:43:41: too many reconnections by interference
+2017/6/14 16:55:30 - 2017/6/14 18:09:36: too many reconnections by interference
+2017/6/14 18:21:11 - 2017/6/14 20:22:42: too many reconnections by interference
+2017/6/14 20:33:59 - 2017/6/14 20:39:15: too many reconnections by interference
+2017/6/14 20:51:05 - 2017/6/14 22:23:49: too many reconnections by interference
+2017/6/14 22:35:30 - 2017/6/15 0:43:41: too many reconnections by interference
+2017/6/15 1:01:10: too many reconnections by interference
+2017/6/15 1:06:50 - 2017/6/15 1:24:37: too many reconnections by interference
+2017/6/15 1:42:12 - 2017/6/15 2:41:18: too many reconnections by interference
+2017/6/15 2:52:10 - 2017/6/15 3:15:45: too many reconnections by interference
+2017/6/15 3:27:19 - 2017/6/15 7:02:25: too many reconnections by interference
+2017/6/15 7:13:58 - 2017/6/15 16:40:12: too many reconnections by interference
+2017/6/15 16:51:55 - 2017/6/15 17:15:48: too many reconnections by interference
+2017/6/15 17:44:26 - 2017/6/15 18:44:10: too many reconnections by interference
+2017/6/15 19:00:55 - 2017/6/15 19:06:33: channel rssi issue
+2017/6/15 20:37:04 - 2017/6/15 20:54:53: too many reconnections by interference
+2017/6/15 21:28:06: too many reconnections by interference
+2017/6/15 22:13:26: too many reconnections by interference
+2017/6/15 22:24:51: too many reconnections by interference
+2017/6/16 1:09:34 - 2017/6/16 2:28:32: too many reconnections by interference
+2017/6/16 2:56:58: too many reconnections by interference
+2017/6/16 4:10:09 - 2017/6/16 4:44:09: too many reconnections by interference
+2017/6/16 5:01:07 - 2017/6/16 5:35:13: too many reconnections by interference
+2017/6/16 8:47:12 - 2017/6/16 9:09:52: too many reconnections by interference
+2017/6/16 9:26:58 - 2017/6/16 9:32:33: too many reconnections by interference
+2017/6/16 9:55:10: too many reconnections by interference
+2017/6/16 10:34:53 - 2017/6/16 10:40:37: too many reconnections by interference
+2017/6/16 11:53:31 - 2017/6/16 12:10:32: too many reconnections by interference
+2017/6/16 12:21:53 - 2017/6/16 12:44:56: too many reconnections by interference
+2017/6/16 13:01:31: too many reconnections by interference
+2017/6/16 13:18:26: too many reconnections by interference
+2017/6/16 13:29:51 - 2017/6/16 14:03:30: too many reconnections by interference
+2017/6/16 14:20:55: too many reconnections by interference
+2017/6/16 14:31:52 - 2017/6/16 14:37:31: too many reconnections by interference
+2017/6/16 15:45:40: too many reconnections by interference
+2017/6/16 15:57:32 - 2017/6/16 16:08:11: too many reconnections by interference
+2017/6/16 16:53:32: too many reconnections by interference
+2017/6/16 17:04:52: too many reconnections by interference
+2017/6/16 17:33:08: too many reconnections by interference
+2017/6/16 17:44:31 - 2017/6/16 18:12:53: too many reconnections by interference
+2017/6/16 18:24:34 - 2017/6/16 18:52:34: too many reconnections by interference
+2017/6/16 19:03:53: too many reconnections by interference
+2017/6/16 19:26:31 - 2017/6/16 20:28:54: too many reconnections by interference
+2017/6/16 20:40:13 - 2017/6/16 20:45:52: too many reconnections by interference
+2017/6/16 21:59:33 - 2017/6/16 23:13:08: too many reconnections by interference
+
+
+Found 500 documents with id 19
+New data for node 19
+predicted next PER: 0.11419053082320829
+current ts is 1500303768002
+2017/6/13 11:34:07: hardware clockdrift defective
+2017/6/13 13:14:54 - 2017/6/13 13:51:06: too many reconnections by interference
+2017/6/13 14:03:37: too many reconnections by interference
+2017/6/13 14:15:53 - 2017/6/13 14:51:27: too many reconnections by interference
+2017/6/13 15:02:54 - 2017/6/13 15:21:16: hardware clockdrift defective
+2017/6/13 15:33:22 - 2017/6/13 15:44:56: too many reconnections by interference
+2017/6/13 15:56:06 - 2017/6/13 18:24:11: too many reconnections by interference
+2017/6/13 18:36:49 - 2017/6/13 19:00:23: too many reconnections by interference
+2017/6/13 19:29:33 - 2017/6/13 21:28:50: too many reconnections by interference
+2017/6/13 21:40:51 - 2017/6/13 21:46:59: too many reconnections by interference
+2017/6/13 22:04:49 - 2017/6/13 22:52:49: too many reconnections by interference
+2017/6/13 23:04:46 - 2017/6/13 23:40:21: too many reconnections by interference
+2017/6/13 23:52:36 - 2017/6/14 0:46:01: too many reconnections by interference
+2017/6/14 0:58:08 - 2017/6/14 1:33:52: too many reconnections by interference
+2017/6/14 1:45:01 - 2017/6/14 1:51:05: too many reconnections by interference
+2017/6/14 2:03:11 - 2017/6/14 2:26:43: too many reconnections by interference
+2017/6/14 2:39:08 - 2017/6/14 4:32:31: too many reconnections by interference
+2017/6/14 4:44:24 - 2017/6/14 5:08:17: too many reconnections by interference
+2017/6/14 5:26:29 - 2017/6/14 6:49:51: too many reconnections by interference
+2017/6/14 7:02:33: too many reconnections by interference
+2017/6/14 7:13:53 - 2017/6/14 7:32:10: too many reconnections by interference
+2017/6/14 7:43:45 - 2017/6/14 8:19:57: too many reconnections by interference
+2017/6/14 8:31:53 - 2017/6/14 9:01:26: too many reconnections by interference
+2017/6/14 9:13:46 - 2017/6/14 9:25:33: too many reconnections by interference
+2017/6/14 9:37:38 - 2017/6/14 9:43:58: too many reconnections by interference
+2017/6/14 9:55:44 - 2017/6/14 14:52:15: hardware clockdrift defective
+2017/6/14 15:15:54 - 2017/6/14 16:04:26: too many reconnections by interference
+2017/6/14 16:27:03: too many reconnections by interference
+2017/6/14 16:38:08 - 2017/6/14 19:12:56: too many reconnections by interference
+2017/6/14 19:24:45 - 2017/6/14 20:05:28: too many reconnections by interference
+2017/6/14 20:17:14 - 2017/6/14 21:26:11: too many reconnections by interference
+2017/6/14 21:44:24 - 2017/6/15 1:19:53: too many reconnections by interference
+2017/6/15 1:36:04 - 2017/6/15 4:42:49: too many reconnections by interference
+2017/6/15 4:54:12 - 2017/6/15 6:32:33: too many reconnections by interference
+2017/6/15 6:50:48 - 2017/6/15 10:07:47: too many reconnections by interference
+2017/6/15 10:20:01 - 2017/6/15 11:35:31: too many reconnections by interference
+2017/6/15 11:47:04 - 2017/6/15 12:04:10: too many reconnections by interference
+2017/6/15 12:15:40 - 2017/6/15 12:45:30: too many reconnections by interference
+2017/6/15 13:08:02 - 2017/6/15 13:25:53: too many reconnections by interference
+2017/6/15 13:37:42 - 2017/6/15 13:55:22: too many reconnections by interference
+2017/6/15 14:13:06 - 2017/6/15 16:46:24: too many reconnections by interference
+2017/6/15 16:58:14 - 2017/6/15 18:21:04: too many reconnections by interference
+2017/6/15 18:38:17 - 2017/6/15 18:44:55: too many reconnections by interference
+
+
+Found 771 documents with id 20
+New data for node 20
+predicted next PER: 0.13466101010806142
+current ts is 1500303768002
+2017/6/13 12:21:46: hardware clockdrift defective
+2017/6/13 13:39:16: too many reconnections by interference
+2017/6/13 14:51:04 - 2017/6/13 15:09:04: too many reconnections by interference
+2017/6/13 15:21:47 - 2017/6/13 16:14:43: too many reconnections by interference
+2017/6/13 16:27:09 - 2017/6/13 16:32:32: too many reconnections by interference
+2017/6/13 16:44:25 - 2017/6/13 19:30:22: too many reconnections by interference
+2017/6/13 19:47:29 - 2017/6/13 20:17:24: too many reconnections by interference
+2017/6/13 20:29:39 - 2017/6/13 22:04:57: too many reconnections by interference
+2017/6/13 22:17:04 - 2017/6/13 23:17:11: too many reconnections by interference
+2017/6/13 23:35:01 - 2017/6/13 23:40:43: too many reconnections by interference
+2017/6/13 23:52:48 - 2017/6/14 0:40:25: too many reconnections by interference
+2017/6/14 0:52:33 - 2017/6/14 1:10:03: too many reconnections by interference
+2017/6/14 1:34:01 - 2017/6/14 3:32:49: too many reconnections by interference
+2017/6/14 3:44:49 - 2017/6/14 4:03:22: too many reconnections by interference
+2017/6/14 4:20:47 - 2017/6/14 5:14:57: too many reconnections by interference
+2017/6/14 5:32:26: too many reconnections by interference
+2017/6/14 5:44:20 - 2017/6/14 7:08:08: too many reconnections by interference
+2017/6/14 7:20:05 - 2017/6/14 7:50:30: too many reconnections by interference
+2017/6/14 8:02:08 - 2017/6/14 8:38:10: too many reconnections by interference
+2017/6/14 8:55:46 - 2017/6/14 11:31:49: too many reconnections by interference
+2017/6/14 11:49:48 - 2017/6/14 13:53:25: too many reconnections by interference
+2017/6/14 14:04:48 - 2017/6/14 16:10:30: too many reconnections by interference
+2017/6/14 16:20:51 - 2017/6/14 16:56:11: too many reconnections by interference
+2017/6/14 17:13:23: too many reconnections by interference
+2017/6/14 17:36:53 - 2017/6/14 18:10:41: too many reconnections by interference
+2017/6/14 18:21:44 - 2017/6/14 18:38:43: too many reconnections by interference
+2017/6/14 18:49:36 - 2017/6/14 19:30:50: too many reconnections by interference
+2017/6/14 19:42:37 - 2017/6/15 2:12:37: too many reconnections by interference
+2017/6/15 2:24:59 - 2017/6/15 3:15:49: too many reconnections by interference
+2017/6/15 3:27:47 - 2017/6/15 7:37:15: too many reconnections by interference
+2017/6/15 8:07:06 - 2017/6/15 12:39:56: too many reconnections by interference
+2017/6/15 12:57:35 - 2017/6/15 13:20:20: too many reconnections by interference
+2017/6/15 13:37:58 - 2017/6/15 14:13:25: too many reconnections by interference
+2017/6/15 14:30:57 - 2017/6/15 15:05:40: too many reconnections by interference
+2017/6/15 15:17:09 - 2017/6/15 15:53:46: too many reconnections by interference
+2017/6/15 16:05:32 - 2017/6/15 18:44:51: too many reconnections by interference
+2017/6/15 19:40:52 - 2017/6/15 20:03:27: too many reconnections by interference
+2017/6/15 20:32:22: too many reconnections by interference
+2017/6/15 20:49:06 - 2017/6/15 21:28:37: too many reconnections by interference
+2017/6/15 21:45:32 - 2017/6/15 22:02:38: too many reconnections by interference
+2017/6/15 22:53:31: too many reconnections by interference
+2017/6/16 1:04:07: too many reconnections by interference
+2017/6/16 2:40:11 - 2017/6/16 2:57:12: too many reconnections by interference
+2017/6/16 3:59:51 - 2017/6/16 5:18:35: too many reconnections by interference
+2017/6/16 8:41:56 - 2017/6/16 9:16:33: too many reconnections by interference
+2017/6/16 9:27:27 - 2017/6/16 10:23:58: too many reconnections by interference
+2017/6/16 10:35:12: too many reconnections by interference
+2017/6/16 10:57:32 - 2017/6/16 11:31:40: too many reconnections by interference
+2017/6/16 11:48:10 - 2017/6/16 12:11:02: too many reconnections by interference
+2017/6/16 12:50:46 - 2017/6/16 13:24:38: too many reconnections by interference
+2017/6/16 14:55:03: too many reconnections by interference
+2017/6/16 16:20:04: too many reconnections by interference
+2017/6/16 17:11:22 - 2017/6/16 17:28:00: too many reconnections by interference
+2017/6/16 17:56:25: too many reconnections by interference
+2017/6/16 18:07:36 - 2017/6/16 18:18:53: too many reconnections by interference
+2017/6/16 20:46:25 - 2017/6/16 21:09:00: too many reconnections by interference
+2017/6/16 21:54:16 - 2017/6/16 22:05:31: too many reconnections by interference
+2017/6/16 22:17:01: too many reconnections by interference
+
+
+final ts is 1500303768002
