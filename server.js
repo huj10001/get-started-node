@@ -12,7 +12,11 @@ app.use(bodyParser.json())
 var mydb;
 var mydb_kilby;
 var kilby_data = [];
+for(var j=0;j<20;j++){
+  kilby_data[j] = [];
+}
 var kilby_all= [];
+myurl = "https://89c13691-0906-4a2b-98ef-801692e3590a-bluemix:4e714e8e0d041063bd2a4e439f057e60c034dd4afdee04224e3e6f4f8441bf55@89c13691-0906-4a2b-98ef-801692e3590a-bluemix.cloudant.com"
 
 // if (typeof localStorage === "undefined" || localStorage === null) {
 //   var LocalStorage = require('node-localstorage').LocalStorage;
@@ -77,19 +81,25 @@ var kilby_all= [];
 * }
 */
 app.post("/api/visitorsss", function (request, response) {
-  var userName = request.body.name;
-  if(!mydb) {
+  request.body._id = request.body._id.toString();
+  insertObj = request.body;
+  if(!mydb_kilby) {
     console.log("No database.");
-    response.send("Hello " + userName + "!");
+    // response.send("Hello " + userName + "!");
     return;
   }
   // insert the username as a document
-  // mydb.insert({ "name" : userName }, function(err, body, header) {
-  //   if (err) {
-  //     return console.log('[mydb.insert] ', err.message);
-  //   }
-  //   response.send("Hello " + userName + "! I added you to the database.");
-  // });
+  console.log("receive new data: " + JSON.stringify(insertObj));
+  mydb_kilby.insert(
+    insertObj, 
+    function(err, body, header) {
+    if (err) {
+      return console.log('[mydb.insert] ', err.message);
+    }
+    console.log("insert new data: " + JSON.stringify(insertObj));
+    // response.send("Hello " + userName + "! I added you to the database.");
+  });
+  // console.log("new data!!" + JSON.stringify(request.body));
 });
 
 /**
@@ -154,6 +164,7 @@ if (appEnv.services['cloudantNoSQLDB']) {
 
   // Initialize database with credentials
   var cloudant = Cloudant(appEnv.services['cloudantNoSQLDB'][0].credentials);
+  // cloudant = Cloudant({url: myurl, plugin:'retry', retryAttempts:5, retryTimeout:10000 });
 
   //database name
   var dbName = 'mydb';
@@ -178,9 +189,11 @@ if (appEnv.services['cloudantNoSQLDB']) {
 
   // Initialize database with credentials
   var cloudant = Cloudant(appEnv.services['cloudantNoSQLDB'][0].credentials);
+  // cloudant = Cloudant({url: myurl, plugin:'retry', retryAttempts:5, retryTimeout:10 000 });
+  cloudant = Cloudant({url: myurl, plugin:'retry', retryAttempts:5, retryTimeout:1000 });
 
   //database name
-  var dbName_kilby = 'kilby_test';
+  var dbName_kilby = 'mydb';
 
   cloudant.db.list(function(err, allDbs) {
   console.log('All my databases: %s', allDbs.join(', '));
@@ -192,7 +205,7 @@ if (appEnv.services['cloudantNoSQLDB']) {
 
   var num_doc = 0;
   var last_ts = null;
-  cloudant.db.get('kilby_test', function(err, data) {
+  cloudant.db.get('mydb', function(err, data) {
     console.log('Num of doc: %d', data.doc_count);
     num_doc = num_doc<data.doc_count ? data.doc_count : num_doc;
     // console.log('doc at line 16636 is: %s', data[16636]);
@@ -202,6 +215,7 @@ if (appEnv.services['cloudantNoSQLDB']) {
   // var array1 = [1,2,3];
   // var array2 = [0,4,5];
   // console.log('similarity is: ' + checkSimilarity(array1, array2));
+
 /* first data fetch, 0 sec delay */
   query1();
   setTimeout(query2, 3000);
@@ -222,6 +236,7 @@ if (appEnv.services['cloudantNoSQLDB']) {
     //   }
     // }
   },12000);
+  /********************************/
 
   /*** fault detection test ***/
   // setTimeout(function(){
@@ -241,16 +256,17 @@ if (appEnv.services['cloudantNoSQLDB']) {
 
 
 /* recursive data fetch, 3 sec delay from last fetch */
-//   setInterval(function(){
-//   query1();
-//   setTimeout(query2, 3000);
-//   setTimeout(query3, 6000);
-//   setTimeout(query4, 9000);
-//   setTimeout(function(){
-//     console.log('final ts is %s', ts_temp);
-//     last_ts = ts_temp;
-//   },12000);
-// },15000);
+  setInterval(function(){
+  query1();
+  setTimeout(query2, 3000);
+  setTimeout(query3, 6000);
+  setTimeout(query4, 9000);
+  setTimeout(function(){
+    console.log('final ts is %s', ts_temp);
+    last_ts = ts_temp;
+  },12000);
+},15000);
+  /************************************************/
 
   // console.log('last ts is %s', last_ts);
 
@@ -339,8 +355,13 @@ if (appEnv.services['cloudantNoSQLDB']) {
 
 // var last_ts = null;
 var ts_temp = 0;
+
+// var kilby_data_temp = [];
+// var kilby_all_temp = [];
+// var data_x = [];
+// var data_y = [];
 function fetchData(node_id, ts){
-  mydb_kilby.find({"selector":{"id":node_id, 
+  mydb_kilby.find({"selector":{"id":parseInt(node_id), 
                               "ts":{"$gt":ts}
                             }}, function(er, result){
     if(er){
@@ -349,34 +370,53 @@ function fetchData(node_id, ts){
     console.log('Found %d documents with id %s', result.docs.length, node_id);
     var kilby_data_temp = [];
     var kilby_all_temp = [];
-    // var per = 'app_per';
     var data_x = [];
     var data_y = [];
+    // kilby_data[parseInt(node_id)] = [];
     if(result.docs.length <= 0){
       // last_ts = null;
       console.log('No new data for node %s\n', node_id);
     }
     else{
       console.log('New data for node %s', node_id);
-    for (var i=0;i<result.docs.length;i++){
-      kilby_data_temp.push([result.docs[i].ts, result.docs[i].app_per]); // ["msg/PER"]
-
+      for (var i=0;i<result.docs.length;i++){
+      // if (typeof kilby_data[parseInt(node_id)] == 'undefined'){
+      //   kilby_data[parseInt(node_id)] = [result.docs[i].ts, result.docs[i].app_per.lost/result.docs[i].app_per.sent];
+      //   console.log(kilby_data[parseInt(node_id)]);
+      // }
+      // else{
+        kilby_data[parseInt(node_id)].push([result.docs[i].ts, result.docs[i].app_per.lost/result.docs[i].app_per.sent]);
+        console.log(kilby_data[parseInt(node_id)]);
+      // }
+      // if(result.docs[i].app_per.last_seq){
+      //   kilby_data[parseInt(node_id)] = null;
+      //   kilby_data[parseInt(node_id)].push([result.docs[i].ts, result.docs[i].app_per.lost/result.docs[i].app_per.sent]);
+      // }
+      // else{
+      //   kilby_data[parseInt(node_id)].push([result.docs[i].ts, result.docs[i].app_per]); // ["msg/PER"]
+      // }
+      
 
       /*** fault detection test ***/
-      kilby_all_temp.push([
-        result.docs[i].ts, 
-        result.docs[i].app_per, 
-        result.docs[i]["msg/PER"],
-        result.docs[i]["msg/avgRSSI"],
-        result.docs[i]["msg/avgDrift"],
-        result.docs[i]["msg/numSyncLost"]
-                            ]);
+      // kilby_all_temp.push([
+      //   result.docs[i].ts, 
+      //   result.docs[i].app_per, 
+      //   result.docs[i]["msg/PER"],
+      //   result.docs[i]["msg/avgRSSI"],
+      //   result.docs[i]["msg/avgDrift"],
+      //   result.docs[i]["msg/numSyncLost"]
+      //                       ]);
 
-      kilby_all[parseInt(node_id)] = kilby_all_temp;
+      // kilby_all[parseInt(node_id)] = kilby_all_temp;
       /*****************************/
 
-
-      kilby_data[parseInt(node_id)] = kilby_data_temp;
+      // if (typeof kilby_data[parseInt(node_id)] == 'undefined'){
+        // kilby_data[parseInt(node_id)] = kilby_data_temp;
+      // }else{
+      //   for(var j=kilby_data[parseInt(node_id)].length;j<(kilby_data[parseInt(node_id)].length+kilby_data_temp.length);j++){
+      //     kilby_data[parseInt(node_id)].push(kilby_data_temp[j]);
+      //   }
+      // }
 
       data_x.push(parseInt(result.docs[i].ts));
       data_y.push(parseFloat(result.docs[i].app_per));
@@ -394,81 +434,81 @@ function fetchData(node_id, ts){
     ts_temp = result.docs[result.docs.length-1].ts>ts_temp ? result.docs[result.docs.length-1].ts : ts_temp;
     console.log('current ts is %s', ts_temp);
 
-    var time_start = null;
-    var time_end = null;
-    var fault_array = [];
-    for(var i=0;i<kilby_all_temp.length;i++){
-      if(kilby_all_temp[i][1] > 0.05){ //app_per
-        if(time_start){
-          time_end = kilby_all_temp[i][0];
-        }
-        else {
-          time_start = kilby_all_temp[i][0];
-        }
-        if(kilby_all_temp[i][2] > 0.05){ //mac_per
-          // if(Math.pow(kilby_all_temp[i][2],4) == kilby_all_temp[i][1]){
-            // if(Math.pow(kilby_all_temp[i][2],4) == kilby_all_temp[i][1]){ 
-            if(kilby_all_temp[i][3] < -90 || kilby_all_temp[i][3] > -60){ //rssi 90
-              if(time_start && time_end){
-                fault_array.pop();
-                fault_array.push([time_start,time_end,"channel rssi issue"]);
-              }
-              else if(time_start && !time_end){
-                fault_array.push([time_start,time_end,"channel rssi issue"]);
-              }
-            }
-            else{
-              if(kilby_all_temp[i][4] > 20){ //clockdrift 200
-                if(time_start && time_end){
-                  fault_array.pop();
-                  fault_array.push([time_start,time_end,"hardware clockdrift defective"]);
-                }
-                else if(time_start && !time_end){
-                  fault_array.push([time_start,time_end,"hardware clockdrift defective"]);
-                }
-              }
-            }
-          // }
-        }
-        else{
-          if(kilby_all_temp[i][5] > 0){ //sync_lost
-            if(time_start && time_end){
-              fault_array.pop();
-              fault_array.push([time_start,time_end,"too many reconnections by interference"]);
-            }
-            else if(time_start && !time_end){
-              fault_array.push([time_start,time_end,"too many reconnections by interference"]);
-            }
-          }
-          else{ //buffer overflow
-            if(time_start && time_end){
-              fault_array.pop();
-              fault_array.push([time_start,time_end,"insufficient bandwidth"]);
-            }
-            else if(time_start && !time_end){
-              fault_array.push([time_start,time_end,"insufficient bandwidth"]);
-            }
-          }
-        }
-      }
-      else{
-        time_start = null;
-        time_end = null;
-      }
-    }
-    // console.log(fault_array);
-    for(var i=0;i<fault_array.length;i++){
-      if(fault_array[i][1]){ //period
-        var start_time = convertTime(fault_array[i][0]);
-        var end_time = convertTime(fault_array[i][1]);
-        console.log("%s - %s: %s", start_time, end_time, fault_array[i][2]);
-      } 
-      else{ //moment
-        var start_time = convertTime(fault_array[i][0]);
-        console.log("%s: %s", start_time, fault_array[i][2]);
-      }
-    }
-    console.log('\n');
+    // var time_start = null;
+    // var time_end = null;
+    // var fault_array = [];
+    // for(var i=0;i<kilby_all_temp.length;i++){
+    //   if(kilby_all_temp[i][1] > 0.05){ //app_per
+    //     if(time_start){
+    //       time_end = kilby_all_temp[i][0];
+    //     }
+    //     else {
+    //       time_start = kilby_all_temp[i][0];
+    //     }
+    //     if(kilby_all_temp[i][2] > 0.05){ //mac_per
+    //       // if(Math.pow(kilby_all_temp[i][2],4) == kilby_all_temp[i][1]){
+    //         // if(Math.pow(kilby_all_temp[i][2],4) == kilby_all_temp[i][1]){ 
+    //         if(kilby_all_temp[i][3] < -90 || kilby_all_temp[i][3] > -60){ //rssi 90
+    //           if(time_start && time_end){
+    //             fault_array.pop();
+    //             fault_array.push([time_start,time_end,"channel rssi issue"]);
+    //           }
+    //           else if(time_start && !time_end){
+    //             fault_array.push([time_start,time_end,"channel rssi issue"]);
+    //           }
+    //         }
+    //         else{
+    //           if(kilby_all_temp[i][4] > 20){ //clockdrift 200
+    //             if(time_start && time_end){
+    //               fault_array.pop();
+    //               fault_array.push([time_start,time_end,"hardware clockdrift defective"]);
+    //             }
+    //             else if(time_start && !time_end){
+    //               fault_array.push([time_start,time_end,"hardware clockdrift defective"]);
+    //             }
+    //           }
+    //         }
+    //       // }
+    //     }
+    //     else{
+    //       if(kilby_all_temp[i][5] > 0){ //sync_lost
+    //         if(time_start && time_end){
+    //           fault_array.pop();
+    //           fault_array.push([time_start,time_end,"too many reconnections by interference"]);
+    //         }
+    //         else if(time_start && !time_end){
+    //           fault_array.push([time_start,time_end,"too many reconnections by interference"]);
+    //         }
+    //       }
+    //       else{ //buffer overflow
+    //         if(time_start && time_end){
+    //           fault_array.pop();
+    //           fault_array.push([time_start,time_end,"insufficient bandwidth"]);
+    //         }
+    //         else if(time_start && !time_end){
+    //           fault_array.push([time_start,time_end,"insufficient bandwidth"]);
+    //         }
+    //       }
+    //     }
+    //   }
+    //   else{
+    //     time_start = null;
+    //     time_end = null;
+    //   }
+    // }
+    // // console.log(fault_array);
+    // for(var i=0;i<fault_array.length;i++){
+    //   if(fault_array[i][1]){ //period
+    //     var start_time = convertTime(fault_array[i][0]);
+    //     var end_time = convertTime(fault_array[i][1]);
+    //     console.log("%s - %s: %s", start_time, end_time, fault_array[i][2]);
+    //   } 
+    //   else{ //moment
+    //     var start_time = convertTime(fault_array[i][0]);
+    //     console.log("%s: %s", start_time, fault_array[i][2]);
+    //   }
+    // }
+    // console.log('\n');
     // setTimeout(fetchData(node_id,last_ts), 15000);
   }
     

@@ -729,7 +729,8 @@ hr {
           }
 
           //Call getNames on page load.
-          getNames();
+          // getNames();
+          setInterval(getNames,1000);
           // alert(data_test[1]);
 
 
@@ -1262,9 +1263,10 @@ function createInfoWindow(poly, content) {
           // legend: 
         };
 
-        var node = document.createElement('div'),
+        var node = document.createElement('div');
+        node.setAttribute('id', 'node');
         // infowindow  = new google.maps.InfoWindow(),
-        chart       = new google.visualization.AnnotatedTimeLine(node);
+        var chart = new google.visualization.AnnotatedTimeLine(node);
 
         chart.draw(data, options);
         // drawAdditionalHAxis(chart, data);
@@ -1277,6 +1279,36 @@ function createInfoWindow(poly, content) {
         // google.maps.event.addListener(marker.getMap(), 'click', function() {
         //     infoWindow.close();
         // });
+      }
+
+      function drawChart2(marker){
+        $.ajax({
+            url: "/api/visitorsss",
+            dataType: "json",
+            success: function (jsonData) {
+                // alert(jsonData[3]);
+                var data2 = new google.visualization.DataTable();
+                data2.addColumn('date','TIME');
+                data2.addColumn('number','PER');
+
+                for(var i=0;i<jsonData[parseInt(marker.id)].length;i++){
+                    // data.addRow([convertTime(node_time[i]), parseFloat(node_data[i])]);
+                    data2.addRow([convertTime(jsonData[parseInt(marker.id)][i][0]),jsonData[parseInt(marker.id)][i][1]]);
+                }
+
+                var options2 = {
+                    title: 'new chart2',
+                    displayAnnotations: true
+                };
+
+                var node2 = document.createElement('div');
+                var chart2 = new google.visualization.AnnotatedTimeLine(node2);
+                chart2.draw(data2, options2);
+
+                infowindow.setContent(node2);
+                infowindow.open(marker.getMap(),marker);
+            }
+        });
       }
 
       function drawGaugeChart(data) {
@@ -1510,11 +1542,12 @@ function createInfoWindow(poly, content) {
         }
         
         marker.addListener('click', function(){
-            google.charts.setOnLoadCallback(drawChart(this,avg,current,predict_y,fault_pbb));
+            google.charts.setOnLoadCallback(drawChart2(this));
+            // google.charts.setOnLoadCallback(drawChart(this,avg,current,predict_y,fault_pbb));
             // setInterval(function(){
             //     drawChart(this,avg,current,predict_y,fault_pbb);
             //     alert('draw');
-            // }, 3000);
+            // }, 1000);
             // drawChart(this,avg,current,predict_y,fault_pbb);
             var sidebar = document.getElementById("demo");;
             // sidebar.style.backgroundColor="#000000";
