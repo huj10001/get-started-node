@@ -16,75 +16,75 @@
     <title>Simple markers</title>
     <style>
       /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
+      * element that contains the map. */
       #map {
         height: 100%;
-      }
-      #legend {
+    }
+    #legend {
         font-family: Arial, sans-serif;
         background: #fff;
         padding: 10px;
         margin: 10px;
         border: 3px solid #000;
-      }
-      #legend h3 {
+    }
+    #legend h3 {
         margin-top: 0;
-      }
-      #legend img {
+    }
+    #legend img {
         vertical-align: middle;
-      }
+    }
 
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
+    /* Optional: Makes the sample page fill the window. */
+    html, body {
         height: 100%;
         margin: 0;
         padding: 0;
-      }
+    }
     #map,
     #wrapper,
     #page-content-wrapper {
       height: 100%;
       width: 100%;
-    }
-    .container-fluid,
-    .row,
-    .col-lg-12 {
+  }
+  .container-fluid,
+  .row,
+  .col-lg-12 {
       height: 100%;
       width: 100%;
-    }
-    }
-    /* hamburger menu pseudo element */
+  }
+}
+/* hamburger menu pseudo element */
 
-    .box-shadow-menu {
-      position: relative;
-      padding-left: 1.25em;
-    }
-    .box-shadow-menu:before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0.25em;
-      width: 1em;
-      height: 0.15em;
-      background: black;
-      box-shadow: 0 0.25em 0 0 black, 0 0.5em 0 0 black;
-    }
-    /* hamburger menu pseudo element gradient */
+.box-shadow-menu {
+  position: relative;
+  padding-left: 1.25em;
+}
+.box-shadow-menu:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.25em;
+  width: 1em;
+  height: 0.15em;
+  background: black;
+  box-shadow: 0 0.25em 0 0 black, 0 0.5em 0 0 black;
+}
+/* hamburger menu pseudo element gradient */
 
-    .gradient-menu {
-      padding-left: 1.25em;
-      position: relative;
-    }
-    .gradient-menu:before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0.21em;
-      bottom: 0.21em;
-      width: 1em;
-      background: linear-gradient(to bottom, black, black 20%, white 20%, white 40%, black 40%, black 60%, white 60%, white 80%, black 80%, black 100%);
-    }
-    /* http://www.jqueryscript.net/demo/Bootstrap-Sidebar-Extension-With-jQuery-CSS-CSS3/ */
+.gradient-menu {
+  padding-left: 1.25em;
+  position: relative;
+}
+.gradient-menu:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.21em;
+  bottom: 0.21em;
+  width: 1em;
+  background: linear-gradient(to bottom, black, black 20%, white 20%, white 40%, black 40%, black 60%, white 60%, white 80%, black 80%, black 100%);
+}
+/* http://www.jqueryscript.net/demo/Bootstrap-Sidebar-Extension-With-jQuery-CSS-CSS3/ */
 
     /*!
      * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
@@ -92,31 +92,31 @@
      * For details, see http://www.apache.org/licenses/LICENSE-2.0.
      */
 
-    /* Toggle Styles */
+     /* Toggle Styles */
 
-    .nav-tabs>li {
+     .nav-tabs>li {
       float: none;
-    }
-    .nav-tabs {
+  }
+  .nav-tabs {
       border-bottom: 0;
-    }
-    .nav-tabs>li.active>a,
-    .nav-tabs>li.active>a:focus,
-    .nav-tabs>li.active>a:hover {
+  }
+  .nav-tabs>li.active>a,
+  .nav-tabs>li.active>a:focus,
+  .nav-tabs>li.active>a:hover {
       margin: 0;
       border-radius: 0;
-    }
-    #wrapper {
+  }
+  #wrapper {
       padding-left: 0;
       -webkit-transition: all 0.5s ease;
       -moz-transition: all 0.5s ease;
       -o-transition: all 0.5s ease;
       transition: all 0.5s ease;
-    }
-    #wrapper.toggled {
+  }
+  #wrapper.toggled {
       padding-left: 250px;
-    }
-    #sidebar-wrapper {
+  }
+  #sidebar-wrapper {
       z-index: 1000;
       position: fixed;
       left: 250px;
@@ -129,97 +129,97 @@
       -moz-transition: all 0.5s ease;
       -o-transition: all 0.5s ease;
       transition: all 0.5s ease;
-    }
-    #wrapper.toggled #sidebar-wrapper {
+  }
+  #wrapper.toggled #sidebar-wrapper {
       width: 250px;
-    }
-    #page-content-wrapper {
+  }
+  #page-content-wrapper {
       width: 100%;
       position: absolute;
       padding: 15px;
-    }
-    #wrapper.toggled #page-content-wrapper {
+  }
+  #wrapper.toggled #page-content-wrapper {
       position: absolute;
       margin-right: -250px;
-    }
-    /* Sidebar Styles */
+  }
+  /* Sidebar Styles */
 
-    .sidebar-nav {
+  .sidebar-nav {
       position: absolute;
       top: 0;
       width: 250px;
       margin: 0;
       padding: 0;
       list-style: none;
-    }
-    .sidebar-nav li {
+  }
+  .sidebar-nav li {
       text-indent: 20px;
       line-height: 40px;
-    }
-    .sidebar-nav li a {
+  }
+  .sidebar-nav li a {
       display: block;
       text-decoration: none;
       color: #000000;
-    }
-    .sidebar-nav li a:hover {
+  }
+  .sidebar-nav li a:hover {
       text-decoration: none;
       color: #000080;
       background: rgba(255, 255, 255, 0.2);
-    }
-    .sidebar-nav li a:active,
-    .sidebar-nav li a:focus {
+  }
+  .sidebar-nav li a:active,
+  .sidebar-nav li a:focus {
       text-decoration: none;
       /*display: inline-block;*/
-    }
-    .sidebar-nav > .sidebar-brand {
+  }
+  .sidebar-nav > .sidebar-brand {
       height: 65px;
       font-size: 18px;
       line-height: 60px;
-    }
-    .sidebar-nav > .sidebar-brand a {
+  }
+  .sidebar-nav > .sidebar-brand a {
       color: #999999;
-    }
-    .sidebar-nav > .sidebar-brand a:hover {
+  }
+  .sidebar-nav > .sidebar-brand a:hover {
       color: #fff;
       background: none;
-    }
-    @media(min-width:768px) {
+  }
+  @media(min-width:768px) {
       #wrapper {
         padding-left: 250px;
-      }
-      #wrapper.toggled {
+    }
+    #wrapper.toggled {
         padding-left: 0;
-      }
-      #sidebar-wrapper {
+    }
+    #sidebar-wrapper {
         width: 250px;
-      }
-      #wrapper.toggled #sidebar-wrapper {
+    }
+    #wrapper.toggled #sidebar-wrapper {
         width: 0;
-      }
-      #page-content-wrapper {
+    }
+    #page-content-wrapper {
         padding: 20px;
         position: relative;
-      }
-      #wrapper.toggled #page-content-wrapper {
+    }
+    #wrapper.toggled #page-content-wrapper {
         position: relative;
         margin-right: 0;
-      }
     }
-    ul {
+}
+ul {
     text-align: left;
     /*display:inline-block;*/
     /*box-sizing:border-box;*/
     /*padding-left: 5px;*/
-    }
-    .ulleft {
-        display: inline;
-        float: left;
-    }
-    .ulright {
-        display: inline;
-        float: right;
-    }
-    #overlay {
+}
+.ulleft {
+    display: inline;
+    float: left;
+}
+.ulright {
+    display: inline;
+    float: right;
+}
+#overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -231,8 +231,8 @@
     -khtml-opacity: 0.5;
     opacity: 0.8;
     z-index: 10000;
-    }
-    #text{
+}
+#text{
     position: absolute;
     top: 50%;
     left: 50%;
@@ -240,8 +240,8 @@
     color: white;
     transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
-    }
-    #myBtn {
+}
+#myBtn {
   display: none;
   position: fixed;
   bottom: 5px;
@@ -320,7 +320,7 @@ hr {
     float: right;
 }
 
-    </style>
+</style>
 
 
 </head>
@@ -333,7 +333,7 @@ hr {
         var test = localStorage.getItem('myFirstKey');
         document.write(test);
         </script>
-        </p> -->
+    </p> -->
         <!-- <div id="nameInput" class="input-group-lg center-block helloInput">
             <p class="lead">What is your name?</p>
             <input id="user_name" type="text" class="form-control" placeholder="name" aria-describedby="sizing-addon1" value="" />
@@ -343,40 +343,40 @@ hr {
         <p id="databaseNames" class="lead text-center"></p> -->
     </div>
     <div id="wrapper" class="toggled">
-  <!-- Sidebar -->
-  <div id="sidebar-wrapper">
-  <button onclick="topFunction()" id="myBtn" title="Go to top">&#8963;</button>
-    <ul class="sidebar-nav" id="side_bar">
-      <li class="sidebar-brand" style="font-weight: bold; color: #000000;">
-        <h1>Summary</h1>
+      <!-- Sidebar -->
+      <div id="sidebar-wrapper">
+          <button onclick="topFunction()" id="myBtn" title="Go to top">&#8963;</button>
+          <ul class="sidebar-nav" id="side_bar">
+              <li class="sidebar-brand" style="font-weight: bold; color: #000000;">
+                <h1>Summary</h1>
 
-      </li>
-      <hr>
-      <div id="demo" class="collapse"></div>
-    </ul>
-  </div>
-  <!-- /#sidebar-wrapper -->
-  <!-- Page Content -->
-  <div id="page-content-wrapper">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-12">
-          <h1>
-          <span style="font-size:50px;cursor:pointer;float:right" onclick="openNav()">&#9881;</span>
-          <a href="#menu-toggle" class="gradient-menu" id="menu-toggle"></a>
-          <!-- &nbsp;Network Map&nbsp;a href="#menu-toggle" class="btn btn-default" >Toggle Sidebar</a -->
-          </h1>
-          <div id="mySidenav" class="sidenav">
-          <h1 id="toolkit">Toolkit</h1>
-          <b>
-          <a id="close" href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-          </b>
-          <hr>
+            </li>
+            <hr>
+            <div id="demo" class="collapse"></div>
+        </ul>
+    </div>
+    <!-- /#sidebar-wrapper -->
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-12">
+              <h1>
+                  <span style="font-size:50px;cursor:pointer;float:right" onclick="openNav()">&#9881;</span>
+                  <a href="#menu-toggle" class="gradient-menu" id="menu-toggle"></a>
+                  <!-- &nbsp;Network Map&nbsp;a href="#menu-toggle" class="btn btn-default" >Toggle Sidebar</a -->
+              </h1>
+              <div id="mySidenav" class="sidenav">
+                  <h1 id="toolkit">Toolkit</h1>
+                  <b>
+                      <a id="close" href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                  </b>
+                  <hr>
 
-          <div style="padding:30px">Choose analytic task:
-          <p>
-          <select id="box1" name="task" style="max-width:90%;">
-            <option selected disabled>Choose one</option>
+                  <div style="padding:30px">Choose analytic task:
+                      <p>
+                          <select id="box1" name="task" style="max-width:90%;">
+                            <option selected disabled>Choose one</option>
               <!-- <option value="noisy">Topology Evaluation</option>
               <option value="phm">Prognostics and Health Management</option>
               <option value="schedule">Smart Scheduling</option>
@@ -385,98 +385,98 @@ hr {
                 <option value="health">Health monitoring</option>
                 <option value="fault">Fault detection</option>
                 <option value="maintenance">Maintenance recommendation</option>
-              </optgroup>
-              <optgroup label="Node aspect">
+            </optgroup>
+            <optgroup label="Node aspect">
                 <option value="topology">Topology comparision and optimization</option>
                 <option value="network">Network reliability</option>
                 <option value="giwsns">GIWSNs</option>
-              </optgroup>
-              <optgroup label="Environment aspect">
+            </optgroup>
+            <optgroup label="Environment aspect">
                 <option value="noisy">Spatial-temporal noisy zone detection</option>
                 <option value="intervention">Surrounding intervention</option>
-              </optgroup>
-          </select>
-          </p>
-          </div>
+            </optgroup>
+        </select>
+    </p>
+</div>
 
-          <div style="padding:30px">Choose target: 
-          <p>
-          <select id="box2" name="target" style="max-width:90%;">
-              <option selected disabled>Choose one</option>
-              <option value="network1">Network 1</option>
-              <option value="network2">Network 2</option>
-              <option value="network3">Network 3</option>
-              <option value="network4">Network 4</option>
-          </select>
-          </p>
-          </div>
+<div style="padding:30px">Choose target: 
+  <p>
+      <select id="box2" name="target" style="max-width:90%;">
+          <option selected disabled>Choose one</option>
+          <option value="network1">Network 1</option>
+          <option value="network2">Network 2</option>
+          <option value="network3">Network 3</option>
+          <option value="network4">Network 4</option>
+      </select>
+  </p>
+</div>
 
-          <div style="padding:30px">
-              <form action="javascript:analyze();">
-                  <input type="submit" value="Run">
-              </form>
-          </div>
+<div style="padding:30px">
+  <form action="javascript:analyze();">
+      <input type="submit" value="Run">
+  </form>
+</div>
 
-          <hr>
+<hr>
 
-          <div id="numbox" style="padding: 10px; display: none">
-          <p>
-          <select id="box3" name="num" style="max-width:90%;" onchange="selectfunction()">
-              <option selected="selected" value="0">0</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-              <option value="11">11</option>
-              <option value="12">12</option>
-              <option value="13">13</option>
-              <option value="14">14</option>
-              <option value="15">15</option>
-              <option value="16">16</option>
-              <option value="17">17</option>
-              <option value="18">18</option>
-          </select>
-          </p>
-          </div>
+<div id="numbox" style="padding: 10px; display: none">
+  <p>
+      <select id="box3" name="num" style="max-width:90%;" onchange="selectfunction()">
+          <option selected="selected" value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+          <option value="13">13</option>
+          <option value="14">14</option>
+          <option value="15">15</option>
+          <option value="16">16</option>
+          <option value="17">17</option>
+          <option value="18">18</option>
+      </select>
+  </p>
+</div>
 
-          <div id="result" style="padding:10px; width: 450px; height: 240px;">
-            <textarea id="mytext" rows="20" cols="35">Result goes here.</textarea>  
-          </div>
+<div id="result" style="padding:10px; width: 450px; height: 240px;">
+    <textarea id="mytext" rows="20" cols="35">Result goes here.</textarea>  
+</div>
 
-          <div id="reset" style="padding:10px; position: absolute; bottom: 0; right: 0">
-              <input type="button" value="Reset" onclick="javascript:eraseText();"> 
-          </div>
-          
+<div id="reset" style="padding:10px; position: absolute; bottom: 0; right: 0">
+  <input type="button" value="Reset" onclick="javascript:eraseText();"> 
+</div>
 
-        </div>
-          <!-- you can use tables or divs for the overall layout -->
-          <div id="map"></div>
-          <!-- <h1>Simple Sidebar</h1> -->
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- /#page-content-wrapper -->
+
+</div>
+<!-- you can use tables or divs for the overall layout -->
+<div id="map"></div>
+<!-- <h1>Simple Sidebar</h1> -->
+</div>
+</div>
+</div>
+</div>
+<!-- /#page-content-wrapper -->
 </div>
 <!-- /#wrapper -->
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="antixss.js" type="text/javascript"></script>
-    <!-- <script src="../server.js" type="text/javascript"></script>  -->
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="antixss.js" type="text/javascript"></script>
+<!-- <script src="../server.js" type="text/javascript"></script>  -->
 
-    <script type="text/javascript">
-        function openNav() {
-            document.getElementById("mySidenav").style.width = "450px";
+<script type="text/javascript">
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "450px";
             // google.maps.event.trigger(map, 'resize');
-            }
+        }
 
         function closeNav() {
             document.getElementById("mySidenav").style.width = "0";
@@ -498,22 +498,22 @@ hr {
                     curr_dict.sort(compare_rate);
                     // console.log(curr_dict[j][0] + " " + curr_dict[j][1]);
                     similarity_string += "\xa0\xa0 Node " + curr_dict[j][0] + "\xa0\xa0\xa0\xa0\xa0\xa0 similarity rate " + (curr_dict[j][1]*100).toFixed(2) + "% \n";
-                  }
-                  similarity_string += "\n";
+                }
+                similarity_string += "\n";
                 //   // console.log(i + ':');
                 //   var curr_dict = checkSimilarity(i);
                 //   Object.keys(curr_dict).forEach(function(currentKey) {
                 //   // console.log(curr_dict[currentKey]);
                 //   document.getElementById('mytext').value = curr_dict[currentKey];
                 //   });
-                }
-                document.getElementById('mytext').value = similarity_string;
             }
-            else if($("#box1").val()=="fault" && $("#box2").val()=="network1"){
-                document.getElementById('numbox').style.display = "block";
-                var fault_val = $("#box3").val();
-                faultDetection(parseInt(fault_val));
-                var time_string = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 Fault time period \n\n";
+            document.getElementById('mytext').value = similarity_string;
+        }
+        else if($("#box1").val()=="fault" && $("#box2").val()=="network1"){
+            document.getElementById('numbox').style.display = "block";
+            var fault_val = $("#box3").val();
+            faultDetection(parseInt(fault_val));
+            var time_string = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 Fault time period \n\n";
                 // alert(array_time.length);
                 for(var i=0;i<array_time.length;i++){
                     // var day = convertTime2(array_time[i][0]);
@@ -531,7 +531,7 @@ hr {
         function selectfunction(){
             var fault_val = $("#box3").val();
             array_time_all = [];
-                faultDetection(parseInt(fault_val));
+            faultDetection(parseInt(fault_val));
                 // var time_string = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 Fault time period \n\n";
                 // // alert(array_time.length);
                 // for(var i=0;i<array_time.length;i++){
@@ -543,12 +543,12 @@ hr {
                 // alert(array_time_all[0][1]);
                 google.charts.load('current', {'packages':['annotatedtimeline']});
                 google.charts.setOnLoadCallback(drawHistogram);
-        }
+            }
 
-        function drawHistogram(){
-            var data_hist = new google.visualization.DataTable();
-            data_hist.addColumn('date','TIME');
-            data_hist.addColumn('number','FREQ');
+            function drawHistogram(){
+                var data_hist = new google.visualization.DataTable();
+                data_hist.addColumn('date','TIME');
+                data_hist.addColumn('number','FREQ');
             // var temp_length = node_data.length;
             for(var i=0;i<array_time_all.length;i++){
                 // data.addRow([new Date(parseInt(node_time[i])).toString(), parseFloat(node_data[i])]);
@@ -561,11 +561,11 @@ hr {
               legend: { position: 'none' },
               displayAnnotations: true,
               // legend: 
-            };
+          };
 
-            var chart_hist = new google.visualization.AnnotatedTimeLine(document.getElementById('result'));
+          var chart_hist = new google.visualization.AnnotatedTimeLine(document.getElementById('result'));
 
-            chart_hist.draw(data_hist, options);
+          chart_hist.draw(data_hist, options);
 
             // var chart_hist = new google.visualization.Histogram(document.getElementById('result'));
             // chart_hist.draw(data_hist, {});
@@ -586,7 +586,7 @@ hr {
             // return formattedTime;
             return result_time;
 
-          }
+        }
 
         function convertTime2(timestamp_string){
             var timestamp = parseInt(timestamp_string);
@@ -602,7 +602,7 @@ hr {
             // return day;
             return formattedTime;
 
-          }
+        }
 
         // var similarity_rate_sum = 0;
         function checkSimilarity(id1){
@@ -613,41 +613,41 @@ hr {
               var arrayB = [];
               for(var i=0;i<data_test[id1].length;i++){
                 arrayA[i] = data_test[id1][i][1];
-              }
-              for(var j=0;j<data_test[id2].length;j++){
+            }
+            for(var j=0;j<data_test[id2].length;j++){
                 arrayB[j] = data_test[id2][j][1];
-              }
+            }
               // arrayA.filter(function(el){
               //   return arrayB.indexOf(el) >= 0;
               // }).length;
               var matches = 0;
-                for (i=0;i<arrayA.length;i++) {
-                    if (Math.abs(arrayA[i]-arrayB[i])/arrayB[i] < 0.2)
-                        matches++;
-                }
-                var similarity_rate = matches/Math.min(arrayA.length, arrayB.length);
-                if(similarity_rate > 0.2){
-                    similarity_dict.push([id2, similarity_rate]);
-                }
+              for (i=0;i<arrayA.length;i++) {
+                if (Math.abs(arrayA[i]-arrayB[i])/arrayB[i] < 0.2)
+                    matches++;
+            }
+            var similarity_rate = matches/Math.min(arrayA.length, arrayB.length);
+            if(similarity_rate > 0.2){
+                similarity_dict.push([id2, similarity_rate]);
+            }
                 // return similarity_rate;
             }
-          }
-          return similarity_dict;
         }
+        return similarity_dict;
+    }
 
-        function compare_rate(a,b){
-          return b[1] - a[1];
-        }
+    function compare_rate(a,b){
+      return b[1] - a[1];
+  }
 
-        var array_time = [];
-        var array_time_all = [];
-        function faultDetection(num){
-            var min_length = 0;
-            var time_start = null;
-            var time_end = null;
-            for(var id=3;id<19;id++){
-                min_length = Math.min(data_test[id].length, data_test[id+1].length);
-            }
+  var array_time = [];
+  var array_time_all = [];
+  function faultDetection(num){
+    var min_length = 0;
+    var time_start = null;
+    var time_end = null;
+    for(var id=3;id<19;id++){
+        min_length = Math.min(data_test[id].length, data_test[id+1].length);
+    }
             // var fault_count = 0;
             for(var i=0;i<min_length;i++){
                 var fault_count = 0;
@@ -689,11 +689,11 @@ hr {
             if (e.which == 13 && name.length > 0) { //catch Enter key
             	//POST request to API to create a new visitor entry in the database
                 $.ajax({
-				  method: "POST",
-				  url: "./api/visitorsss",
-				  contentType: "application/json",
-				  data: JSON.stringify({name: name })
-				})
+                  method: "POST",
+                  url: "./api/visitorsss",
+                  contentType: "application/json",
+                  data: JSON.stringify({name: name })
+              })
                 .done(function(data) {
                     $('#response').html(AntiXSS.sanitizeInput(data));
                     $('#nameInput').hide();
@@ -707,15 +707,15 @@ hr {
         var data_test = [];
         function getNames(){
           $.get("./api/visitorsss")
-              .done(function(data) {
+          .done(function(data) {
                 // alert(data[1][0]);
                 for(var i=0;i<data.length;i++){
                     data_test[i] = data[i];
                 }
-                  if(data.length > 0) {
+                if(data.length > 0) {
                     data.forEach(function(element, index) {
                       data[index] = AntiXSS.sanitizeInput(element)
-                    });
+                  });
                     // $('#databaseNames').html("Database contents: " + JSON.stringify(data));
                     // for(var i=0;i<data.length;i++){
                     //     data_test.push(data[i]);
@@ -724,39 +724,39 @@ hr {
                     // alert(JSON.stringify(data[1][0]));
                     // alert(data[3]);
                     // alert(data_test[20]);
-                  }
-              });
-          }
+                }
+            });
+      }
 
           //Call getNames on page load.
           // getNames();
-          setInterval(getNames,1000);
+          // setInterval(getNames,1000);
           // alert(data_test[1]);
 
 
 
 
-    </script>
+      </script>
 
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
-    <!-- <script src="/home/ubuntu/Documents/get-started-node/server.js" type="text/javascript"></script> -->
-
-
-    <!-- <div id="map"></div> -->
-    <div id="legend"><h3>Status</h3>
-    <canvas id="myCanvas" width="150" height="40">
-    </div>
+      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+      <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+      <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+      <!-- <script src="/home/ubuntu/Documents/get-started-node/server.js" type="text/javascript"></script> -->
 
 
-    <script>
-    var marker;
-    var markers = [];
-    var sum_network = 0;
+      <!-- <div id="map"></div> -->
+      <div id="legend"><h3>Status</h3>
+        <canvas id="myCanvas" width="150" height="40">
+        </div>
 
 
-      function initMap() {
+        <script>
+            var marker;
+            var markers = [];
+            var sum_network = 0;
+
+
+            function initMap() {
         // alert(data_test[]);
         // var tools = require('./tools');
         // var result = fetchData();
@@ -813,10 +813,11 @@ hr {
           //   style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
           // },
           // navigationControl: true
-        });
+      });
 
         google.maps.event.addListener(map, 'click', function() {
             infowindow.close();
+            clearInterval(myinterval);
             // for(var i=0;i<markers.length;i++){
             //     if(markers[i]){
             //         var li = document.getElementById("newid"+i);
@@ -835,41 +836,41 @@ hr {
           active: {
             name: 'Active',
             icon: iconBase + 'mm_20_green.png'
-          },
-          warning: {
+        },
+        warning: {
             name: 'Warning',
             icon: iconBase + 'mm_20_orange.png'
-          },
-          critical: {
+        },
+        critical: {
             name: 'Critical',
             icon: iconBase + 'mm_20_red.png'
-          }
-        };
+        }
+    };
 
-        var contentString = '<div id="content">'+
-            '<div id="siteNotice">'+
-            '</div>'+
-            '<h1 id="firstHeading" class="firstHeading">PER</h1>'+
-            '<div id="bodyContent">'+
-            '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-            'sandstone rock formation in the southern part of the '+
-            'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
-            'south west of the nearest large town, Alice Springs; 450&#160;km '+
-            '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
-            'features of the Uluru - Kata Tjuta National Park. Uluru is '+
-            'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
-            'Aboriginal people of the area. It has many springs, waterholes, '+
-            'rock caves and ancient paintings. Uluru is listed as a World '+
-            'Heritage Site.</p>'+
-            '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
-            'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
-            '(last visited June 22, 2009).</p>'+
-            '</div>'+
-            '</div>';
+    var contentString = '<div id="content">'+
+    '<div id="siteNotice">'+
+    '</div>'+
+    '<h1 id="firstHeading" class="firstHeading">PER</h1>'+
+    '<div id="bodyContent">'+
+    '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
+    'sandstone rock formation in the southern part of the '+
+    'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
+    'south west of the nearest large town, Alice Springs; 450&#160;km '+
+    '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
+    'features of the Uluru - Kata Tjuta National Park. Uluru is '+
+    'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
+    'Aboriginal people of the area. It has many springs, waterholes, '+
+    'rock caves and ancient paintings. Uluru is listed as a World '+
+    'Heritage Site.</p>'+
+    '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
+    'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
+    '(last visited June 22, 2009).</p>'+
+    '</div>'+
+    '</div>';
 
-        var infowindow = new google.maps.InfoWindow({
-            content: contentString,
-        });
+    var infowindow = new google.maps.InfoWindow({
+        content: contentString,
+    });
         // var infoWindow = new google.maps.InfoWindow({
         //     content: contentString,
         // });
@@ -939,8 +940,8 @@ hr {
     // return formattedTime;
     return result_time;
 
-  }
-  function findLineByLeastSquares(values_x, values_y) {
+}
+function findLineByLeastSquares(values_x, values_y) {
     var sum_x = 0;
     var sum_y = 0;
     var sum_xy = 0;
@@ -950,9 +951,9 @@ hr {
     /*
      * We'll use those variables for faster read/write access.
      */
-    var x = 0;
-    var y = 0;
-    var values_length = values_x != null ? values_x.length : 0;
+     var x = 0;
+     var y = 0;
+     var values_length = values_x != null ? values_x.length : 0;
 
     // if (values_length != values_y.length) {
     //     throw new Error('The parameters values_x and values_y need to have same size!');
@@ -961,14 +962,14 @@ hr {
     /*
      * Nothing to do.
      */
-    if (values_length === 0) {
+     if (values_length === 0) {
         return [ [], [] ];
     }
 
     /*
      * Calculate the sum for each of the parts necessary.
      */
-    for (var v = 0; v < values_length; v++) {
+     for (var v = 0; v < values_length; v++) {
         x = values_x[v];
         y = values_y[v];
         sum_x += x;
@@ -982,16 +983,16 @@ hr {
      * Calculate m and b for the formular:
      * y = x * m + b
      */
-    var m = (count*sum_xy - sum_x*sum_y) / (count*sum_xx - sum_x*sum_x);
-    var b = (sum_y/count) - (m*sum_x)/count;
+     var m = (count*sum_xy - sum_x*sum_y) / (count*sum_xx - sum_x*sum_x);
+     var b = (sum_y/count) - (m*sum_x)/count;
 
     /*
      * We will make the x and y result line now
      */
-    var result_values_x = [];
-    var result_values_y = [];
+     var result_values_x = [];
+     var result_values_y = [];
 
-    for (var v = 0; v < values_length; v++) {
+     for (var v = 0; v < values_length; v++) {
         x = values_x[v];
         y = x * m + b;
         result_values_x.push(x);
@@ -1000,19 +1001,19 @@ hr {
 
     return [result_values_x, result_values_y];
 }
-  function getCustomInfo(marker){
+function getCustomInfo(marker){
     return marker.customInfo;
-  }
-  function getCustomInfoTime(marker){
+}
+function getCustomInfoTime(marker){
     return marker.customInfoTime;
-  }
-  function getMarker(id){
+}
+function getMarker(id){
     return markers[parseInt(id)];
-  }
-  function generateRandom(){
+}
+function generateRandom(){
     return Math.random() * (0.06 - 0.00) + 0.00;
-  }
-  function calcMid(marker){
+}
+function calcMid(marker){
     var parent_id = marker.parentInfo;
     var parent_marker = getMarker(parent_id);
     if(parent_marker){
@@ -1021,19 +1022,19 @@ hr {
         var midpoint = new google.maps.LatLng(x, y);
         return midpoint;
     }
-  }
-  function calcDistance(marker1,marker2){
+}
+function calcDistance(marker1,marker2){
     var x = marker1.getPosition().lat() - marker2.getPosition().lat();
     var y = marker1.getPosition().lng() - marker2.getPosition().lng();
     var distance = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
     return distance;
-  }
-  function getParent(marker){
+}
+function getParent(marker){
     var parent_id = marker.parentInfo;
     var parent_marker = getMarker(parent_id);
     return parent_marker;
-  }
-  function searchArea(position, area){
+}
+function searchArea(position, area){
     if(area.shapeType == 1){ // is a circle
         var center = area.getCenter();
         var radius = area.getRadius();
@@ -1051,9 +1052,9 @@ hr {
     }else{
         return false;
     }
-  }
-  var shapes = [];
-  function markRegion(){
+}
+var shapes = [];
+function markRegion(){
     // var cluster = [];
     
     while(markers.length > 0){
@@ -1122,17 +1123,17 @@ hr {
             }
             else if(cluster.length == 2){
                 var cityCircle = new google.maps.Circle({
-                strokeColor: '#FF5733',
-                strokeOpacity: 0,
-                strokeWeight: 0,
-                fillColor: '#FF5733',
-                fillOpacity: 0.2 * avg_lossRate_mult,
-                map: map,
-                center: calcMid(first_marker),
-                radius: calcDistance(first_marker,second_marker)/2*100000+4,
-                lossInfo: avg_lossRate,
-                shapeType: 1,
-                affected: affected
+                    strokeColor: '#FF5733',
+                    strokeOpacity: 0,
+                    strokeWeight: 0,
+                    fillColor: '#FF5733',
+                    fillOpacity: 0.2 * avg_lossRate_mult,
+                    map: map,
+                    center: calcMid(first_marker),
+                    radius: calcDistance(first_marker,second_marker)/2*100000+4,
+                    lossInfo: avg_lossRate,
+                    shapeType: 1,
+                    affected: affected
                 });
                 shapes.push(cityCircle);
                 // createInfoWindow(cityCircle, "PER: " + avg_lossRate);
@@ -1165,8 +1166,8 @@ hr {
             }
         }
     }
-  }
-  function drawAdditionalHAxis(chart,dataTable){
+}
+function drawAdditionalHAxis(chart,dataTable){
     var layout = chart.getChartLayoutInterface();
     var chartArea = layout.getChartAreaBoundingBox();
 
@@ -1210,7 +1211,7 @@ function createInfoWindow(poly, content) {
 
 
 
-  function drawChart(marker,avg,current,predict,fault_pbb) {
+function drawChart(marker,avg,current,predict,fault_pbb) {
         // var data = google.visualization.arrayToDataTable([
         //   ['Time', 'PER'],
         //   ['7/13',  parseFloat(getCustomInfo(marker)[0])],
@@ -1243,14 +1244,14 @@ function createInfoWindow(poly, content) {
         },2000);
 
         var titlestring = '<div id="content">'+
-            '<h1 id="firstHeading" class="firstHeading">PER</h1>'+
-            '<div id="bodyContent">'+
-            '<p><b>Average: </b>'+(parseFloat(avg)*100).toFixed(2)+'%'+'</p>'+
-            '<p><b>Current: </b>'+(parseFloat(current)*100).toFixed(2)+'%'+'</p>'+
-            '<p><b>Predicted: </b>'+(parseFloat(predict)*100).toFixed(2)+'%'+'</p>'+
-            '<p><b>Fault probability: </b>'+(fault_pbb*100).toFixed(2)+'%'+'</p>'+
-            '</div>'+
-            '</div>';
+        '<h1 id="firstHeading" class="firstHeading">PER</h1>'+
+        '<div id="bodyContent">'+
+        '<p><b>Average: </b>'+(parseFloat(avg)*100).toFixed(2)+'%'+'</p>'+
+        '<p><b>Current: </b>'+(parseFloat(current)*100).toFixed(2)+'%'+'</p>'+
+        '<p><b>Predicted: </b>'+(parseFloat(predict)*100).toFixed(2)+'%'+'</p>'+
+        '<p><b>Fault probability: </b>'+(fault_pbb*100).toFixed(2)+'%'+'</p>'+
+        '</div>'+
+        '</div>';
 
         var options = {
           title: 'PER'+'\n'+'current: '+(parseFloat(current)*100).toFixed(2)+'%'+'\xa0\xa0'+'predicted: '+(parseFloat(predict)*100).toFixed(2)+'%'+'\xa0\xa0'+'fault probability: '+(fault_pbb*100).toFixed(2)+'%',
@@ -1261,10 +1262,10 @@ function createInfoWindow(poly, content) {
           legend: { position: 'none' },
           displayAnnotations: true,
           // legend: 
-        };
+      };
 
-        var node = document.createElement('div');
-        node.setAttribute('id', 'node');
+      var node = document.createElement('div');
+      node.setAttribute('id', 'node');
         // infowindow  = new google.maps.InfoWindow(),
         var chart = new google.visualization.AnnotatedTimeLine(node);
 
@@ -1279,9 +1280,9 @@ function createInfoWindow(poly, content) {
         // google.maps.event.addListener(marker.getMap(), 'click', function() {
         //     infoWindow.close();
         // });
-      }
+    }
 
-      function drawChart2(marker){
+    function drawChart2(marker){
         $.ajax({
             url: "/api/visitorsss",
             dataType: "json",
@@ -1291,9 +1292,28 @@ function createInfoWindow(poly, content) {
                 data2.addColumn('date','TIME');
                 data2.addColumn('number','PER');
 
+                var total2 = 0;
+                var predict2_time = [];
+                var predict2_per = [];
                 for(var i=0;i<jsonData[parseInt(marker.id)].length;i++){
                     // data.addRow([convertTime(node_time[i]), parseFloat(node_data[i])]);
                     data2.addRow([convertTime(jsonData[parseInt(marker.id)][i][0]),jsonData[parseInt(marker.id)][i][1]]);
+                    predict2_time.push(jsonData[parseInt(marker.id)][i][0]);
+                    predict2_per.push(jsonData[parseInt(marker.id)][i][1]);
+                    var current2 = jsonData[parseInt(marker.id)][i][1];
+                    total2 += current2;
+                    // var avg2 = total2/jsonData[parseInt(marker.id).length];
+                }
+                var avg2 = total2/jsonData[parseInt(marker.id)].length;
+                var predict2 = findLineByLeastSquares(predict2_time, predict2_per)[1][0];
+                if(predict2 > 0.05){
+                    var fault_pbb2 = 1;
+                }else if(predict2 > 0.05 && current2 > predict2){
+                    var fault_pbb2 = 0;
+                }else if(current2 < 0.05 && current2 > predict2){
+                    var fault_pbb2 = 0;
+                }else{
+                    var fault_pbb2 = 1/((0.05-current2)/(predict2-current2));
                 }
 
                 var options2 = {
@@ -1304,14 +1324,32 @@ function createInfoWindow(poly, content) {
                 var node2 = document.createElement('div');
                 var chart2 = new google.visualization.AnnotatedTimeLine(node2);
                 chart2.draw(data2, options2);
+                // setInterval(function(){
+                //     chart2.draw(data2, options2);
+                // },1000);
 
-                infowindow.setContent(node2);
+                var titlestring2 = '<div id="content">'+
+                '<h1 id="firstHeading" class="firstHeading">PER</h1>'+
+                '<div id="bodyContent">'+
+                '<p><b>Average: </b>'+(avg2*100).toFixed(2)+'%'+'</p>'+
+                '<p><b>Current: </b>'+(current2*100).toFixed(2)+'%'+'</p>'+
+                '<p><b>Predicted: </b>'+(predict2*100).toFixed(2)+'%'+'</p>'+
+                '<p><b>Fault probability: </b>'+(fault_pbb2*100).toFixed(2)+'%'+'</p>'+
+                '</div>'+
+                '</div>';
+
+                var div2 = document.createElement('div');
+                div2.innerHTML = titlestring2;
+                div2.appendChild(node2);
+
+                // var infowindow = new google.maps.InfoWindow();
+                infowindow.setContent(div2);
                 infowindow.open(marker.getMap(),marker);
             }
         });
-      }
+    }
 
-      function drawGaugeChart(data) {
+    function drawGaugeChart(data) {
 
         // var data = google.visualization.arrayToDataTable([
         //   ['Label', 'Value'],
@@ -1325,29 +1363,29 @@ function createInfoWindow(poly, content) {
           redFrom: 90, redTo: 100,
           yellowFrom:75, yellowTo: 90,
           minorTicks: 5
-        };
+      };
 
-        var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+      var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
 
-        chart.draw(data, options);
+      chart.draw(data, options);
 
-        setInterval(function() {
+      setInterval(function() {
           data.setValue(0, 1, 40 + Math.round(60 * Math.random()));
           chart.draw(data, options);
-        }, 13000);
-        setInterval(function() {
+      }, 13000);
+      setInterval(function() {
           data.setValue(1, 1, 40 + Math.round(60 * Math.random()));
           chart.draw(data, options);
-        }, 5000);
-        setInterval(function() {
+      }, 5000);
+      setInterval(function() {
           data.setValue(2, 1, 60 + Math.round(20 * Math.random()));
           chart.draw(data, options);
-        }, 26000);
-      }
+      }, 26000);
+  }
 
-      function getSum(total, num) {
-        return total + num;
-      }
+  function getSum(total, num) {
+    return total + num;
+}
 
       // var sum_network = 0;
       function addNetwork(markers,label){
@@ -1402,10 +1440,10 @@ function createInfoWindow(poly, content) {
             // }
         }).insertBefore(sidebar);
         // insertBefore( ".network1" );
-      }
+    }
 
-      
-      function addMarker(location,label,active,parent){
+    var myinterval;
+    function addMarker(location,label,active,parent){
         // var array = [generateRandom(),generateRandom(),generateRandom(),generateRandom(),generateRandom(),generateRandom()];
         // alert(data_test[0][1]);
         // var array = [data_test[100][1],data_test[101][1],data_test[102][1],data_test[103][1],data_test[104][1],data_test[105][1]];
@@ -1476,11 +1514,11 @@ function createInfoWindow(poly, content) {
         var marker = new google.maps.Marker({
             map: map,
             icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            scale: 15,
-            strokeWeight:2,
-            fillColor: '#008000',
-            fillOpacity: 1.0
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 15,
+                strokeWeight:2,
+                fillColor: '#008000',
+                fillOpacity: 1.0
             },
             position: location,
             label: label,
@@ -1536,13 +1574,20 @@ function createInfoWindow(poly, content) {
         // var loss_rate = 1;
         if(avg>0.05){ //red: avg packet loss 
                 // marker.setAnimation(google.maps.Animation.BOUNCE);
-            marker.icon.fillColor = ' #FF0000 ';
-            marker.isCritical = 1;
-            marker.lossRate = avg/0.05;
-        }
-        
-        marker.addListener('click', function(){
-            google.charts.setOnLoadCallback(drawChart2(this));
+                marker.icon.fillColor = ' #FF0000 ';
+                marker.isCritical = 1;
+                marker.lossRate = avg/0.05;
+            }
+
+            marker.addListener('click', function(){
+                clearInterval(myinterval);
+                google.charts.setOnLoadCallback(drawChart2(this));
+                // $(document).ready(function(){
+                    // drawChart2(this);
+                    myinterval = setInterval(function(){
+                        drawChart2(marker);
+                    },3000);
+                // });
             // google.charts.setOnLoadCallback(drawChart(this,avg,current,predict_y,fault_pbb));
             // setInterval(function(){
             //     drawChart(this,avg,current,predict_y,fault_pbb);
@@ -1588,42 +1633,42 @@ function createInfoWindow(poly, content) {
             {lat: parentMarker.getPosition().lat(), lng: parentMarker.getPosition().lng()}
             ];
             var link = new google.maps.Polyline({
-            path: path,
+                path: path,
             // geodesic: true,
             strokeColor: '#000080',
             strokeOpacity: 1.0,
             strokeWeight: 1 + link_info * 100,
             customInfo: link_info
         });
-        if(link_info > 0.04){
-            link.strokeColor = '#800000';
+            if(link_info > 0.04){
+                link.strokeColor = '#800000';
+            }
+            createInfoWindow(link, "Link traffic : " + link.customInfo);
+            link.setMap(map);
         }
-        createInfoWindow(link, "Link traffic : " + link.customInfo);
-        link.setMap(map);
-        }
-      }
-      var legend = document.getElementById('legend');
-        for (var key in icons) {
-          var type = icons[key];
-          var name = type.name;
-          var icon = type.icon;
-          var div = document.createElement('div');
-          div.innerHTML = '<img src="' + icon + '"> ' + name;
-          legend.appendChild(div);
-        }
-        var c = document.getElementById("myCanvas");
-        var ctx = c.getContext("2d");
-        ctx.fillText("Low",5,12);
-        ctx.fillText("High",125,12);
-        ctx.fillText("Noisy zone (PER)",30,35);
-        var grd = ctx.createLinearGradient(0, 0, 170, 0);
-        grd.addColorStop(0, "white");
-        grd.addColorStop(1, " #ff5733");
-        ctx.fillStyle = grd;
-        ctx.fillRect(2, 15, 150, 10);
+    }
+    var legend = document.getElementById('legend');
+    for (var key in icons) {
+      var type = icons[key];
+      var name = type.name;
+      var icon = type.icon;
+      var div = document.createElement('div');
+      div.innerHTML = '<img src="' + icon + '"> ' + name;
+      legend.appendChild(div);
+  }
+  var c = document.getElementById("myCanvas");
+  var ctx = c.getContext("2d");
+  ctx.fillText("Low",5,12);
+  ctx.fillText("High",125,12);
+  ctx.fillText("Noisy zone (PER)",30,35);
+  var grd = ctx.createLinearGradient(0, 0, 170, 0);
+  grd.addColorStop(0, "white");
+  grd.addColorStop(1, " #ff5733");
+  ctx.fillStyle = grd;
+  ctx.fillRect(2, 15, 150, 10);
 
-        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
-        markRegion();
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
+  markRegion();
         // alert(shapes[0].shapeType+' '+shapes[1].shapeType+' '+shapes[2].shapeType+' '+shapes[3].shapeType);
         // for(var i=0;i<shapes.length;i++){
         //     alert(shapes[i].shapeType);
@@ -1664,6 +1709,7 @@ function createInfoWindow(poly, content) {
             });
             google.maps.event.addListener(map, 'click', function() {
                 infowindow.close();
+                clearInterval(myinterval);
                 current_shape.setOptions({strokeWeight: 0, fillColor: '#FF5733'});
             });
             // google.maps.event.addListener(current_shape, 'mouseout', function(event){
@@ -1718,7 +1764,7 @@ function createInfoWindow(poly, content) {
         //     // });
         // }
 
-  }
+    }
 
   // google.load('visualization', '1.0', {'packages':['corechart']});
   google.charts.load('current', {'packages':['annotatedtimeline']});
@@ -1726,7 +1772,7 @@ function createInfoWindow(poly, content) {
   var elmnt = document.getElementById("sidebar-wrapper");
   elmnt.onscroll = function() {scrollFunction()};
 
-function scrollFunction() {
+  function scrollFunction() {
     if (elmnt.scrollTop > 20) {
         document.getElementById("myBtn").style.display = "block";
     } else {
@@ -1740,33 +1786,33 @@ function topFunction() {
     // document.documentElement.scrollTop = 0;
 }
 
-  var timeleft = 10;
-    var downloadTimer = setInterval(function(){
+var timeleft = 10;
+var downloadTimer = setInterval(function(){
     timeleft--;
     if(document.getElementById("countdowntimer")){
-    document.getElementById("countdowntimer").textContent = timeleft;}
-    if(timeleft <= 0)
-        clearInterval(downloadTimer);
+        document.getElementById("countdowntimer").textContent = timeleft;}
+        if(timeleft <= 0)
+            clearInterval(downloadTimer);
     },1000);
 
-  if(!window.location.hash){
+if(!window.location.hash){
     var overlay = jQuery('<div id="overlay"><div id="text">Data loaded in <span id="countdowntimer">10 </span> seconds</div></div>');
     overlay.appendTo(document.body)
-  }
+}
 
-  window.onload = setTimeout(function(){ 
+window.onload = setTimeout(function(){ 
     if(!window.location.hash) {
         window.location = window.location + '#loaded';
         window.location.reload();
     }
-    }, 10000);
+}, 10000);
 
   // alert("Loading...");
 
-    </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpPgcU1vPIge5zzD50cfVkL7DVpIVKac0&callback=initMap">
-    </script>
+</script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpPgcU1vPIge5zzD50cfVkL7DVpIVKac0&callback=initMap">
+</script>
 
 
 

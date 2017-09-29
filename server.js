@@ -12,7 +12,7 @@ app.use(bodyParser.json())
 var mydb;
 var mydb_kilby;
 var kilby_data = [];
-for(var j=0;j<20;j++){
+for(var j=0;j<25;j++){
   kilby_data[j] = [];
 }
 var kilby_all= [];
@@ -22,7 +22,7 @@ myurl = "https://89c13691-0906-4a2b-98ef-801692e3590a-bluemix:4e714e8e0d041063bd
 //   var LocalStorage = require('node-localstorage').LocalStorage;
 //   localStorage = new LocalStorage('./scratch');
 // }
- 
+
 // localStorage.setItem('test', 100);
 // console.log("local storage : "+localStorage);
 // console.log("test : "+localStorage.getItem('test'));
@@ -93,10 +93,10 @@ app.post("/api/visitorsss", function (request, response) {
   mydb_kilby.insert(
     insertObj, 
     function(err, body, header) {
-    if (err) {
-      return console.log('[mydb.insert] ', err.message);
-    }
-    console.log("insert new data: " + JSON.stringify(insertObj));
+      if (err) {
+        return console.log('[mydb.insert] ', err.message);
+      }
+      console.log("insert new data: " + JSON.stringify(insertObj));
     // response.send("Hello " + userName + "! I added you to the database.");
   });
   // console.log("new data!!" + JSON.stringify(request.body));
@@ -113,7 +113,7 @@ app.post("/api/visitorsss", function (request, response) {
  * [ "Bob", "Jane" ]
  * @return An array of all the visitor names
  */
-app.get("/api/visitorsss", function (request, response) {
+ app.get("/api/visitorsss", function (request, response) {
   // var names = [];
   if(!mydb_kilby) {
     response.json(kilby_data);
@@ -196,9 +196,9 @@ if (appEnv.services['cloudantNoSQLDB']) {
   var dbName_kilby = 'mydb';
 
   cloudant.db.list(function(err, allDbs) {
-  console.log('All my databases: %s', allDbs.join(', '));
+    console.log('All my databases: %s', allDbs.join(', '));
 
-});
+  });
 
   mydb_kilby = cloudant.db.use(dbName_kilby);
 
@@ -216,7 +216,7 @@ if (appEnv.services['cloudantNoSQLDB']) {
   // var array2 = [0,4,5];
   // console.log('similarity is: ' + checkSimilarity(array1, array2));
 
-/* first data fetch, 0 sec delay */
+  /* first data fetch, 0 sec delay */
   query1();
   setTimeout(query2, 3000);
   setTimeout(query3, 6000);
@@ -255,17 +255,17 @@ if (appEnv.services['cloudantNoSQLDB']) {
   /***************************/
 
 
-/* recursive data fetch, 3 sec delay from last fetch */
+  /* recursive data fetch, 3 sec delay from last fetch */
   setInterval(function(){
-  query1();
-  setTimeout(query2, 3000);
-  setTimeout(query3, 6000);
-  setTimeout(query4, 9000);
-  setTimeout(function(){
-    console.log('final ts is %s', ts_temp);
-    last_ts = ts_temp;
-  },12000);
-},15000);
+    query1();
+    setTimeout(query2, 3000);
+    setTimeout(query3, 6000);
+    setTimeout(query4, 9000);
+    setTimeout(function(){
+      console.log('final ts is %s', ts_temp);
+      last_ts = ts_temp;
+    },12000);
+  },15000);
   /************************************************/
 
   // console.log('last ts is %s', last_ts);
@@ -318,7 +318,7 @@ if (appEnv.services['cloudantNoSQLDB']) {
 // var predict = (known_y.length + 1) / lr.slope;
 // console.log('predicted: '+ predict);
 
-  
+
 //   mydb_kilby.find({selector:{id:'3'}}, function(er, result) {
 //   if (er) {
 //     throw er;
@@ -329,7 +329,7 @@ if (appEnv.services['cloudantNoSQLDB']) {
 //     var kilby_data_temp = [];
 //     for (var i = 0; i < result.docs.length; i++) {
 //     // console.log('  app per: %s', result.docs[i].app_per);
-    
+
 //     kilby_data_temp.push([result.docs[i].ts, result.docs[i].app_per]);
 //     kilby_data[3] = kilby_data_temp;
 //     // console.log('  time: %s, per: %s', result.docs[i].ts, result.docs[i].app_per);
@@ -362,8 +362,8 @@ var ts_temp = 0;
 // var data_y = [];
 function fetchData(node_id, ts){
   mydb_kilby.find({"selector":{"id":parseInt(node_id), 
-                              "ts":{"$gt":ts}
-                            }}, function(er, result){
+    "ts":{"$gt":ts}
+  }}, function(er, result){
     if(er){
       throw er;
     }
@@ -425,7 +425,7 @@ function fetchData(node_id, ts){
     //   console.log(typeof(parseFloat(kilby_data_temp[0][1])));
     // }
     // if(node_id == '3'){
-    var predict_result = findLineByLeastSquares(data_x, data_y);
+      var predict_result = findLineByLeastSquares(data_x, data_y);
     // var result = linearRegression(data_y, data_x);
     // var result_x = result[0];
     // var result_y = result[1];
@@ -511,7 +511,7 @@ function fetchData(node_id, ts){
     // console.log('\n');
     // setTimeout(fetchData(node_id,last_ts), 15000);
   }
-    
+
   // }
 
     // var output = result.docs.length;
@@ -520,17 +520,17 @@ function fetchData(node_id, ts){
 }
 
 function convertTime(timestamp_string){
-    var timestamp = parseInt(timestamp_string);
-            var date = new Date(timestamp);
-            var year = date.getFullYear();
-            var month = date.getMonth();
-            var day = date.getDate();
-            var hours = date.getHours();
-            var minutes = "0" + date.getMinutes();
-            var seconds = "0" + date.getSeconds();
-            var formattedTime = year + '/' + month + '/' + day + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-            return formattedTime;
-  }
+  var timestamp = parseInt(timestamp_string);
+  var date = new Date(timestamp);
+  var year = date.getFullYear();
+  var month = date.getMonth();
+  var day = date.getDate();
+  var hours = date.getHours();
+  var minutes = "0" + date.getMinutes();
+  var seconds = "0" + date.getSeconds();
+  var formattedTime = year + '/' + month + '/' + day + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+  return formattedTime;
+}
 
 function query1(){
   fetchData('1',last_ts);
@@ -576,25 +576,25 @@ function checkSimilarity(id1){
       //   return arrayB.indexOf(el) >= 0;
       // }).length;
       var matches = 0;
-        for (i=0;i<arrayA.length;i++) {
-            if (Math.abs(arrayA[i]-arrayB[i])/arrayB[i] < 0.2)
-                matches++;
-        }
-        var similarity_rate = matches/Math.min(arrayA.length, arrayB.length);
-        if(similarity_rate > 0.2){
-          similarity_dict.push([id2, similarity_rate]);
-        }
+      for (i=0;i<arrayA.length;i++) {
+        if (Math.abs(arrayA[i]-arrayB[i])/arrayB[i] < 0.2)
+          matches++;
+      }
+      var similarity_rate = matches/Math.min(arrayA.length, arrayB.length);
+      if(similarity_rate > 0.2){
+        similarity_dict.push([id2, similarity_rate]);
+      }
         // return similarity_rate;
+      }
     }
+    return similarity_dict;
   }
-  return similarity_dict;
-}
 
-function compare_rate(a,b){
-  return a[1] - b[1];
-}
+  function compare_rate(a,b){
+    return a[1] - b[1];
+  }
 
-function findLineByLeastSquares(values_x, values_y) {
+  function findLineByLeastSquares(values_x, values_y) {
     var sum_x = 0;
     var sum_y = 0;
     var sum_xy = 0;
@@ -604,9 +604,9 @@ function findLineByLeastSquares(values_x, values_y) {
     /*
      * We'll use those variables for faster read/write access.
      */
-    var x = 0;
-    var y = 0;
-    var values_length = values_x != null ? values_x.length : 0;
+     var x = 0;
+     var y = 0;
+     var values_length = values_x != null ? values_x.length : 0;
 
     // if (values_length != values_y.length) {
     //     throw new Error('The parameters values_x and values_y need to have same size!');
@@ -615,47 +615,47 @@ function findLineByLeastSquares(values_x, values_y) {
     /*
      * Nothing to do.
      */
-    if (values_length === 0) {
-        return [ [], [] ];
+     if (values_length === 0) {
+      return [ [], [] ];
     }
 
     /*
      * Calculate the sum for each of the parts necessary.
      */
-    for (var v = 0; v < values_length; v++) {
-        x = values_x[v];
-        y = values_y[v];
-        sum_x += x;
-        sum_y += y;
-        sum_xx += x*x;
-        sum_xy += x*y;
-        count++;
+     for (var v = 0; v < values_length; v++) {
+      x = values_x[v];
+      y = values_y[v];
+      sum_x += x;
+      sum_y += y;
+      sum_xx += x*x;
+      sum_xy += x*y;
+      count++;
     }
 
     /*
      * Calculate m and b for the formular:
      * y = x * m + b
      */
-    var m = (count*sum_xy - sum_x*sum_y) / (count*sum_xx - sum_x*sum_x);
-    var b = (sum_y/count) - (m*sum_x)/count;
+     var m = (count*sum_xy - sum_x*sum_y) / (count*sum_xx - sum_x*sum_x);
+     var b = (sum_y/count) - (m*sum_x)/count;
 
     /*
      * We will make the x and y result line now
      */
-    var result_values_x = [];
-    var result_values_y = [];
+     var result_values_x = [];
+     var result_values_y = [];
 
-    for (var v = 0; v < values_length; v++) {
-        x = values_x[v];
-        y = x * m + b;
-        result_values_x.push(x);
-        result_values_y.push(y);
+     for (var v = 0; v < values_length; v++) {
+      x = values_x[v];
+      y = x * m + b;
+      result_values_x.push(x);
+      result_values_y.push(y);
     }
 
     return [result_values_x, result_values_y];
-}
+  }
 
-function linearRegression(y,x){
+  function linearRegression(y,x){
     var lr = {};
     var n = y.length;
     var sum_x = 0;
@@ -665,7 +665,7 @@ function linearRegression(y,x){
     var sum_yy = 0;
     
     for (var i = 0; i < y.length; i++) {
-      
+
       sum_x += x[i];
       sum_y += y[i];
       sum_xy += (x[i]*y[i]);
@@ -678,18 +678,18 @@ function linearRegression(y,x){
     lr['r2'] = Math.pow((n*sum_xy - sum_x*sum_y)/Math.sqrt((n*sum_xx-sum_x*sum_x)*(n*sum_yy-sum_y*sum_y)),2);
     
     return lr;
-}
+  }
 
-function polynomialRegression(){
-  var data = kilby_data[15];
-  var regression = require("regression");
-  const result = regression.polynomial(data, { order: 8 });
-  var last = data.length-1;
-  var last_time = parseInt(data[last][0]);
-  console.log("current: " + data[last]);
-  console.log("next: "+ result.predict(last_time+1));
-}
-/******** forecasting ******/
+  function polynomialRegression(){
+    var data = kilby_data[15];
+    var regression = require("regression");
+    const result = regression.polynomial(data, { order: 8 });
+    var last = data.length-1;
+    var last_time = parseInt(data[last][0]);
+    console.log("current: " + data[last]);
+    console.log("next: "+ result.predict(last_time+1));
+  }
+  /******** forecasting ******/
 // var ts = require("timeseries-analysis");
 // var t       = new ts.main(ts.adapter.sin({cycles:4}));
 // console.log(t);
@@ -738,5 +738,5 @@ app.use(express.static(__dirname + '/views'));
 
 var port = process.env.PORT || 3000
 app.listen(port, function() {
-    console.log("To view your app, open this link in your browser: http://localhost:" + port);
+  console.log("To view your app, open this link in your browser: http://localhost:" + port);
 });
