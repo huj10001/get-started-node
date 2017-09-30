@@ -1316,14 +1316,34 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
                     var fault_pbb2 = 1/((0.05-current2)/(predict2-current2));
                 }
 
+                var d = new Date();
+                d.setHours(d.getHours() - 2);
+
                 var options2 = {
                     title: 'new chart2',
-                    displayAnnotations: true
+                    displayAnnotations: false,
+                    allowRedraw: true,
+                    zoomStartTime: d
                 };
 
                 var node2 = document.createElement('div');
                 var chart2 = new google.visualization.AnnotatedTimeLine(node2);
+                // chart2.setVisibleChartRange();
+                // var range = chart2.getVisibleChartRange();
+                // if(chart2.getVisibleChartRange()){
+                //     var range = chart2.getVisibleChartRange();
+                //     chart2.setVisibleChartRange(range['start'], range['end']);
+                // }
+                // google.visualization.events.addListener(chart2, 'ready', function(){
+                //     // var range = chart2.getVisibleChartRange();
+                //     var d = new Date();
+                //     d.setHours(d.getHours() - 2);
+                //     chart2.setVisibleChartRange(d, null);
+                //     // var range2 = chart2.getVisibleChartRange();
+                //     // chart2.setVisibleChartRange(range2['start'], null);
+                // });
                 chart2.draw(data2, options2);
+                
                 // setInterval(function(){
                 //     chart2.draw(data2, options2);
                 // },1000);
@@ -1442,7 +1462,7 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
         // insertBefore( ".network1" );
     }
 
-    var myinterval;
+    var myinterval = null;
     function addMarker(location,label,active,parent){
         // var array = [generateRandom(),generateRandom(),generateRandom(),generateRandom(),generateRandom(),generateRandom()];
         // alert(data_test[0][1]);
@@ -1581,13 +1601,20 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
 
             marker.addListener('click', function(){
                 clearInterval(myinterval);
-                google.charts.setOnLoadCallback(drawChart2(this));
-                // $(document).ready(function(){
-                    // drawChart2(this);
+                // google.charts.setOnLoadCallback(drawChart2(this));
+                // // $(document).ready(function(){
+                //     // drawChart2(this);
+                //     myinterval = setInterval(function(){
+                //         drawChart2(marker);
+                //     },3000);
+                // });
+                google.charts.load('current', {'packages':['annotatedtimeline']});
+                google.charts.setOnLoadCallback(function(){
+                    drawChart2(marker);
                     myinterval = setInterval(function(){
                         drawChart2(marker);
-                    },3000);
-                // });
+                    },2000); // refresh chart per 20 sec.
+                });
             // google.charts.setOnLoadCallback(drawChart(this,avg,current,predict_y,fault_pbb));
             // setInterval(function(){
             //     drawChart(this,avg,current,predict_y,fault_pbb);
@@ -1767,7 +1794,7 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
     }
 
   // google.load('visualization', '1.0', {'packages':['corechart']});
-  google.charts.load('current', {'packages':['annotatedtimeline']});
+  // google.charts.load('current', {'packages':['annotatedtimeline']});
 
   var elmnt = document.getElementById("sidebar-wrapper");
   elmnt.onscroll = function() {scrollFunction()};
