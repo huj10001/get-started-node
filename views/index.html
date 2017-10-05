@@ -262,6 +262,28 @@ ul {
 #myBtn:hover {
   background-color: #555;
 }
+
+#mapresetbtn {
+  /*position: fixed;*/
+  bottom: 5px;
+  left: 250px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50px;
+  font-size: 40px;
+  height: 50px;
+  width: 50px;
+  margin: 10px;
+}
+#mapresetbtn:hover{
+    background-color: #555;
+}
+
 hr {
     display: block;
     border: 2px solid;
@@ -353,6 +375,7 @@ hr {
             </li>
             <hr>
             <div id="demo" class="collapse"></div>
+            <div id="demo2" class="collapse"></div>
         </ul>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -742,21 +765,31 @@ hr {
       <script type="text/javascript" src="https://www.google.com/jsapi"></script>
       <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
       <!-- <script src="/home/ubuntu/Documents/get-started-node/server.js" type="text/javascript"></script> -->
+      <script type="text/javascript">
+          var map;
+          function mapReset(){
+            map.setZoom(5);
+            map.setCenter(new google.maps.LatLng(41.850033, -87.6500523));
+        }
+    </script>
+    <div id="mapreset">
+      <button id="mapresetbtn" type="button" onclick="mapReset()">&#8634;</button>
+  </div>
+  <!-- <div id="map"></div> -->
+  <div id="legend"><h3>Status</h3>
+    <canvas id="myCanvas" width="150" height="40">
+    </div>
 
 
-      <!-- <div id="map"></div> -->
-      <div id="legend"><h3>Status</h3>
-        <canvas id="myCanvas" width="150" height="40">
-        </div>
+    <script>
+        var marker;
+        var markers = [];
+        var markers_location = [];
+        var markers2 = [];
+        var sum_network = 0;
 
 
-        <script>
-            var marker;
-            var markers = [];
-            var sum_network = 0;
-
-
-            function initMap() {
+        function initMap() {
         // alert(data_test[]);
         // var tools = require('./tools');
         // var result = fetchData();
@@ -785,29 +818,51 @@ hr {
         });
 
 
-        var node1 = new google.maps.LatLng(32.925167, -96.757725);
-        var node3 = new google.maps.LatLng(32.92515, -96.75778);
-        var node4 = new google.maps.LatLng(32.925150, -96.757650);
-        var node5 = new google.maps.LatLng(32.9250795, -96.757841);
-        var node6 = new google.maps.LatLng(32.9252, -96.75752);
-        var node7 = new google.maps.LatLng(32.925078, -96.75749);
-        var node8 = new google.maps.LatLng(32.92540, -96.757743);
-        var node9 = new google.maps.LatLng(32.9255, -96.7575);
-        var node10 = new google.maps.LatLng(32.9255, -96.7573);
-        var node11 = new google.maps.LatLng(32.92519, -96.75780);
-        var node12 = new google.maps.LatLng(32.925000, -96.757700);
-        var node13 = new google.maps.LatLng(32.925000, -96.757750);
-        var node14 = new google.maps.LatLng(32.924790, -96.757800);
-        var node15 = new google.maps.LatLng(32.924840, -96.757820);
-        var node16 = new google.maps.LatLng(32.924790, -96.75763);
-        var node17 = new google.maps.LatLng(32.92483, -96.75758);
-        var node18 = new google.maps.LatLng(32.924695, -96.757495);
-        var node19 = new google.maps.LatLng(32.924705, -96.757385);
-        var node20 = new google.maps.LatLng(32.92481, -96.75758);
+        var node21 = new google.maps.LatLng(32.925167, -96.757725);
+        var node23 = new google.maps.LatLng(32.92515, -96.75778);
+        var node24 = new google.maps.LatLng(32.925150, -96.757650);
+        var node25 = new google.maps.LatLng(32.9250795, -96.757841);
+        var node26 = new google.maps.LatLng(32.9252, -96.75752);
+        var node27 = new google.maps.LatLng(32.925078, -96.75749);
+        var node28 = new google.maps.LatLng(32.92540, -96.757743);
+        var node29 = new google.maps.LatLng(32.9255, -96.7575);
+        var node30 = new google.maps.LatLng(32.9255, -96.7573);
+        var node31 = new google.maps.LatLng(32.92519, -96.75780);
+        var node32 = new google.maps.LatLng(32.925000, -96.757700);
+        var node33 = new google.maps.LatLng(32.925000, -96.757750);
+        var node34 = new google.maps.LatLng(32.924790, -96.757800);
+        var node35 = new google.maps.LatLng(32.924840, -96.757820);
+        var node36 = new google.maps.LatLng(32.924790, -96.75763);
+        var node37 = new google.maps.LatLng(32.92483, -96.75758);
+        var node38 = new google.maps.LatLng(32.924695, -96.757495);
+        var node39 = new google.maps.LatLng(32.924705, -96.757385);
+        var node40 = new google.maps.LatLng(32.92481, -96.75758);
 
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 20,
-          center: node1
+
+        var node1 = new google.maps.LatLng(41.8066521,-72.2527231);
+        var node3 = new google.maps.LatLng(41.8066351,-72.2527781);
+        var node4 = new google.maps.LatLng(41.8066351,-72.2526481);
+        var node5 = new google.maps.LatLng(41.8065646,-72.2528391);
+        var node6 = new google.maps.LatLng(41.806685099999996,-72.2525181);
+        var node7 = new google.maps.LatLng(41.8065631,-72.25248810000001);
+        var node8 = new google.maps.LatLng(41.8068851,-72.25274110000001);
+        var node9 = new google.maps.LatLng(41.8069851,-72.2524981);
+        var node10 = new google.maps.LatLng(41.8069851,-72.2522981);
+        var node11 = new google.maps.LatLng(41.8066751,-72.2527981);
+        var node12 = new google.maps.LatLng(41.806485099999996,-72.2526981);
+        var node13 = new google.maps.LatLng(41.806485099999996,-72.2527481);
+        var node14 = new google.maps.LatLng(41.8062751,-72.2527981);
+        var node15 = new google.maps.LatLng(41.8063251,-72.2528181);
+        var node16 = new google.maps.LatLng(41.8062751,-72.25262810000001);
+        var node17 = new google.maps.LatLng(41.8063151,-72.25257810000001);
+        var node18 = new google.maps.LatLng(41.8061801,-72.25249310000001);
+        var node19 = new google.maps.LatLng(41.8061901,-72.2523831);
+        var node20 = new google.maps.LatLng(41.8062951,-72.25257810000001);
+
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 5,
+          center: new google.maps.LatLng(41.850033, -87.6500523)
           // mapTypeControl: true,
           // mapTypeControlOptions: {
           //   style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
@@ -878,24 +933,49 @@ hr {
         addMarker(node1,'1',"active",'0');
         addMarker(node3,'3',"active",'1');
         addMarker(node4,'4',"active",'1');
-        addMarker(node5,'5',"active",'3');
-        addMarker(node6,'6',"active",'4');
-        addMarker(node7,'7',"active",'4');
+        addMarker(node5,'5',"active",'1');
+        addMarker(node6,'6',"active",'1');
+        addMarker(node7,'7',"active",'1');
         addMarker(node8,'8',"active",'1');
-        addMarker(node9,'9',"active",'8');
-        addMarker(node10,'10',"active",'8');
+        addMarker(node9,'9',"active",'1');
+        addMarker(node10,'10',"active",'1');
         addMarker(node11,'11',"active",'1');
         addMarker(node12,'12',"active",'1');
         addMarker(node13,'13',"active",'1');
-        addMarker(node14,'14',"active",'12');
-        addMarker(node15,'15',"active",'13');
-        addMarker(node16,'16',"active",'12');
-        addMarker(node17,'17',"active",'13');
-        addMarker(node18,'18',"active",'17');
-        addMarker(node19,'19',"active",'18');
-        addMarker(node20,'20',"active",'16');
+        addMarker(node14,'14',"active",'1');
+        addMarker(node15,'15',"active",'1');
+        addMarker(node16,'16',"active",'1');
+        addMarker(node17,'17',"active",'1');
+        addMarker(node18,'18',"active",'1');
+        addMarker(node19,'19',"active",'1');
+        addMarker(node20,'20',"active",'1');
 
         addNetwork(markers,1);
+
+        addMarker(node21,'21',"active",'0');
+        addMarker(node23,'23',"active",'21');
+        addMarker(node24,'24',"active",'21');
+        addMarker(node25,'25',"active",'23');
+        addMarker(node26,'26',"active",'24');
+        addMarker(node27,'27',"active",'24');
+        addMarker(node28,'28',"active",'21');
+        addMarker(node29,'29',"active",'28');
+        addMarker(node30,'30',"active",'28');
+        addMarker(node31,'31',"active",'21');
+        addMarker(node32,'32',"active",'21');
+        addMarker(node33,'33',"active",'21');
+        addMarker(node34,'34',"active",'32');
+        addMarker(node35,'35',"active",'33');
+        addMarker(node36,'36',"active",'32');
+        addMarker(node37,'37',"active",'33');
+        addMarker(node38,'38',"active",'37');
+        addMarker(node39,'39',"active",'38');
+        addMarker(node40,'40',"active",'36');
+
+        addNetwork(markers2,2);
+
+        var markerCluster1 = new MarkerClusterer(map, markers_location,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
         // addNetwork(markers,2);
 
   //       function drawChart(marker) {
@@ -1419,12 +1499,14 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
         // }
         // alert(sum_network);
         var avg_network = sum_network / markers.length;
-        var sidebar = $('#demo');
-        var sidebar_entry = $('<li/>', {
-            'html': '<a href="#demo" class="btn btn-link" data-toggle="collapse">Network '+label
-            +'<ul style="padding-left: 5px">Num. Nodes: '+(markers.length - 1 )+'</ul>'
-            +'<ul style="padding-left: 5px">Avg. PER: '+avg_network.toFixed(6)+'</ul>'
-            +'<ul style="padding-left: 5px">Avg. RSSI: '+generateRandom().toFixed(6)+'</ul>'
+        
+        if(label==1){
+            var sidebar = $('#demo');
+            var sidebar_entry = $('<li/>', {
+                'html': '<a href="#demo" class="btn btn-link" data-toggle="collapse">Network '+label
+                +'<ul style="padding-left: 5px">Num. Nodes: '+(markers.length - 1 )+'</ul>'
+                +'<ul style="padding-left: 5px">Avg. PER: '+avg_network.toFixed(6)+'</ul>'
+                +'<ul style="padding-left: 5px">Avg. RSSI: '+generateRandom().toFixed(6)+'</ul>'
             // +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
             // +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>'
             +'<ul style="padding-left: 5px">Energy status: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+(Math.random() * (0.8 - 0.1) + 0.1)+'">'+'</meter>'+'</ul>'
@@ -1459,11 +1541,53 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
             //     // alert($(this).attr('id'));
             // }
         }).insertBefore(sidebar);
+        }else if(label ==2){
+            var sidebar2 = $('#demo2');
+            var sidebar_entry2 = $('<li/>', {
+                'html': '<a href="#demo2" class="btn btn-link" data-toggle="collapse">Network '+label
+                +'<ul style="padding-left: 5px">Num. Nodes: '+(markers2.length - 1 )+'</ul>'
+                +'<ul style="padding-left: 5px">Avg. PER: '+avg_network.toFixed(6)+'</ul>'
+                +'<ul style="padding-left: 5px">Avg. RSSI: '+generateRandom().toFixed(6)+'</ul>'
+            // +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
+            // +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>'
+            +'<ul style="padding-left: 5px">Energy status: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+(Math.random() * (0.8 - 0.1) + 0.1)+'">'+'</meter>'+'</ul>'
+            // +'<ul>Stability status: '+(Math.round(Math.random()*100) + 0)+'%'+'</ul>'
+            // +'<ul>Performance status: '+(Math.round(Math.random()*100) + 0)+'%'+'</ul>'
+            // +'<ul>Security status: '+(Math.round(Math.random()*100) + 0)+'%'+'</ul>',
+            +'<ul style="padding-left: 5px">Stability status: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+(Math.random() * (0.8 - 0.1) + 0.1)+'">'+'</meter>'+'</ul>'
+            // +'<ul style="padding-left: 5px">Performance status: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+(Math.random() * (0.8 - 0.1) + 0.1)+'">'+'</meter>'+'</ul>'
+            +'<ul style="padding-left: 5px">Security status: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+(Math.random() * (0.8 - 0.1) + 0.1)+'">'+'</meter>'+'</ul>',
+            //  'click': function() {
+            //     // $(this).css('color', 'red');
+            //     drawGaugeChart(this);
+            // },
+            // jQuery(this).attr("id","newId"),
+            // 'click': function() {
+            //     google.maps.event.trigger(marker, 'click');
+            //     $(this).css('color','red');
+            //     // $(this).attr("id","newid");
+            // },
+            // 'mouseenter': function() {
+            //     $(this).css('color', 'red');
+            // },
+            // 'mouseleave': function() {
+            //     $(this).css('color', '#999999');
+            // },
+            // 'focus': function() {
+            //     $(this).css('color', '#999999');
+            // },
+            // function() {
+            //     $(this).attr("id","newid"+label);
+            //     // alert($(this).attr('id'));
+            //     // alert($(this).attr('id'));
+            // }
+        }).insertBefore(sidebar2);
         // insertBefore( ".network1" );
     }
+}
 
-    var myinterval = null;
-    function addMarker(location,label,active,parent){
+var myinterval = null;
+function addMarker(location,label,active,parent){
         // var array = [generateRandom(),generateRandom(),generateRandom(),generateRandom(),generateRandom(),generateRandom()];
         // alert(data_test[0][1]);
         // var array = [data_test[100][1],data_test[101][1],data_test[102][1],data_test[103][1],data_test[104][1],data_test[105][1]];
@@ -1551,7 +1675,10 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
             lossRate: 0,
             batteryInfo: Math.random() * (0.8 - 0.1) + 0.1
         });
-        markers[parseInt(label)] = marker;
+        if(parseInt(marker.label)<=20){
+            markers[parseInt(label)] = marker;
+
+            markers_location.push(marker);
         // $('#side_bar').append("<li>node" + label + "</li>");
         var sidebar = $('#demo');
         var sidebar_entry = $('<li/>', {
@@ -1584,7 +1711,45 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
                 // alert($(this).attr('id'));
             }
         }).appendTo(sidebar);
-        for(var i=0;i<array.length;i++){
+    }
+    else {
+        markers2[parseInt(label)] = marker;
+        
+        markers_location.push(marker);
+        // $('#side_bar').append("<li>node" + label + "</li>");
+        var sidebar2 = $('#demo2');
+        var sidebar_entry2 = $('<li/>', {
+            'html': '<a href="#infolist">Node '+label
+            +'<ul>Parent: '+parent+'</ul>'
+            +'<ul>Avg. PER: '+avg.toFixed(6)+'</ul>'
+            +'<ul>Avg. RSSI: '+generateRandom().toFixed(6)+'</ul>'
+            +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
+            +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>'
+            +'<ul>Battey level: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+marker.batteryInfo+'">'+'</meter>'+'</ul>',
+            // jQuery(this).attr("id","newId"),
+            'click': function() {
+                google.maps.event.trigger(marker, 'click');
+                $(this).css('color','red');
+                // $(this).attr("id","newid");
+            },
+            'mouseenter': function() {
+                $(this).css('color', 'red');
+            },
+            'mouseleave': function() {
+                $(this).css('color', '#999999');
+            },
+            'focus': function() {
+                $(this).css('color', '#FF0000');
+            },
+            function() {
+                $(this).attr("id","newid"+label);
+                $(this).addClass('network2');
+                // alert($(this).attr('id'));
+                // alert($(this).attr('id'));
+            }
+        }).appendTo(sidebar2);
+    }
+    for(var i=0;i<array.length;i++){
             if(predict_y>0.05){  //orange: predicted packet loss
                 // marker.setAnimation(google.maps.Animation.BOUNCE);
                 marker.icon.fillColor = ' #FFA500 ';
@@ -1621,7 +1786,8 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
             //     alert('draw');
             // }, 1000);
             // drawChart(this,avg,current,predict_y,fault_pbb);
-            var sidebar = document.getElementById("demo");;
+            var sidebar = document.getElementById("demo");
+            var sidebar2 = document.getElementById("demo2")
             // sidebar.style.backgroundColor="#000000";
             // for(var i=0;i<markers.length;i++){
             //     if(markers[i]){
@@ -1652,7 +1818,11 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
 
         var link_info = generateRandom();
         if(marker.parentInfo != '0'){
-            var parentMarker = markers[parseInt(marker.parentInfo)];
+            if(parseInt(marker.label)<=20){
+                var parentMarker = markers[parseInt(marker.parentInfo)];
+            }else{
+                var parentMarker = markers2[parseInt(marker.parentInfo)];
+            }
             // var lat = parentMarker.getPosition().lat();
             // var lng = parentMarker.getPosition().lng();
             var path = [
@@ -1695,6 +1865,7 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
   ctx.fillRect(2, 15, 150, 10);
 
   map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(mapreset);
   markRegion();
         // alert(shapes[0].shapeType+' '+shapes[1].shapeType+' '+shapes[2].shapeType+' '+shapes[3].shapeType);
         // for(var i=0;i<shapes.length;i++){
