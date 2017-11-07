@@ -735,6 +735,7 @@ hr {
                 for(var i=0;i<data.length;i++){
                     data_test[i] = data[i];
                 }
+                // alert(data_test[5][0]['TS']);
                 if(data.length > 0) {
                     data.forEach(function(element, index) {
                       data[index] = AntiXSS.sanitizeInput(element)
@@ -752,7 +753,8 @@ hr {
       }
 
           //Call getNames on page load.
-          // getNames();
+          getNames();
+          // alert(data_test[0]);
           // setInterval(getNames,1000);
           // alert(data_test[1]);
 
@@ -787,6 +789,7 @@ hr {
         var markers_location = [];
         var markers2 = [];
         var sum_network = 0;
+        var zoomChange = null;
 
 
         function initMap() {
@@ -1289,6 +1292,22 @@ function createInfoWindow(poly, content) {
     });
 }
 
+function drawInsideHistogram(data_point, marker){
+    var node_data = getCustomInfo(marker);                            
+    var data_his = google.visualization.arrayToDataTable([
+            ['channel', 'rssi'],
+            ['CH11', parseFloat(node_data[data_point][2])],
+            ['CH12', parseFloat(node_data[data_point][3])],
+            ]);
+            var options_his = {
+            };
+            var node_his = document.createElement('div');
+            var infoWindow_his  = new google.maps.InfoWindow();
+            var chart_his = new google.visualization.ColumnChart(node_his);
+            chart_his.draw(data_his, options_his);
+            infoWindow_his.setContent(node_his);
+            infoWindow_his.open(marker.getMap(),marker);
+}
 
 
 function drawChart(marker,avg,current,predict,fault_pbb) {
@@ -1308,23 +1327,29 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
         var data = new google.visualization.DataTable();
         data.addColumn('date','TIME');
         data.addColumn('number','PER');
+        data.addColumn('number','RSSI');
+        // data.addColumn('string', 'title');
+        // data.addColumn('string', 'text');
         var temp_length = node_data.length;
         for(var i=0;i<node_data.length;i++){
             // data.addRow([new Date(parseInt(node_time[i])).toString(), parseFloat(node_data[i])]);
             // data.addRow(['123', 0.001]);
-            data.addRow([convertTime(node_time[i]), parseFloat(node_data[i])]);
+            var time_data = convertTime(node_time[i]);
+            var avg_per_data = parseFloat(node_data[i][1]) / parseFloat(node_data[i][0]);
+            var avg_rssi_data = (parseFloat(node_data[i][2])+parseFloat(node_data[i][3]))/2;
+            data.addRow([time_data, avg_per_data, avg_rssi_data]);
         }
-        setInterval(function(){
-            if(node_data.length > temp_length){
-                for(var i=temp_length;i<node_data.length;i++){
-                    data.addRow([convertTime(node_time[i]), parseFloat(node_data[i])]);
-                }
-                temp_length = node_data.length;
-            }
-        },2000);
+        // setInterval(function(){
+        //     if(node_data.length > temp_length){
+        //         for(var i=temp_length;i<node_data.length;i++){
+        //             data.addRow([convertTime(node_time[i]), parseFloat(node_data[i])]);
+        //         }
+        //         temp_length = node_data.length;
+        //     }
+        // },2000);
 
         var titlestring = '<div id="content">'+
-        '<h1 id="firstHeading" class="firstHeading">PER</h1>'+
+        '<h1 id="firstHeading" class="firstHeading">PER vs. RSSI</h1>'+
         '<div id="bodyContent">'+
         '<p><b>Average: </b>'+(parseFloat(avg)*100).toFixed(2)+'%'+'</p>'+
         '<p><b>Current: </b>'+(parseFloat(current)*100).toFixed(2)+'%'+'</p>'+
@@ -1334,22 +1359,38 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
         '</div>';
 
         var options = {
-          title: 'PER'+'\n'+'current: '+(parseFloat(current)*100).toFixed(2)+'%'+'\xa0\xa0'+'predicted: '+(parseFloat(predict)*100).toFixed(2)+'%'+'\xa0\xa0'+'fault probability: '+(fault_pbb*100).toFixed(2)+'%',
+          title: 'PER vs. RSSI'+'\n'+'current: '+(parseFloat(current)*100).toFixed(2)+'%'+'\xa0\xa0'+'predicted: '+(parseFloat(predict)*100).toFixed(2)+'%'+'\xa0\xa0'+'fault probability: '+(fault_pbb*100).toFixed(2)+'%',
           // subtitle: 'hello',
           // curveType: 'function',
-          // width: 900,
+          width: 500,
           // height: 200,
           legend: { position: 'none' },
           displayAnnotations: true,
+          // tooltip: {isHtml: true},
           // legend: 
       };
 
       var node = document.createElement('div');
       node.setAttribute('id', 'node');
+      node.style.height = "250px";
         // infowindow  = new google.maps.InfoWindow(),
         var chart = new google.visualization.AnnotatedTimeLine(node);
+        google.visualization.events.addListener(chart, 'select', selectHandler);
+        function selectHandler(e) {
+          var selected = chart.getSelection()[0].row;
+          drawInsideHistogram(selected, marker);
+          // var histogram_data = google.visualization.arrayToDataTable([
+          //   ['channel', 'rssi'],
+          //   ['CH11', parseFloat(node_data[selected][2]],
+          //   ['CH12', parseFloat(node_data[selected][3]]
+          //   ]);
+          //   var histogram_options = {
+          //   };
+          //   var histogram_chart = new google.visualization.Histogram();
+          //   histogram_chart.draw(histogram_data, histogram_options);
+        }
 
-        chart.draw(data, options);
+      chart.draw(data, options);
         // drawAdditionalHAxis(chart, data);
         var div = document.createElement('div');
         div.innerHTML = titlestring;
@@ -1408,21 +1449,30 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
 
                 var node2 = document.createElement('div');
                 var chart2 = new google.visualization.AnnotatedTimeLine(node2);
+
                 // chart2.setVisibleChartRange();
                 // var range = chart2.getVisibleChartRange();
                 // if(chart2.getVisibleChartRange()){
                 //     var range = chart2.getVisibleChartRange();
                 //     chart2.setVisibleChartRange(range['start'], range['end']);
                 // }
-                // google.visualization.events.addListener(chart2, 'ready', function(){
+                // google.visualization.events.addListener(chart2, 'rangechange', function(){
                 //     // var range = chart2.getVisibleChartRange();
-                //     var d = new Date();
-                //     d.setHours(d.getHours() - 2);
-                //     chart2.setVisibleChartRange(d, null);
+                //     // var d = new Date();
+                //     // d.setHours(d.getHours() - 2);
+                //     // chart2.setVisibleChartRange(d, null);
                 //     // var range2 = chart2.getVisibleChartRange();
                 //     // chart2.setVisibleChartRange(range2['start'], null);
                 // });
                 chart2.draw(data2, options2);
+
+                // getVisibleChartRange()
+                // if(chart2.getVisibleChartRange()){
+                //     var range = chart2.getVisibleChartRange();
+                //     chart2.setVisibleChartRange(range['start'], range['end']);
+                // }
+
+                // chart2.getAction('alertAction');
                 
                 // setInterval(function(){
                 //     chart2.draw(data2, options2);
@@ -1439,6 +1489,16 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
                 '</div>';
 
                 var div2 = document.createElement('div');
+                // div2.setAttribute('id', 'divv');
+                // var list2 = document.createElement('ul');
+                // list2.setAttribute('id', 'ull');
+                // var item2 = document.createElement('li');
+                // item2.setAttribute('id', 'li1');
+                // var item3 = document.createElement('li');
+                // item3.setAttribute('id', 'li2');
+                // $('#divv').append($('#ull'));
+                // $('#ull').append($('#li1'));
+                // $('#ull').append($('#li2'));
                 div2.innerHTML = titlestring2;
                 div2.appendChild(node2);
 
@@ -1447,9 +1507,9 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
                 infowindow.open(marker.getMap(),marker);
             }
         });
-    }
+}
 
-    function drawGaugeChart(data) {
+function drawGaugeChart(data) {
 
         // var data = google.visualization.arrayToDataTable([
         //   ['Label', 'Value'],
@@ -1599,8 +1659,16 @@ function addMarker(location,label,active,parent){
             var array_x = [];
             var array_y = [];
             for(var i=0;i<node_data_length;i++){
-                array[i] = data_test[node_id][i][1];
-                array_time[i] = data_test[node_id][i][0];
+                // var array_temp = data_test[node_id][i].slice();
+                array_time[i] = data_test[node_id][i]['TS'];
+                // array[i][0] = data_test[node_id][i]['APP_PER_SENT'];
+                // array[i][1] = data_test[node_id][i]['APP_PER_LOST'];
+                // array[i][2] = data_test[node_id][i]['CH11_RSSI'];
+                // array[i][3] = data_test[node_id][i]['CH12_RSSI'];
+                array[i] = [
+                data_test[node_id][i]['APP_PER_SENT'], data_test[node_id][i]['APP_PER_LOST'],
+                data_test[node_id][i]['CH11_RSSI'], data_test[node_id][i]['CH12_RSSI']
+                ];
 
                 array_x.push(parseInt(array_time[i]));
                 array_y.push(parseFloat(array[i]));
@@ -1765,7 +1833,7 @@ function addMarker(location,label,active,parent){
             }
 
             marker.addListener('click', function(){
-                clearInterval(myinterval);
+                // clearInterval(myinterval);
                 // google.charts.setOnLoadCallback(drawChart2(this));
                 // // $(document).ready(function(){
                 //     // drawChart2(this);
@@ -1773,14 +1841,14 @@ function addMarker(location,label,active,parent){
                 //         drawChart2(marker);
                 //     },3000);
                 // });
-                google.charts.load('current', {'packages':['annotatedtimeline']});
-                google.charts.setOnLoadCallback(function(){
-                    drawChart2(marker);
-                    myinterval = setInterval(function(){
-                        drawChart2(marker);
-                    },2000); // refresh chart per 20 sec.
-                });
-            // google.charts.setOnLoadCallback(drawChart(this,avg,current,predict_y,fault_pbb));
+                // google.charts.load('current', {'packages':['annotatedtimeline']});
+                // google.charts.setOnLoadCallback(function(){
+                //     drawChart2(marker);
+                //     myinterval = setInterval(function(){
+                //         drawChart2(marker);
+                //     },5000); // refresh chart per 5 sec.
+                // });
+                google.charts.setOnLoadCallback(drawChart(this,avg,current,predict_y,fault_pbb));
             // setInterval(function(){
             //     drawChart(this,avg,current,predict_y,fault_pbb);
             //     alert('draw');
@@ -1965,7 +2033,7 @@ function addMarker(location,label,active,parent){
     }
 
   // google.load('visualization', '1.0', {'packages':['corechart']});
-  // google.charts.load('current', {'packages':['annotatedtimeline']});
+  google.charts.load('current', {'packages':['annotatedtimeline']});
 
   var elmnt = document.getElementById("sidebar-wrapper");
   elmnt.onscroll = function() {scrollFunction()};

@@ -12,8 +12,10 @@ app.use(bodyParser.json())
 var mydb;
 var mydb_kilby;
 var kilby_data = [];
+var topo_data = [];
 for(var j=0;j<25;j++){
   kilby_data[j] = [];
+  topo_data[j] = [];
 }
 var kilby_all= [];
 myurl = "https://89c13691-0906-4a2b-98ef-801692e3590a-bluemix:4e714e8e0d041063bd2a4e439f057e60c034dd4afdee04224e3e6f4f8441bf55@89c13691-0906-4a2b-98ef-801692e3590a-bluemix.cloudant.com"
@@ -115,22 +117,22 @@ app.post("/api/visitorsss", function (request, response) {
  */
  app.get("/api/visitorsss", function (request, response) {
   // var names = [];
-  if(!mydb_kilby) {
-    response.json(kilby_data);
+  // if(!ibmdb) {
+    response.json(topo_data);
     return;
-  }
+  // }
 
-  mydb.list({ include_docs: true }, function(err, body) {
-    if (!err) {
-      // body.rows.forEach(function(row) {
-        // if(row.doc.name)
-          // names.push(row.doc.name);
-          // json = [];
-          // names.push(kilby_data);
-      // });
-      response.json(kilby_data);
-    }
-  });
+  // ibmdb.list({ include_docs: true }, function(err, body) {
+  //   if (!err) {
+  //     // body.rows.forEach(function(row) {
+  //       // if(row.doc.name)
+  //         // names.push(row.doc.name);
+  //         // json = [];
+  //         // names.push(kilby_data);
+  //     // });
+  //     response.json(topo_data);
+  //   }
+  // });
 });
 
 // var googleMapsClient = require('@google/maps').createClient({
@@ -187,36 +189,62 @@ if (appEnv.services['cloudantNoSQLDB']) {
   // Load the Cloudant library.
   var Cloudant = require('cloudant');
 
-  // Initialize database with credentials
-  var cloudant = Cloudant(appEnv.services['cloudantNoSQLDB'][0].credentials);
-  // cloudant = Cloudant({url: myurl, plugin:'retry', retryAttempts:5, retryTimeout:10 000 });
-  cloudant = Cloudant({url: myurl, plugin:'retry', retryAttempts:5, retryTimeout:1000 });
 
-  //database name
-  var dbName_kilby = 'mydb';
+  /* db2 */
+  var ibmdb = require('ibm_db');
 
-  cloudant.db.list(function(err, allDbs) {
-    console.log('All my databases: %s', allDbs.join(', '));
+  ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50001;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;Security=SSL;", function (err,conn) {
+    if (err) return console.log(err);
 
-  });
+    // conn.query('select TS, SENSOR_ID, APP_PER_SENT, APP_PER_LOST, CH11_RSSI, CH12_RSSI from BLUADMIN.NW_DATA_SET_0', function (err, data) {
+      // conn.query('select * from BLUADMIN.TOPOLOGY_DATA', function (err, data) {
+        conn.query('select count(*) from BLUADMIN.NW_DATA_SET_0', function (err, data) {
+          if (err) console.log(err);
+          else{
+        // for(var i=0;i<data.length;i++){
+        //   topo_data.push(data[i]);
+        //   console.log(topo_data);
+        // }
+        console.log('Num of rows: ',data[0][1]);
+      } 
 
-  mydb_kilby = cloudant.db.use(dbName_kilby);
+      conn.close(function () {
+        console.log('done');
+      });
+    });
+      });
+  /* end db2 */
+
+  // // Initialize database with credentials
+  // var cloudant = Cloudant(appEnv.services['cloudantNoSQLDB'][0].credentials);
+  // // cloudant = Cloudant({url: myurl, plugin:'retry', retryAttempts:5, retryTimeout:10 000 });
+  // cloudant = Cloudant({url: myurl, plugin:'retry', retryAttempts:5, retryTimeout:1000 });
+
+  // //database name
+  // var dbName_kilby = 'mydb';
+
+  // cloudant.db.list(function(err, allDbs) {
+  //   console.log('All my databases: %s', allDbs.join(', '));
+
+  // });
+
+  // mydb_kilby = cloudant.db.use(dbName_kilby);
 
 
-  var num_doc = 0;
-  var last_ts = null;
-  cloudant.db.get('mydb', function(err, data) {
-    console.log('Num of doc: %d', data.doc_count);
-    num_doc = num_doc<data.doc_count ? data.doc_count : num_doc;
-    // console.log('doc at line 16636 is: %s', data[16636]);
-  });
-  // console.log('data fetch start');
-  // setTimeout(query1, 1000);
-  // var array1 = [1,2,3];
-  // var array2 = [0,4,5];
-  // console.log('similarity is: ' + checkSimilarity(array1, array2));
+  // var num_doc = 0;
+  // var last_ts = null;
+  // cloudant.db.get('mydb', function(err, data) {
+  //   console.log('Num of doc: %d', data.doc_count);
+  //   num_doc = num_doc<data.doc_count ? data.doc_count : num_doc;
+  //   // console.log('doc at line 16636 is: %s', data[16636]);
+  // });
+  // // console.log('data fetch start');
+  // // setTimeout(query1, 1000);
+  // // var array1 = [1,2,3];
+  // // var array2 = [0,4,5];
+  // // console.log('similarity is: ' + checkSimilarity(array1, array2));
 
-  /* first data fetch, 0 sec delay */
+  // /* first data fetch, 0 sec delay */
   query1();
   setTimeout(query2, 3000);
   setTimeout(query3, 6000);
@@ -236,36 +264,36 @@ if (appEnv.services['cloudantNoSQLDB']) {
     //   }
     // }
   },12000);
-  /********************************/
+  // /********************************/
 
-  /*** fault detection test ***/
-  // setTimeout(function(){
-  //   for(var i=0;i<kilby_all.length; i++){
-  //     if(kilby_all[i]){
-  //       // console.log(kilby_all[i][1][1]);
-  //       console.log("node " + i);
-  //       for(var j=0;j<kilby_all[i].length;j++){
-  //         if(parseFloat(kilby_all[i][j][1]) > 0.05){
-  //           console.log(kilby_all[i][j]);
-  //         }
-  //       }
-  //     }
-  //   }
+  // /*** fault detection test ***/
+  // // setTimeout(function(){
+  // //   for(var i=0;i<kilby_all.length; i++){
+  // //     if(kilby_all[i]){
+  // //       // console.log(kilby_all[i][1][1]);
+  // //       console.log("node " + i);
+  // //       for(var j=0;j<kilby_all[i].length;j++){
+  // //         if(parseFloat(kilby_all[i][j][1]) > 0.05){
+  // //           console.log(kilby_all[i][j]);
+  // //         }
+  // //       }
+  // //     }
+  // //   }
+  // // },15000);
+  // /***************************/
+
+
+  // /* recursive data fetch, 3 sec delay from last fetch */
+  // setInterval(function(){
+  //   query1();
+  //   setTimeout(query2, 3000);
+  //   setTimeout(query3, 6000);
+  //   setTimeout(query4, 9000);
+  //   setTimeout(function(){
+  //     console.log('final ts is %s', ts_temp);
+  //     last_ts = ts_temp;
+  //   },12000);
   // },15000);
-  /***************************/
-
-
-  /* recursive data fetch, 3 sec delay from last fetch */
-  setInterval(function(){
-    query1();
-    setTimeout(query2, 3000);
-    setTimeout(query3, 6000);
-    setTimeout(query4, 9000);
-    setTimeout(function(){
-      console.log('final ts is %s', ts_temp);
-      last_ts = ts_temp;
-    },12000);
-  },15000);
   /************************************************/
 
   // console.log('last ts is %s', last_ts);
@@ -353,86 +381,112 @@ if (appEnv.services['cloudantNoSQLDB']) {
 
 }
 
-// var last_ts = null;
+var last_ts = null;
 var ts_temp = 0;
 
 // var kilby_data_temp = [];
 // var kilby_all_temp = [];
 // var data_x = [];
 // var data_y = [];
+// ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50001;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;Security=SSL;", function (err,conn) {
+//   if (err) return console.log(err);
+//   conn.query('select TS, SENSOR_ID, APP_PER_SENT, APP_PER_LOST, CH11_RSSI, CH12_RSSI from BLUADMIN.NW_DATA_SET_0', function (err, data) {
+//     if (err) console.log(err);
+//     else{
+//         // for(var i=0;i<data.length;i++){
+//         //   topo_data.push(data[i]);
+//         //   console.log(topo_data);
+//         // }
+//         // console.log('Num of rows: ',data[0][1]);
+//       }
+//     });
+// });
 function fetchData(node_id, ts){
-  mydb_kilby.find({"selector":{"id":parseInt(node_id), 
-    "ts":{"$gt":ts}
-  }}, function(er, result){
-    if(er){
-      throw er;
-    }
-    console.log('Found %d documents with id %s', result.docs.length, node_id);
-    var kilby_data_temp = [];
-    var kilby_all_temp = [];
-    var data_x = [];
-    var data_y = [];
-    // kilby_data[parseInt(node_id)] = [];
-    if(result.docs.length <= 0){
-      // last_ts = null;
-      console.log('No new data for node %s\n', node_id);
-    }
-    else{
-      console.log('New data for node %s', node_id);
-      for (var i=0;i<result.docs.length;i++){
-      // if (typeof kilby_data[parseInt(node_id)] == 'undefined'){
-      //   kilby_data[parseInt(node_id)] = [result.docs[i].ts, result.docs[i].app_per.lost/result.docs[i].app_per.sent];
-      //   console.log(kilby_data[parseInt(node_id)]);
-      // }
-      // else{
-        kilby_data[parseInt(node_id)].push([result.docs[i].ts, result.docs[i].app_per.lost/result.docs[i].app_per.sent]);
-        console.log(kilby_data[parseInt(node_id)]);
-      // }
-      // if(result.docs[i].app_per.last_seq){
-      //   kilby_data[parseInt(node_id)] = null;
-      //   kilby_data[parseInt(node_id)].push([result.docs[i].ts, result.docs[i].app_per.lost/result.docs[i].app_per.sent]);
-      // }
-      // else{
-      //   kilby_data[parseInt(node_id)].push([result.docs[i].ts, result.docs[i].app_per]); // ["msg/PER"]
-      // }
-      
+  var sensor_id = parseInt(node_id);
+  ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50001;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;Security=SSL;", function (err,conn) {
+    if(err) return console.log(err);
+    conn.query('select TS, APP_PER_SENT, APP_PER_LOST, CH11_RSSI, CH12_RSSI from BLUADMIN.NW_DATA_SET_0 where SENSOR_ID=? fetch first 10 rows only',[sensor_id], function (err, data) {
+      console.log('Found %d documents with id %s', data.length, node_id);
+      if(data.length>0){
+        for(var i=0;i<data.length;i++){
+          // console.log("testtest:",data[i]['TS']);
+          topo_data[parseInt(node_id)].push(data[i]);
+        }
+        console.log(topo_data[parseInt(node_id)]);
+      }
+    });
+  });
+}
+  // mydb_kilby.find({"selector":{"id":parseInt(node_id), 
+  //   "ts":{"$gt":ts}
+  // }}, function(er, result){
 
-      /*** fault detection test ***/
-      // kilby_all_temp.push([
-      //   result.docs[i].ts, 
-      //   result.docs[i].app_per, 
-      //   result.docs[i]["msg/PER"],
-      //   result.docs[i]["msg/avgRSSI"],
-      //   result.docs[i]["msg/avgDrift"],
-      //   result.docs[i]["msg/numSyncLost"]
-      //                       ]);
+      // console.log('Found %d documents with id %s', result.docs.length, node_id);
+    //   var kilby_data_temp = [];
+    //   var kilby_all_temp = [];
+    //   var data_x = [];
+    //   var data_y = [];
+    // // kilby_data[parseInt(node_id)] = [];
+    // if(result.docs.length <= 0){
+    //   // last_ts = null;
+    //   console.log('No new data for node %s\n', node_id);
+    // }
+    // else{
+    //   console.log('New data for node %s', node_id);
+    //   for (var i=0;i<result.docs.length;i++){
+    //   // if (typeof kilby_data[parseInt(node_id)] == 'undefined'){
+    //   //   kilby_data[parseInt(node_id)] = [result.docs[i].ts, result.docs[i].app_per.lost/result.docs[i].app_per.sent];
+    //   //   console.log(kilby_data[parseInt(node_id)]);
+    //   // }
+    //   // else{
+    //     kilby_data[parseInt(node_id)].push([result.docs[i].ts, result.docs[i].app_per.lost/result.docs[i].app_per.sent]);
+    //     console.log(kilby_data[parseInt(node_id)]);
+    //   // }
+    //   // if(result.docs[i].app_per.last_seq){
+    //   //   kilby_data[parseInt(node_id)] = null;
+    //   //   kilby_data[parseInt(node_id)].push([result.docs[i].ts, result.docs[i].app_per.lost/result.docs[i].app_per.sent]);
+    //   // }
+    //   // else{
+    //   //   kilby_data[parseInt(node_id)].push([result.docs[i].ts, result.docs[i].app_per]); // ["msg/PER"]
+    //   // }
 
-      // kilby_all[parseInt(node_id)] = kilby_all_temp;
-      /*****************************/
 
-      // if (typeof kilby_data[parseInt(node_id)] == 'undefined'){
-        // kilby_data[parseInt(node_id)] = kilby_data_temp;
-      // }else{
-      //   for(var j=kilby_data[parseInt(node_id)].length;j<(kilby_data[parseInt(node_id)].length+kilby_data_temp.length);j++){
-      //     kilby_data[parseInt(node_id)].push(kilby_data_temp[j]);
-      //   }
-      // }
+    //   /*** fault detection test ***/
+    //   // kilby_all_temp.push([
+    //   //   result.docs[i].ts, 
+    //   //   result.docs[i].app_per, 
+    //   //   result.docs[i]["msg/PER"],
+    //   //   result.docs[i]["msg/avgRSSI"],
+    //   //   result.docs[i]["msg/avgDrift"],
+    //   //   result.docs[i]["msg/numSyncLost"]
+    //   //                       ]);
 
-      data_x.push(parseInt(result.docs[i].ts));
-      data_y.push(parseFloat(result.docs[i].app_per));
-    }
+    //   // kilby_all[parseInt(node_id)] = kilby_all_temp;
+    //   /*****************************/
+
+    //   // if (typeof kilby_data[parseInt(node_id)] == 'undefined'){
+    //     // kilby_data[parseInt(node_id)] = kilby_data_temp;
+    //   // }else{
+    //   //   for(var j=kilby_data[parseInt(node_id)].length;j<(kilby_data[parseInt(node_id)].length+kilby_data_temp.length);j++){
+    //   //     kilby_data[parseInt(node_id)].push(kilby_data_temp[j]);
+    //   //   }
+    //   // }
+
+    //   // data_x.push(parseInt(result.docs[i].ts));
+    //   // data_y.push(parseFloat(result.docs[i].app_per));
+    // }
     // if(kilby_data_temp[0]){
     //   console.log(typeof(parseFloat(kilby_data_temp[0][1])));
     // }
     // if(node_id == '3'){
-      var predict_result = findLineByLeastSquares(data_x, data_y);
-    // var result = linearRegression(data_y, data_x);
-    // var result_x = result[0];
-    // var result_y = result[1];
-    // var size = data_y.length;
-    console.log('predicted next PER: '+ predict_result[1][0]);
-    ts_temp = result.docs[result.docs.length-1].ts>ts_temp ? result.docs[result.docs.length-1].ts : ts_temp;
-    console.log('current ts is %s', ts_temp);
+    //   var predict_result = findLineByLeastSquares(data_x, data_y);
+    // // var result = linearRegression(data_y, data_x);
+    // // var result_x = result[0];
+    // // var result_y = result[1];
+    // // var size = data_y.length;
+    // console.log('predicted next PER: '+ predict_result[1][0]);
+    // ts_temp = result.docs[result.docs.length-1].ts>ts_temp ? result.docs[result.docs.length-1].ts : ts_temp;
+    // console.log('current ts is %s', ts_temp);
 
     // var time_start = null;
     // var time_end = null;
@@ -510,14 +564,14 @@ function fetchData(node_id, ts){
     // }
     // console.log('\n');
     // setTimeout(fetchData(node_id,last_ts), 15000);
-  }
+  // }
 
   // }
 
     // var output = result.docs.length;
     // return output;
-  });
-}
+  // });
+// }
 
 function convertTime(timestamp_string){
   var timestamp = parseInt(timestamp_string);
