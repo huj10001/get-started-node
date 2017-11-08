@@ -887,9 +887,9 @@ hr {
 
 
         map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 20,
-          // center: new google.maps.LatLng(41.850033, -87.6500523)
-          center: new google.maps.LatLng(data_topo_test[1]['2'], data_topo_test[1]['3'])
+          zoom: 5,
+          center: new google.maps.LatLng(41.850033, -87.6500523)
+          // center: new google.maps.LatLng(data_topo_test[1]['2'], data_topo_test[1]['3'])
           // mapTypeControl: true,
           // mapTypeControlOptions: {
           //   style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
@@ -1001,8 +1001,11 @@ hr {
 
         addNetwork(markers2,2);
 
-        // var markerCluster1 = new MarkerClusterer(map, markers_location,
-        //     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+        var markerCluster1 = new MarkerClusterer(map, markers_location,
+            {
+                maxZoom: 15,
+                imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+            });
         // addNetwork(markers,2);
 
   //       function drawChart(marker) {
