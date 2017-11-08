@@ -2,6 +2,6 @@
 applications:
  - name: kilby311
    # random-route: true
-   host: kilby311
+   host: kilby311test
    domain: mybluemix.net
    memory: 256M

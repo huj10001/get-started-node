@@ -13,9 +13,11 @@ var mydb;
 var mydb_kilby;
 var kilby_data = [];
 var topo_data = [];
+var topo_loc_data = [];
 for(var j=0;j<25;j++){
   kilby_data[j] = [];
   topo_data[j] = [];
+  topo_loc_data[j] = [];
 }
 var kilby_all= [];
 myurl = "https://89c13691-0906-4a2b-98ef-801692e3590a-bluemix:4e714e8e0d041063bd2a4e439f057e60c034dd4afdee04224e3e6f4f8441bf55@89c13691-0906-4a2b-98ef-801692e3590a-bluemix.cloudant.com"
@@ -104,6 +106,11 @@ app.post("/api/visitorsss", function (request, response) {
   // console.log("new data!!" + JSON.stringify(request.body));
 });
 
+
+app.get("/api/topo", function (request, response) {
+    response.json(topo_loc_data);
+    return;
+});
 /**
  * Endpoint to get a JSON array of all the visitors in the database
  * REST API example:
@@ -188,11 +195,23 @@ if (appEnv.services['cloudantNoSQLDB']) {
 if (appEnv.services['cloudantNoSQLDB']) {
   // Load the Cloudant library.
   var Cloudant = require('cloudant');
-
-
-  /* db2 */
+ 
   var ibmdb = require('ibm_db');
 
+  /* db2 topology*/
+  ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50001;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;Security=SSL;", function (err,conn) {
+    if(err) return console.log(err);
+    conn.query('select SENSOR_ID, min(GPS_LAT), min(GPS_LONG) from BLUADMIN.TOPOLOGY_DATA group by SENSOR_ID', function (err, data) {
+      console.log('topology data:', data);
+      for(var i=0;i<data.length;i++){
+        var sid = data[i]['SENSOR_ID'];
+        topo_loc_data[sid] = data[i];
+      }
+    });
+  });
+
+
+  /* db2  sensor*/
   ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50001;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;Security=SSL;", function (err,conn) {
     if (err) return console.log(err);
 
@@ -405,7 +424,7 @@ function fetchData(node_id, ts){
   var sensor_id = parseInt(node_id);
   ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50001;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;Security=SSL;", function (err,conn) {
     if(err) return console.log(err);
-    conn.query('select TS, APP_PER_SENT, APP_PER_LOST, CH11_RSSI, CH12_RSSI from BLUADMIN.NW_DATA_SET_0 where SENSOR_ID=? fetch first 10 rows only',[sensor_id], function (err, data) {
+    conn.query('select TS, APP_PER_SENT, APP_PER_LOST, CH11_RSSI, CH12_RSSI, CH13_RSSI, CH14_RSSI, CH15_RSSI from BLUADMIN.NW_DATA_SET_0 where SENSOR_ID=? fetch first 100 rows only',[sensor_id], function (err, data) {
       console.log('Found %d documents with id %s', data.length, node_id);
       if(data.length>0){
         for(var i=0;i<data.length;i++){

@@ -752,8 +752,25 @@ hr {
             });
       }
 
+      var data_topo_test = [];
+      function getTopo(){
+        $.get("./api/topo")
+        .done(function(data){
+            for(var i=0;i<data.length;i++){
+                data_topo_test[i] = data[i];
+            }
+            if(data.length>0){
+                data.forEach(function(element, index){
+                    data[index] = AntiXSS.sanitizeInput(element)
+                });
+            }
+        });
+      }
+
           //Call getNames on page load.
+          getTopo();    
           getNames();
+          alert('Data uploaded!');
           // alert(data_test[0]);
           // setInterval(getNames,1000);
           // alert(data_test[1]);
@@ -821,51 +838,58 @@ hr {
         });
 
 
-        var node21 = new google.maps.LatLng(32.925167, -96.757725);
-        var node23 = new google.maps.LatLng(32.92515, -96.75778);
-        var node24 = new google.maps.LatLng(32.925150, -96.757650);
-        var node25 = new google.maps.LatLng(32.9250795, -96.757841);
-        var node26 = new google.maps.LatLng(32.9252, -96.75752);
-        var node27 = new google.maps.LatLng(32.925078, -96.75749);
-        var node28 = new google.maps.LatLng(32.92540, -96.757743);
-        var node29 = new google.maps.LatLng(32.9255, -96.7575);
-        var node30 = new google.maps.LatLng(32.9255, -96.7573);
-        var node31 = new google.maps.LatLng(32.92519, -96.75780);
-        var node32 = new google.maps.LatLng(32.925000, -96.757700);
-        var node33 = new google.maps.LatLng(32.925000, -96.757750);
-        var node34 = new google.maps.LatLng(32.924790, -96.757800);
-        var node35 = new google.maps.LatLng(32.924840, -96.757820);
-        var node36 = new google.maps.LatLng(32.924790, -96.75763);
-        var node37 = new google.maps.LatLng(32.92483, -96.75758);
-        var node38 = new google.maps.LatLng(32.924695, -96.757495);
-        var node39 = new google.maps.LatLng(32.924705, -96.757385);
-        var node40 = new google.maps.LatLng(32.92481, -96.75758);
+        // var node21 = new google.maps.LatLng(32.925167, -96.757725);
+        // var node23 = new google.maps.LatLng(32.92515, -96.75778);
+        // var node24 = new google.maps.LatLng(32.925150, -96.757650);
+        // var node25 = new google.maps.LatLng(32.9250795, -96.757841);
+        // var node26 = new google.maps.LatLng(32.9252, -96.75752);
+        // var node27 = new google.maps.LatLng(32.925078, -96.75749);
+        // var node28 = new google.maps.LatLng(32.92540, -96.757743);
+        // var node29 = new google.maps.LatLng(32.9255, -96.7575);
+        // var node30 = new google.maps.LatLng(32.9255, -96.7573);
+        // var node31 = new google.maps.LatLng(32.92519, -96.75780);
+        // var node32 = new google.maps.LatLng(32.925000, -96.757700);
+        // var node33 = new google.maps.LatLng(32.925000, -96.757750);
+        // var node34 = new google.maps.LatLng(32.924790, -96.757800);
+        // var node35 = new google.maps.LatLng(32.924840, -96.757820);
+        // var node36 = new google.maps.LatLng(32.924790, -96.75763);
+        // var node37 = new google.maps.LatLng(32.92483, -96.75758);
+        // var node38 = new google.maps.LatLng(32.924695, -96.757495);
+        // var node39 = new google.maps.LatLng(32.924705, -96.757385);
+        // var node40 = new google.maps.LatLng(32.92481, -96.75758);
 
 
-        var node1 = new google.maps.LatLng(41.8066521,-72.2527231);
-        var node3 = new google.maps.LatLng(41.8066351,-72.2527781);
-        var node4 = new google.maps.LatLng(41.8066351,-72.2526481);
-        var node5 = new google.maps.LatLng(41.8065646,-72.2528391);
-        var node6 = new google.maps.LatLng(41.806685099999996,-72.2525181);
-        var node7 = new google.maps.LatLng(41.8065631,-72.25248810000001);
-        var node8 = new google.maps.LatLng(41.8068851,-72.25274110000001);
-        var node9 = new google.maps.LatLng(41.8069851,-72.2524981);
-        var node10 = new google.maps.LatLng(41.8069851,-72.2522981);
-        var node11 = new google.maps.LatLng(41.8066751,-72.2527981);
-        var node12 = new google.maps.LatLng(41.806485099999996,-72.2526981);
-        var node13 = new google.maps.LatLng(41.806485099999996,-72.2527481);
-        var node14 = new google.maps.LatLng(41.8062751,-72.2527981);
-        var node15 = new google.maps.LatLng(41.8063251,-72.2528181);
-        var node16 = new google.maps.LatLng(41.8062751,-72.25262810000001);
-        var node17 = new google.maps.LatLng(41.8063151,-72.25257810000001);
-        var node18 = new google.maps.LatLng(41.8061801,-72.25249310000001);
-        var node19 = new google.maps.LatLng(41.8061901,-72.2523831);
-        var node20 = new google.maps.LatLng(41.8062951,-72.25257810000001);
+        // var node1 = new google.maps.LatLng(41.8066521,-72.2527231);
+        // var node3 = new google.maps.LatLng(41.8066351,-72.2527781);
+        // var node4 = new google.maps.LatLng(41.8066351,-72.2526481);
+        // var node5 = new google.maps.LatLng(41.8065646,-72.2528391);
+        // var node6 = new google.maps.LatLng(41.806685099999996,-72.2525181);
+        var node1 = new google.maps.LatLng(data_topo_test[1]['2'], data_topo_test[1]['3']);
+        var node3 = new google.maps.LatLng(data_topo_test[3]['2'], data_topo_test[3]['3']);
+        var node4 = new google.maps.LatLng(data_topo_test[4]['2'], data_topo_test[4]['3']);
+        var node5 = new google.maps.LatLng(data_topo_test[5]['2'], data_topo_test[5]['3']);
+        var node6 = new google.maps.LatLng(data_topo_test[6]['2'], data_topo_test[6]['3']);
+
+        // var node7 = new google.maps.LatLng(41.8065631,-72.25248810000001);
+        // var node8 = new google.maps.LatLng(41.8068851,-72.25274110000001);
+        // var node9 = new google.maps.LatLng(41.8069851,-72.2524981);
+        // var node10 = new google.maps.LatLng(41.8069851,-72.2522981);
+        // var node11 = new google.maps.LatLng(41.8066751,-72.2527981);
+        // var node12 = new google.maps.LatLng(41.806485099999996,-72.2526981);
+        // var node13 = new google.maps.LatLng(41.806485099999996,-72.2527481);
+        // var node14 = new google.maps.LatLng(41.8062751,-72.2527981);
+        // var node15 = new google.maps.LatLng(41.8063251,-72.2528181);
+        // var node16 = new google.maps.LatLng(41.8062751,-72.25262810000001);
+        // var node17 = new google.maps.LatLng(41.8063151,-72.25257810000001);
+        // var node18 = new google.maps.LatLng(41.8061801,-72.25249310000001);
+        // var node19 = new google.maps.LatLng(41.8061901,-72.2523831);
+        // var node20 = new google.maps.LatLng(41.8062951,-72.25257810000001);
 
 
         map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 5,
-          center: new google.maps.LatLng(41.850033, -87.6500523)
+          zoom: 20,
+          // center: new google.maps.LatLng(41.850033, -87.6500523)
+          center: new google.maps.LatLng(data_topo_test[1]['2'], data_topo_test[1]['3'])
           // mapTypeControl: true,
           // mapTypeControlOptions: {
           //   style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
@@ -938,47 +962,47 @@ hr {
         addMarker(node4,'4',"active",'1');
         addMarker(node5,'5',"active",'1');
         addMarker(node6,'6',"active",'1');
-        addMarker(node7,'7',"active",'1');
-        addMarker(node8,'8',"active",'1');
-        addMarker(node9,'9',"active",'1');
-        addMarker(node10,'10',"active",'1');
-        addMarker(node11,'11',"active",'1');
-        addMarker(node12,'12',"active",'1');
-        addMarker(node13,'13',"active",'1');
-        addMarker(node14,'14',"active",'1');
-        addMarker(node15,'15',"active",'1');
-        addMarker(node16,'16',"active",'1');
-        addMarker(node17,'17',"active",'1');
-        addMarker(node18,'18',"active",'1');
-        addMarker(node19,'19',"active",'1');
-        addMarker(node20,'20',"active",'1');
+        // addMarker(node7,'7',"active",'1');
+        // addMarker(node8,'8',"active",'1');
+        // addMarker(node9,'9',"active",'1');
+        // addMarker(node10,'10',"active",'1');
+        // addMarker(node11,'11',"active",'1');
+        // addMarker(node12,'12',"active",'1');
+        // addMarker(node13,'13',"active",'1');
+        // addMarker(node14,'14',"active",'1');
+        // addMarker(node15,'15',"active",'1');
+        // addMarker(node16,'16',"active",'1');
+        // addMarker(node17,'17',"active",'1');
+        // addMarker(node18,'18',"active",'1');
+        // addMarker(node19,'19',"active",'1');
+        // addMarker(node20,'20',"active",'1');
 
         addNetwork(markers,1);
 
-        addMarker(node21,'21',"active",'0');
-        addMarker(node23,'23',"active",'21');
-        addMarker(node24,'24',"active",'21');
-        addMarker(node25,'25',"active",'23');
-        addMarker(node26,'26',"active",'24');
-        addMarker(node27,'27',"active",'24');
-        addMarker(node28,'28',"active",'21');
-        addMarker(node29,'29',"active",'28');
-        addMarker(node30,'30',"active",'28');
-        addMarker(node31,'31',"active",'21');
-        addMarker(node32,'32',"active",'21');
-        addMarker(node33,'33',"active",'21');
-        addMarker(node34,'34',"active",'32');
-        addMarker(node35,'35',"active",'33');
-        addMarker(node36,'36',"active",'32');
-        addMarker(node37,'37',"active",'33');
-        addMarker(node38,'38',"active",'37');
-        addMarker(node39,'39',"active",'38');
-        addMarker(node40,'40',"active",'36');
+        // addMarker(node21,'21',"active",'0');
+        // addMarker(node23,'23',"active",'21');
+        // addMarker(node24,'24',"active",'21');
+        // addMarker(node25,'25',"active",'23');
+        // addMarker(node26,'26',"active",'24');
+        // addMarker(node27,'27',"active",'24');
+        // addMarker(node28,'28',"active",'21');
+        // addMarker(node29,'29',"active",'28');
+        // addMarker(node30,'30',"active",'28');
+        // addMarker(node31,'31',"active",'21');
+        // addMarker(node32,'32',"active",'21');
+        // addMarker(node33,'33',"active",'21');
+        // addMarker(node34,'34',"active",'32');
+        // addMarker(node35,'35',"active",'33');
+        // addMarker(node36,'36',"active",'32');
+        // addMarker(node37,'37',"active",'33');
+        // addMarker(node38,'38',"active",'37');
+        // addMarker(node39,'39',"active",'38');
+        // addMarker(node40,'40',"active",'36');
 
         addNetwork(markers2,2);
 
-        var markerCluster1 = new MarkerClusterer(map, markers_location,
-            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+        // var markerCluster1 = new MarkerClusterer(map, markers_location,
+        //     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
         // addNetwork(markers,2);
 
   //       function drawChart(marker) {
@@ -1298,6 +1322,9 @@ function drawInsideHistogram(data_point, marker){
             ['channel', 'rssi'],
             ['CH11', parseFloat(node_data[data_point][2])],
             ['CH12', parseFloat(node_data[data_point][3])],
+            ['CH13', parseFloat(node_data[data_point][4])],
+            ['CH14', parseFloat(node_data[data_point][5])],
+            ['CH15', parseFloat(node_data[data_point][6])]
             ]);
             var options_his = {
             };
@@ -1335,8 +1362,12 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
             // data.addRow([new Date(parseInt(node_time[i])).toString(), parseFloat(node_data[i])]);
             // data.addRow(['123', 0.001]);
             var time_data = convertTime(node_time[i]);
-            var avg_per_data = parseFloat(node_data[i][1]) / parseFloat(node_data[i][0]);
+            if(parseFloat(node_data[i][0]) != 0){
+                var avg_per_data = parseFloat(node_data[i][1]) / parseFloat(node_data[i][0] != 0);
+            }
+            var avg_per_data = 0;
             var avg_rssi_data = (parseFloat(node_data[i][2])+parseFloat(node_data[i][3]))/2;
+            
             data.addRow([time_data, avg_per_data, avg_rssi_data]);
         }
         // setInterval(function(){
@@ -1358,11 +1389,11 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
         '</div>'+
         '</div>';
 
-        var options = {
+        var options = { // title not used
           title: 'PER vs. RSSI'+'\n'+'current: '+(parseFloat(current)*100).toFixed(2)+'%'+'\xa0\xa0'+'predicted: '+(parseFloat(predict)*100).toFixed(2)+'%'+'\xa0\xa0'+'fault probability: '+(fault_pbb*100).toFixed(2)+'%',
           // subtitle: 'hello',
           // curveType: 'function',
-          width: 500,
+          width: 600,
           // height: 200,
           legend: { position: 'none' },
           displayAnnotations: true,
@@ -1379,15 +1410,6 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
         function selectHandler(e) {
           var selected = chart.getSelection()[0].row;
           drawInsideHistogram(selected, marker);
-          // var histogram_data = google.visualization.arrayToDataTable([
-          //   ['channel', 'rssi'],
-          //   ['CH11', parseFloat(node_data[selected][2]],
-          //   ['CH12', parseFloat(node_data[selected][3]]
-          //   ]);
-          //   var histogram_options = {
-          //   };
-          //   var histogram_chart = new google.visualization.Histogram();
-          //   histogram_chart.draw(histogram_data, histogram_options);
         }
 
       chart.draw(data, options);
@@ -1659,21 +1681,29 @@ function addMarker(location,label,active,parent){
             var array_x = [];
             var array_y = [];
             for(var i=0;i<node_data_length;i++){
-                // var array_temp = data_test[node_id][i].slice();
                 array_time[i] = data_test[node_id][i]['TS'];
-                // array[i][0] = data_test[node_id][i]['APP_PER_SENT'];
-                // array[i][1] = data_test[node_id][i]['APP_PER_LOST'];
-                // array[i][2] = data_test[node_id][i]['CH11_RSSI'];
-                // array[i][3] = data_test[node_id][i]['CH12_RSSI'];
                 array[i] = [
                 data_test[node_id][i]['APP_PER_SENT'], data_test[node_id][i]['APP_PER_LOST'],
-                data_test[node_id][i]['CH11_RSSI'], data_test[node_id][i]['CH12_RSSI']
+                data_test[node_id][i]['CH11_RSSI'], data_test[node_id][i]['CH12_RSSI'],
+                data_test[node_id][i]['CH13_RSSI'], data_test[node_id][i]['CH14_RSSI'],
+                data_test[node_id][i]['CH15_RSSI']
                 ];
 
                 array_x.push(parseInt(array_time[i]));
-                array_y.push(parseFloat(array[i]));
+                if(parseFloat(array[i][0]) != 0){
+                    array_y.push(parseFloat(array[i][1]) / parseFloat(array[i][0]));
+                    var current = parseFloat(array[i][1]) / parseFloat(array[i][0]);
+                }else{
+                    array_y.push(0);
+                    var current = 0;
+                }
             }
-            var current = array[array.length-1];
+            // if(parseFloat(array[array.length-1][0]) != 0){
+            //         var current = array[array.length-1][1] / parseFloat(array[array.length-1][0]);
+            // }else{
+            //         var current = 0;
+            // }
+            // var current = 0;
             var result = findLineByLeastSquares(array_x, array_y);
             var predict_y = result[1][0];
             // var fault_pbb_temp = 1/((0.05-parseFloat(current))/(parseFloat(predict_y)-parseFloat(current)));
@@ -1695,7 +1725,12 @@ function addMarker(location,label,active,parent){
         // alert(data_test);
         var sum = 0;
         for(var i=0;i<array.length;i++){
-            sum += parseFloat(array[i]);
+            // sum += parseFloat(array[i]);
+            if(parseFloat(array[i][0]) != 0){
+                    sum += parseFloat(array[i][1]) / parseFloat(array[i][0]);
+                }else{
+                    sum += 0;
+                }
         }
         // sum_network += sum;
         var avg = sum / array.length;
