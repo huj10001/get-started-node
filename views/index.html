@@ -713,7 +713,7 @@ hr {
             	//POST request to API to create a new visitor entry in the database
                 $.ajax({
                   method: "POST",
-                  url: "./api/visitorsss",
+                  url: "./api/sensor",
                   contentType: "application/json",
                   data: JSON.stringify({name: name })
               })
@@ -729,7 +729,7 @@ hr {
         //Retreive all the visitors from the database
         var data_test = [];
         function getNames(){
-          $.get("./api/visitorsss")
+          $.get("./api/sensor")
           .done(function(data) {
                 // alert(data[1][0]);
                 for(var i=0;i<data.length;i++){
@@ -754,7 +754,7 @@ hr {
 
       var data_topo_test = [];
       function getTopo(){
-        $.get("./api/topo")
+        $.get("./api/topology")
         .done(function(data){
             for(var i=0;i<data.length;i++){
                 data_topo_test[i] = data[i];
@@ -806,6 +806,7 @@ hr {
         var markers_location = [];
         var markers2 = [];
         var sum_network = 0;
+        var sum_network_rssi = 0;
         var zoomChange = null;
 
 
@@ -1322,14 +1323,27 @@ function createInfoWindow(poly, content) {
 function drawInsideHistogram(data_point, marker){
     var node_data = getCustomInfo(marker);                            
     var data_his = google.visualization.arrayToDataTable([
-            ['channel', 'rssi'],
+            ['channel', 'RSSI'],
             ['CH11', parseFloat(node_data[data_point][2])],
             ['CH12', parseFloat(node_data[data_point][3])],
             ['CH13', parseFloat(node_data[data_point][4])],
             ['CH14', parseFloat(node_data[data_point][5])],
-            ['CH15', parseFloat(node_data[data_point][6])]
+            ['CH15', parseFloat(node_data[data_point][6])],
+            ['CH16', parseFloat(node_data[data_point][7])],
+            ['CH17', parseFloat(node_data[data_point][8])],
+            ['CH18', parseFloat(node_data[data_point][9])],
+            ['CH19', parseFloat(node_data[data_point][10])],
+            ['CH20', parseFloat(node_data[data_point][11])],
+            ['CH21', parseFloat(node_data[data_point][12])],
+            ['CH22', parseFloat(node_data[data_point][13])],
+            ['CH23', parseFloat(node_data[data_point][14])],
+            ['CH24', parseFloat(node_data[data_point][15])],
+            ['CH25', parseFloat(node_data[data_point][16])],
             ]);
             var options_his = {
+                'legend':'top',
+                width: 700,
+                // height: 400,
             };
             var node_his = document.createElement('div');
             var infoWindow_his  = new google.maps.InfoWindow();
@@ -1366,10 +1380,16 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
             // data.addRow(['123', 0.001]);
             var time_data = convertTime(node_time[i]);
             if(parseFloat(node_data[i][0]) != 0){
-                var avg_per_data = parseFloat(node_data[i][1]) / parseFloat(node_data[i][0] != 0);
+                var avg_per_data = parseFloat(node_data[i][1]) / parseFloat(node_data[i][0]) * 100;
+            }else{
+                var avg_per_data = 1;
             }
-            var avg_per_data = 0;
-            var avg_rssi_data = (parseFloat(node_data[i][2])+parseFloat(node_data[i][3]))/2;
+            // var avg_rssi_data = (parseFloat(node_data[i][2])+parseFloat(node_data[i][3]))/2;
+            var sum_rssi_data = 0;
+            for(var j=2; j<node_data[i].length;j++){
+                sum_rssi_data += parseFloat(node_data[i][j]);
+            }
+            var avg_rssi_data = sum_rssi_data / (node_data[i].length -2);    
             
             data.addRow([time_data, avg_per_data, avg_rssi_data]);
         }
@@ -1397,9 +1417,11 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
           // subtitle: 'hello',
           // curveType: 'function',
           width: 600,
-          // height: 200,
+          // height: 800,
           legend: { position: 'none' },
           displayAnnotations: true,
+          // max: 100,
+          scaleType:'allfixed',
           // tooltip: {isHtml: true},
           // legend: 
       };
@@ -1430,7 +1452,7 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
 
     function drawChart2(marker){
         $.ajax({
-            url: "/api/visitorsss",
+            url: "/api/sensor",
             dataType: "json",
             success: function (jsonData) {
                 // alert(jsonData[3]);
@@ -1584,6 +1606,7 @@ function drawGaugeChart(data) {
         // }
         // alert(sum_network);
         var avg_network = sum_network / markers.length;
+        var avg_network_rssi = sum_network_rssi / markers.length;
         
         if(label==1){
             var sidebar = $('#demo');
@@ -1591,7 +1614,7 @@ function drawGaugeChart(data) {
                 'html': '<a href="#demo" class="btn btn-link" data-toggle="collapse">Network '+label
                 +'<ul style="padding-left: 5px">Num. Nodes: '+(markers.length - 1 )+'</ul>'
                 +'<ul style="padding-left: 5px">Avg. PER: '+avg_network.toFixed(6)+'</ul>'
-                +'<ul style="padding-left: 5px">Avg. RSSI: '+generateRandom().toFixed(6)+'</ul>'
+                +'<ul style="padding-left: 5px">Avg. RSSI: '+avg_network_rssi.toFixed(6)+'</ul>'
             // +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
             // +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>'
             +'<ul style="padding-left: 5px">Energy status: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+(Math.random() * (0.8 - 0.1) + 0.1)+'">'+'</meter>'+'</ul>'
@@ -1632,7 +1655,7 @@ function drawGaugeChart(data) {
                 'html': '<a href="#demo2" class="btn btn-link" data-toggle="collapse">Network '+label
                 +'<ul style="padding-left: 5px">Num. Nodes: '+(markers2.length - 1 )+'</ul>'
                 +'<ul style="padding-left: 5px">Avg. PER: '+avg_network.toFixed(6)+'</ul>'
-                +'<ul style="padding-left: 5px">Avg. RSSI: '+generateRandom().toFixed(6)+'</ul>'
+                +'<ul style="padding-left: 5px">Avg. RSSI: '+avg_network_rssi.toFixed(6)+'</ul>'
             // +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
             // +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>'
             +'<ul style="padding-left: 5px">Energy status: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+(Math.random() * (0.8 - 0.1) + 0.1)+'">'+'</meter>'+'</ul>'
@@ -1689,7 +1712,12 @@ function addMarker(location,label,active,parent){
                 data_test[node_id][i]['APP_PER_SENT'], data_test[node_id][i]['APP_PER_LOST'],
                 data_test[node_id][i]['CH11_RSSI'], data_test[node_id][i]['CH12_RSSI'],
                 data_test[node_id][i]['CH13_RSSI'], data_test[node_id][i]['CH14_RSSI'],
-                data_test[node_id][i]['CH15_RSSI']
+                data_test[node_id][i]['CH15_RSSI'], data_test[node_id][i]['CH16_RSSI'],
+                data_test[node_id][i]['CH17_RSSI'], data_test[node_id][i]['CH18_RSSI'],
+                data_test[node_id][i]['CH19_RSSI'], data_test[node_id][i]['CH20_RSSI'],
+                data_test[node_id][i]['CH21_RSSI'], data_test[node_id][i]['CH22_RSSI'],
+                data_test[node_id][i]['CH23_RSSI'], data_test[node_id][i]['CH24_RSSI'],
+                data_test[node_id][i]['CH25_RSSI']
                 ];
 
                 array_x.push(parseInt(array_time[i]));
@@ -1727,6 +1755,8 @@ function addMarker(location,label,active,parent){
         }
         // alert(data_test);
         var sum = 0;
+        var sum_rssi = 0;
+        var num_channel = 0;
         for(var i=0;i<array.length;i++){
             // sum += parseFloat(array[i]);
             if(parseFloat(array[i][0]) != 0){
@@ -1734,10 +1764,25 @@ function addMarker(location,label,active,parent){
                 }else{
                     sum += 0;
                 }
+                for(var j=2;j<array[i].length;j++){
+                    sum_rssi += parseFloat(array[i][j]);
+                    num_channel ++;
+                }
         }
+        var avg_rssi = sum_rssi / num_channel;
         // sum_network += sum;
         var avg = sum / array.length;
-        sum_network += avg;
+        if(isNaN(avg)){
+            sum_network += 0;
+        }else{
+            sum_network += avg;
+        }
+
+        if(isNaN(avg_rssi)){
+            sum_network_rssi += 0;
+        }else{
+            sum_network_rssi += avg_rssi;
+        }
 
         /** analysis **/
         // var timeseries = require("timeseries-analysis");
@@ -1791,7 +1836,7 @@ function addMarker(location,label,active,parent){
             'html': '<a href="#infolist">Node '+label
             +'<ul>Parent: '+parent+'</ul>'
             +'<ul>Avg. PER: '+avg.toFixed(6)+'</ul>'
-            +'<ul>Avg. RSSI: '+generateRandom().toFixed(6)+'</ul>'
+            +'<ul>Avg. RSSI: '+avg_rssi.toFixed(6)+'</ul>'
             +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
             +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>'
             +'<ul>Battey level: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+marker.batteryInfo+'">'+'</meter>'+'</ul>',
@@ -1828,7 +1873,7 @@ function addMarker(location,label,active,parent){
             'html': '<a href="#infolist">Node '+label
             +'<ul>Parent: '+parent+'</ul>'
             +'<ul>Avg. PER: '+avg.toFixed(6)+'</ul>'
-            +'<ul>Avg. RSSI: '+generateRandom().toFixed(6)+'</ul>'
+            +'<ul>Avg. RSSI: '+avg_rssi.toFixed(6)+'</ul>'
             +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
             +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>'
             +'<ul>Battey level: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+marker.batteryInfo+'">'+'</meter>'+'</ul>',

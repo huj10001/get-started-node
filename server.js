@@ -84,7 +84,7 @@ myurl = "https://89c13691-0906-4a2b-98ef-801692e3590a-bluemix:4e714e8e0d041063bd
 * 	"name": "Bob"
 * }
 */
-app.post("/api/visitorsss", function (request, response) {
+app.post("/api/sensor", function (request, response) {
   request.body._id = request.body._id.toString();
   insertObj = request.body;
   if(!mydb_kilby) {
@@ -107,7 +107,7 @@ app.post("/api/visitorsss", function (request, response) {
 });
 
 
-app.get("/api/topo", function (request, response) {
+app.get("/api/topology", function (request, response) {
     response.json(topo_loc_data);
     return;
 });
@@ -122,7 +122,7 @@ app.get("/api/topo", function (request, response) {
  * [ "Bob", "Jane" ]
  * @return An array of all the visitor names
  */
- app.get("/api/visitorsss", function (request, response) {
+ app.get("/api/sensor", function (request, response) {
   // var names = [];
   // if(!ibmdb) {
     response.json(topo_data);
@@ -199,7 +199,7 @@ if (appEnv.services['cloudantNoSQLDB']) {
   var ibmdb = require('ibm_db');
 
   /* db2 topology*/
-  ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50001;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;Security=SSL;", function (err,conn) {
+  ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
     if(err) return console.log(err);
     conn.query('select SENSOR_ID, min(GPS_LAT), min(GPS_LONG) from BLUADMIN.TOPOLOGY_DATA group by SENSOR_ID', function (err, data) {
       console.log('topology data:', data);
@@ -212,7 +212,7 @@ if (appEnv.services['cloudantNoSQLDB']) {
 
 
   /* db2  sensor*/
-  ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50001;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;Security=SSL;", function (err,conn) {
+  ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
     if (err) return console.log(err);
 
     // conn.query('select TS, SENSOR_ID, APP_PER_SENT, APP_PER_LOST, CH11_RSSI, CH12_RSSI from BLUADMIN.NW_DATA_SET_0', function (err, data) {
@@ -422,9 +422,12 @@ var ts_temp = 0;
 // });
 function fetchData(node_id, ts){
   var sensor_id = parseInt(node_id);
-  ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50001;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;Security=SSL;", function (err,conn) {
+  ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
     if(err) return console.log(err);
-    conn.query('select TS, APP_PER_SENT, APP_PER_LOST, CH11_RSSI, CH12_RSSI, CH13_RSSI, CH14_RSSI, CH15_RSSI from BLUADMIN.NW_DATA_SET_0 where SENSOR_ID=? fetch first 100 rows only',[sensor_id], function (err, data) {
+    conn.query(
+      // 'select TS, APP_PER_SENT, APP_PER_LOST, CH11_RSSI, CH12_RSSI, CH13_RSSI, CH14_RSSI, CH15_RSSI from BLUADMIN.NW_DATA_SET_0 where SENSOR_ID=? fetch first 100 rows only'
+      'select TS, APP_PER_SENT, APP_PER_LOST, CH11_RSSI, CH12_RSSI, CH13_RSSI, CH14_RSSI, CH15_RSSI, CH16_RSSI, CH17_RSSI, CH18_RSSI, CH19_RSSI, CH20_RSSI, CH21_RSSI, CH22_RSSI, CH23_RSSI, CH24_RSSI, CH25_RSSI from BLUADMIN.NW_DATA_SET_0 where SENSOR_ID=?'
+      ,[sensor_id], function (err, data) {
       console.log('Found %d documents with id %s', data.length, node_id);
       if(data.length>0){
         for(var i=0;i<data.length;i++){
