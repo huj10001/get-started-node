@@ -1,0 +1,12 @@
+{
+  "services": {
+    "DB2": [
+      {
+        "credentials": {
+          "url": "https://dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net:8443"
+        },
+        "label": "DB2"
+      }
+    ]
+  }
+}

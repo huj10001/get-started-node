@@ -1409,11 +1409,12 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
         '<p><b>Current: </b>'+(parseFloat(current)*100).toFixed(2)+'%'+'</p>'+
         '<p><b>Predicted: </b>'+(parseFloat(predict)*100).toFixed(2)+'%'+'</p>'+
         '<p><b>Fault probability: </b>'+(fault_pbb*100).toFixed(2)+'%'+'</p>'+
+        // '<p>'+'<input id="datetime" type="datetime-local"/>'+'</p>'+
         '</div>'+
         '</div>';
 
         var options = { // title not used
-          title: 'PER vs. RSSI'+'\n'+'current: '+(parseFloat(current)*100).toFixed(2)+'%'+'\xa0\xa0'+'predicted: '+(parseFloat(predict)*100).toFixed(2)+'%'+'\xa0\xa0'+'fault probability: '+(fault_pbb*100).toFixed(2)+'%',
+          title: 'PER'+'\n'+'current: '+(parseFloat(current)*100).toFixed(2)+'%'+'\xa0\xa0'+'predicted: '+(parseFloat(predict)*100).toFixed(2)+'%'+'\xa0\xa0'+'fault probability: '+(fault_pbb*100).toFixed(2)+'%',
           // subtitle: 'hello',
           // curveType: 'function',
           width: 600,

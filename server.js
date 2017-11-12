@@ -155,44 +155,44 @@ app.get("/api/topology", function (request, response) {
 // });
 
 // load local VCAP configuration  and service credentials
-var vcapLocal;
-try {
-  vcapLocal = require('./vcap-local.json');
-  console.log("Loaded local VCAP", vcapLocal);
-} catch (e) { }
+// var vcapLocal;
+// try {
+//   vcapLocal = require('./vcap-local.json');
+//   console.log("Loaded local VCAP", vcapLocal);
+// } catch (e) { }
 
-const appEnvOpts = vcapLocal ? { vcap: vcapLocal} : {}
+// const appEnvOpts = vcapLocal ? { vcap: vcapLocal} : {}
 
-const appEnv = cfenv.getAppEnv(appEnvOpts);
+// const appEnv = cfenv.getAppEnv(appEnvOpts);
 
 
-/* insert */
-if (appEnv.services['cloudantNoSQLDB']) {
-  // Load the Cloudant library.
-  var Cloudant = require('cloudant');
+// /* insert */
+// if (appEnv.services['DB2']) {
+//   // Load the Cloudant library.
+//   var Cloudant = require('cloudant');
 
-  // Initialize database with credentials
-  var cloudant = Cloudant(appEnv.services['cloudantNoSQLDB'][0].credentials);
-  // cloudant = Cloudant({url: myurl, plugin:'retry', retryAttempts:5, retryTimeout:10000 });
+//   // Initialize database with credentials
+//   var cloudant = Cloudant(appEnv.services['DB2'][0].credentials);
+//   // cloudant = Cloudant({url: myurl, plugin:'retry', retryAttempts:5, retryTimeout:10000 });
 
-  //database name
-  var dbName = 'mydb';
+//   //database name
+//   var dbName = 'mydb';
 
-  // Create a new "mydb" database.
-  cloudant.db.create(dbName, function(err, data) {
-    if(!err) //err if database doesn't already exists
-      console.log("Created database: " + dbName);
-  });
+//   // Create a new "mydb" database.
+//   cloudant.db.create(dbName, function(err, data) {
+//     if(!err) //err if database doesn't already exists
+//       console.log("Created database: " + dbName);
+//   });
 
-  // Specify the database we are going to use (mydb)...
-  mydb = cloudant.db.use(dbName);
-}
+//   // Specify the database we are going to use (mydb)...
+//   mydb = cloudant.db.use(dbName);
+// }
 /*  ******/
 
 
 
 /* read */
-if (appEnv.services['cloudantNoSQLDB']) {
+// if (appEnv.services['DB2']) {
   // Load the Cloudant library.
   var Cloudant = require('cloudant');
  
@@ -398,7 +398,7 @@ if (appEnv.services['cloudantNoSQLDB']) {
 // // console.log("forecast",forecast);
 // });
 
-}
+// }
 
 var last_ts = null;
 var ts_temp = 0;
