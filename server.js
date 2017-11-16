@@ -14,6 +14,7 @@ var mydb_kilby;
 var kilby_data = [];
 var topo_data = [];
 var topo_loc_data = [];
+var gateway_data = [];
 for(var j=0;j<25;j++){
   kilby_data[j] = [];
   topo_data[j] = [];
@@ -106,6 +107,10 @@ app.post("/api/sensor", function (request, response) {
   // console.log("new data!!" + JSON.stringify(request.body));
 });
 
+app.get("/api/gateway", function (request, response) {
+    response.json(gateway_data);
+    return;
+});
 
 app.get("/api/topology", function (request, response) {
     response.json(topo_loc_data);
@@ -198,6 +203,17 @@ app.get("/api/topology", function (request, response) {
  
   var ibmdb = require('ibm_db');
 
+  /* db2 gateway */
+  ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
+    if(err) return console.log(err);
+    conn.query('select distinct GATEWAY_NAME from BLUADMIN.NW_DATA_SET_0', function (err, data) {
+      console.log('gateway:', data);
+      for(var i=0;i<data.length;i++){
+        gateway_data.push(data[i]);
+      }
+    });
+  });
+
   /* db2 topology*/
   ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
     if(err) return console.log(err);
@@ -265,9 +281,9 @@ app.get("/api/topology", function (request, response) {
 
   // /* first data fetch, 0 sec delay */
   query1();
-  setTimeout(query2, 3000);
-  setTimeout(query3, 6000);
-  setTimeout(query4, 9000);
+  // setTimeout(query2, 3000);
+  // setTimeout(query3, 6000);
+  // setTimeout(query4, 9000);
   setTimeout(function(){
     console.log('final ts is %s', ts_temp);
     last_ts = ts_temp;
@@ -615,26 +631,42 @@ function query1(){
   fetchData('5',last_ts);
   fetchData('6',last_ts);
   fetchData('7',last_ts);
-}
-function query2(){
+
   fetchData('8',last_ts);
   fetchData('9',last_ts);
   fetchData('10',last_ts);
   fetchData('11',last_ts);
   fetchData('12',last_ts);
   fetchData('13',last_ts);
-}
-function query3(){
+
   fetchData('14',last_ts);
   fetchData('15',last_ts);
   fetchData('16',last_ts);
   fetchData('17',last_ts);
   fetchData('18',last_ts);
-}
-function query4(){
+
   fetchData('19',last_ts);
   fetchData('20',last_ts);
 }
+// function query2(){
+//   fetchData('8',last_ts);
+//   fetchData('9',last_ts);
+//   fetchData('10',last_ts);
+//   fetchData('11',last_ts);
+//   fetchData('12',last_ts);
+//   fetchData('13',last_ts);
+// }
+// function query3(){
+//   fetchData('14',last_ts);
+//   fetchData('15',last_ts);
+//   fetchData('16',last_ts);
+//   fetchData('17',last_ts);
+//   fetchData('18',last_ts);
+// }
+// function query4(){
+//   fetchData('19',last_ts);
+//   fetchData('20',last_ts);
+// }
 function checkSimilarity(id1){
   var similarity_dict = [];
   var sorted = [];

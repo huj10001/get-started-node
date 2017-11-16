@@ -232,6 +232,9 @@ ul {
     opacity: 0.8;
     z-index: 10000;
 }
+#confirm{
+    color: black;
+}
 #text{
     position: absolute;
     top: 50%;
@@ -557,6 +560,11 @@ hr {
       chart.draw(data, options);
   }
 
+  function confirm(){
+    window.location = window.location + '#loaded';
+    window.location.reload();
+  }
+
   function analyze(){
             // document.getElementById('mytext').value = $("#box1 option:selected").text();;
             if($("#box1").val()=="giwsns" && $("#box2").val()=="network1"){
@@ -801,16 +809,33 @@ hr {
             }
         });
 
+        var data_gateway_test = [];
+        function getGateway(){
+            $.get("./api/gateway")
+            .done(function(data){
+                for(var i=0;i<data.length;i++){
+                    data_gateway_test[i] = data[i];
+                }
+                if(data.length>0){
+                    data.forEach(function(element, index){
+                        data[index] = AntiXSS.sanitizeInput(element)
+                    });
+                }
+            });
+        }
+
 
         //Retreive all the visitors from the database
+        var sensorComplete = false;
         var data_test = [];
-        function getNames(){
+        function getSensor(){
           $.get("./api/sensor")
           .done(function(data) {
                 // alert(data[1][0]);
                 for(var i=0;i<data.length;i++){
                     data_test[i] = data[i];
                 }
+                sensorComplete = true;
                 // alert(data_test[5][0]['TS']);
                 if(data.length > 0) {
                     data.forEach(function(element, index) {
@@ -844,9 +869,20 @@ hr {
     }
 
           //Call getNames on page load.
+          getGateway();
           getTopo();    
-          getNames();
-          alert('Data uploaded!');
+          getSensor();
+          if(window.location.hash) {
+            alert('Topology uploaded!');
+          }else{
+            alert('Gateway uploaded!');
+          }
+          // alert(data_test[7]);
+          // while (data_test[7] == ''){
+          //   alert('wait');
+          // }
+          // alert('sensor uploaded');
+          
           // alert(data_test[0]);
           // setInterval(getNames,1000);
           // alert(data_test[1]);
@@ -1547,7 +1583,7 @@ function drawInsideHistogram(data_point, marker){
         '<p>'+'Metric: <input type="checkbox" value="app_per" id="app_per" />Application Layer PER<input type="checkbox" value="mac_per" id="mac_per" />Mac Layer PER<input type="checkbox" value="rssi" id="rssi" />RSSI'+'</p>'+
         '</div>'+
         '</div>'+
-        '<div><form action="javascript:view();"><input type="submit" value="view"></form></div>';
+        '<div><form action="javascript:view();"><input type="submit" value="View"></form></div>';
 
         div.innerHTML = titlestring;
         // node.appendChild(div);
@@ -2212,7 +2248,7 @@ function topFunction() {
     // document.documentElement.scrollTop = 0;
 }
 
-var timeleft = 10;
+var timeleft = 5;
 var downloadTimer = setInterval(function(){
     timeleft--;
     if(document.getElementById("countdowntimer")){
@@ -2222,16 +2258,26 @@ var downloadTimer = setInterval(function(){
     },1000);
 
 if(!window.location.hash){
-    var overlay = jQuery('<div id="overlay"><div id="text">Data loaded in <span id="countdowntimer">10 </span> seconds</div></div>');
+    var overlay = jQuery('<div id="overlay"><div id="text">Gateways: <form action="javascript:confirm();"><input type="checkbox">'+
+     data_gateway_test[0]['GATEWAY_NAME']+
+     '<br><input type="checkbox">'+
+      data_gateway_test[1]['GATEWAY_NAME']+
+      '<br><input type="checkbox">'+
+      data_gateway_test[2]['GATEWAY_NAME']+
+      '<br><input type="checkbox">'+
+      data_gateway_test[3]['GATEWAY_NAME']+
+      '<br><input id="confirm" type="submit" value="Confirm"></form>'+
+      // '<span id="countdowntimer">5 </span> seconds'+
+      '</div></div>');
     overlay.appendTo(document.body)
 }
 
-window.onload = setTimeout(function(){ 
-    if(!window.location.hash) {
-        window.location = window.location + '#loaded';
-        window.location.reload();
-    }
-}, 10000);
+// window.onload = setTimeout(function(){ 
+//     if(!window.location.hash) {
+//         window.location = window.location + '#loaded';
+//         window.location.reload();
+//     }
+// }, 5000);
 
   // alert("Loading...");
 
