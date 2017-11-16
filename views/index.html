@@ -493,6 +493,8 @@ hr {
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="antixss.js" type="text/javascript"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="//cdn.jsdelivr.net/webshim/1.14.5/polyfiller.js"></script>
 <!-- <script src="../server.js" type="text/javascript"></script>  -->
 
 <script type="text/javascript">
@@ -509,7 +511,53 @@ hr {
             document.getElementById('mytext').value = "";
         }
 
-        function analyze(){
+        function viewchart(marker){
+            var node_id = parseInt(marker.label);
+            var node_data = getCustomInfo(marker);
+            var node_time = getCustomInfoTime(marker);
+            var data = new google.visualization.DataTable();
+            data.addColumn('date','TIME');
+            data.addColumn('number','PER');
+            data.addColumn('number','RSSI');
+            var temp_length = node_data.length;
+            for(var i=0;i<node_data.length;i++){
+                var time_data = convertTime(node_time[i]);
+                if(parseFloat(node_data[i][0]) != 0){
+                    var avg_per_data = parseFloat(node_data[i][1]) / parseFloat(node_data[i][0]) * 100;
+                }else{
+                    var avg_per_data = 1;
+                }
+                var sum_rssi_data = 0;
+                for(var j=2; j<node_data[i].length;j++){
+                    sum_rssi_data += parseFloat(node_data[i][j]);
+                }
+                var avg_rssi_data = sum_rssi_data / (node_data[i].length -2);    
+                
+                data.addRow([time_data, avg_per_data, avg_rssi_data]);
+            }
+            var node = document.createElement('div');
+            node.setAttribute('id', 'node');
+            node.style.height = "250px";
+            var chart = new google.visualization.AnnotatedTimeLine(node);
+            var chart_start_date = $("#chart_start_date").val();
+            var chart_end_date = $("#chart_end_date").val();
+        // if(!document.getElementById('app_per').checked) {
+        //     chart.hideDataColumns(1);
+        // }else if(!document.getElementById('rssi').checked){
+        //     chart.hideDataColumns(2);
+        // }
+        // chart.setVisibleChartRange();
+        var options = { // title not used
+          title: '',
+          width: 600,
+          legend: { position: 'none' },
+          displayAnnotations: true,
+          scaleType:'allfixed',
+      };
+      chart.draw(data, options);
+  }
+
+  function analyze(){
             // document.getElementById('mytext').value = $("#box1 option:selected").text();;
             if($("#box1").val()=="giwsns" && $("#box2").val()=="network1"){
                 var similarity_string = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 Event similarity \n\n";
@@ -549,6 +597,34 @@ hr {
                 google.charts.setOnLoadCallback(drawHistogram);
 
             }
+        }
+
+        function convertTimeView(raw_time){
+            var date_array = raw_time.split("-");
+            var year = date_array[0];
+            var month = date_array[1];
+            var day = date_array[2];
+            var result_time = new Date(year, month, day);
+            return result_time;
+        }
+
+        var chart; 
+        var data;
+        var options;
+        function view(){
+            chart.hideDataColumns(0);
+            chart.hideDataColumns(1);
+            chart.hideDataColumns(2);
+            var chart_start_date = new Date($('#chart_start_date').val().toString());
+            var chart_end_date = new Date($('#chart_end_date').val().toString());            
+            if(document.getElementById('app_per').checked){
+                chart.showDataColumns(0); //time app_per rssi
+            }
+            if(document.getElementById('rssi').checked){
+                chart.showDataColumns(1); //time app_per rssi
+            }
+            chart.draw(data, options);
+            chart.setVisibleChartRange(chart_start_date, chart_end_date);
         }
 
         function selectfunction(){
@@ -765,7 +841,7 @@ hr {
                 });
             }
         });
-      }
+    }
 
           //Call getNames on page load.
           getTopo();    
@@ -1003,10 +1079,10 @@ hr {
         addNetwork(markers2,2);
 
         var markerCluster1 = new MarkerClusterer(map, markers_location,
-            {
-                maxZoom: 15,
-                imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
-            });
+        {
+            maxZoom: 15,
+            imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+        });
         // addNetwork(markers,2);
 
   //       function drawChart(marker) {
@@ -1323,26 +1399,26 @@ function createInfoWindow(poly, content) {
 function drawInsideHistogram(data_point, marker){
     var node_data = getCustomInfo(marker);                            
     var data_his = google.visualization.arrayToDataTable([
-            ['channel', 'RSSI'],
-            ['CH11', parseFloat(node_data[data_point][2])],
-            ['CH12', parseFloat(node_data[data_point][3])],
-            ['CH13', parseFloat(node_data[data_point][4])],
-            ['CH14', parseFloat(node_data[data_point][5])],
-            ['CH15', parseFloat(node_data[data_point][6])],
-            ['CH16', parseFloat(node_data[data_point][7])],
-            ['CH17', parseFloat(node_data[data_point][8])],
-            ['CH18', parseFloat(node_data[data_point][9])],
-            ['CH19', parseFloat(node_data[data_point][10])],
-            ['CH20', parseFloat(node_data[data_point][11])],
-            ['CH21', parseFloat(node_data[data_point][12])],
-            ['CH22', parseFloat(node_data[data_point][13])],
-            ['CH23', parseFloat(node_data[data_point][14])],
-            ['CH24', parseFloat(node_data[data_point][15])],
-            ['CH25', parseFloat(node_data[data_point][16])],
-            ]);
-            var options_his = {
-                'legend':'top',
-                width: 700,
+        ['channel', 'RSSI'],
+        ['CH11', parseFloat(node_data[data_point][2])],
+        ['CH12', parseFloat(node_data[data_point][3])],
+        ['CH13', parseFloat(node_data[data_point][4])],
+        ['CH14', parseFloat(node_data[data_point][5])],
+        ['CH15', parseFloat(node_data[data_point][6])],
+        ['CH16', parseFloat(node_data[data_point][7])],
+        ['CH17', parseFloat(node_data[data_point][8])],
+        ['CH18', parseFloat(node_data[data_point][9])],
+        ['CH19', parseFloat(node_data[data_point][10])],
+        ['CH20', parseFloat(node_data[data_point][11])],
+        ['CH21', parseFloat(node_data[data_point][12])],
+        ['CH22', parseFloat(node_data[data_point][13])],
+        ['CH23', parseFloat(node_data[data_point][14])],
+        ['CH24', parseFloat(node_data[data_point][15])],
+        ['CH25', parseFloat(node_data[data_point][16])],
+        ]);
+    var options_his = {
+        'legend':'top',
+        width: 700,
                 // height: 400,
             };
             var node_his = document.createElement('div');
@@ -1351,10 +1427,10 @@ function drawInsideHistogram(data_point, marker){
             chart_his.draw(data_his, options_his);
             infoWindow_his.setContent(node_his);
             infoWindow_his.open(marker.getMap(),marker);
-}
+        }
 
 
-function drawChart(marker,avg,current,predict,fault_pbb) {
+        function drawChart(marker,avg,current,predict,fault_pbb) {
         // var data = google.visualization.arrayToDataTable([
         //   ['Time', 'PER'],
         //   ['7/13',  parseFloat(getCustomInfo(marker)[0])],
@@ -1368,7 +1444,7 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
         var node_data = getCustomInfo(marker);
         var node_time = getCustomInfoTime(marker);
         // alert(node_data.length);
-        var data = new google.visualization.DataTable();
+        data = new google.visualization.DataTable();
         data.addColumn('date','TIME');
         data.addColumn('number','PER');
         data.addColumn('number','RSSI');
@@ -1402,18 +1478,35 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
         //     }
         // },2000);
 
-        var titlestring = '<div id="content">'+
-        '<h1 id="firstHeading" class="firstHeading">PER vs. RSSI</h1>'+
-        '<div id="bodyContent">'+
-        '<p><b>Average: </b>'+(parseFloat(avg)*100).toFixed(2)+'%'+'</p>'+
-        '<p><b>Current: </b>'+(parseFloat(current)*100).toFixed(2)+'%'+'</p>'+
-        '<p><b>Predicted: </b>'+(parseFloat(predict)*100).toFixed(2)+'%'+'</p>'+
-        '<p><b>Fault probability: </b>'+(fault_pbb*100).toFixed(2)+'%'+'</p>'+
-        // '<p>'+'<input id="datetime" type="datetime-local"/>'+'</p>'+
-        '</div>'+
-        '</div>';
+        // $(function(){           
+        //     // if (!Modernizr.inputtypes.date) {
+        //         $('input[type=date]').datepicker({
+        //           dateFormat : 'yy-mm-dd'
+        //       }
+        //       );
+        //     // }
+        // });
 
-        var options = { // title not used
+        jQuery.swap = function( elem, options, callback, args ) {
+            var ret, name, old = {};
+            for ( name in options ) {
+                old[ name ] = elem.style[ name ];
+                elem.style[ name ] = options[ name ];
+            }
+
+            ret = callback.apply( elem, args || [] );
+            for ( name in options ) {
+                elem.style[ name ] = old[ name ];
+            }                                                                                                               
+            return ret;
+        };
+
+        webshims.setOptions('forms-ext', {types: 'date'});
+        webshims.polyfill('forms forms-ext');
+
+        
+
+        options = { // title not used
           title: 'PER'+'\n'+'current: '+(parseFloat(current)*100).toFixed(2)+'%'+'\xa0\xa0'+'predicted: '+(parseFloat(predict)*100).toFixed(2)+'%'+'\xa0\xa0'+'fault probability: '+(fault_pbb*100).toFixed(2)+'%',
           // subtitle: 'hello',
           // curveType: 'function',
@@ -1431,16 +1524,31 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
       node.setAttribute('id', 'node');
       node.style.height = "250px";
         // infowindow  = new google.maps.InfoWindow(),
-        var chart = new google.visualization.AnnotatedTimeLine(node);
+        chart = new google.visualization.AnnotatedTimeLine(node);
         google.visualization.events.addListener(chart, 'select', selectHandler);
         function selectHandler(e) {
           var selected = chart.getSelection()[0].row;
           drawInsideHistogram(selected, marker);
-        }
-
-      chart.draw(data, options);
+      }
+      // view(marker);
+      // chart.draw(data, options);
         // drawAdditionalHAxis(chart, data);
         var div = document.createElement('div');
+
+        var titlestring = '<div id="content">'+
+        '<h1 id="firstHeading" class="firstHeading">PER vs. RSSI</h1>'+
+        '<div id="bodyContent">'+
+        '<p><b>Average: </b>'+(parseFloat(avg)*100).toFixed(2)+'%'+'</p>'+
+        '<p><b>Current: </b>'+(parseFloat(current)*100).toFixed(2)+'%'+'</p>'+
+        '<p><b>Predicted: </b>'+(parseFloat(predict)*100).toFixed(2)+'%'+'</p>'+
+        '<p><b>Fault probability: </b>'+(fault_pbb*100).toFixed(2)+'%'+'</p>'+
+        '<p>'+'Start date: <input type="date" id="chart_start_date" />'+'</p>'+
+        '<p>'+'End date: <input type="date" id="chart_end_date" />'+'</p>'+
+        '<p>'+'Metric: <input type="checkbox" value="app_per" id="app_per" />Application Layer PER<input type="checkbox" value="mac_per" id="mac_per" />Mac Layer PER<input type="checkbox" value="rssi" id="rssi" />RSSI'+'</p>'+
+        '</div>'+
+        '</div>'+
+        '<div><form action="javascript:view();"><input type="submit" value="view"></form></div>';
+
         div.innerHTML = titlestring;
         // node.appendChild(div);
         div.appendChild(node);
@@ -1451,6 +1559,7 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
         // });
     }
 
+    
     function drawChart2(marker){
         $.ajax({
             url: "/api/sensor",
@@ -1557,41 +1666,8 @@ function drawChart(marker,avg,current,predict,fault_pbb) {
         });
 }
 
-function drawGaugeChart(data) {
 
-        // var data = google.visualization.arrayToDataTable([
-        //   ['Label', 'Value'],
-        //   ['Memory', 80],
-        //   ['CPU', 55],
-        //   ['Network', 68]
-        // ]);
-
-        var options = {
-          width: 400, height: 120,
-          redFrom: 90, redTo: 100,
-          yellowFrom:75, yellowTo: 90,
-          minorTicks: 5
-      };
-
-      var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
-
-      chart.draw(data, options);
-
-      setInterval(function() {
-          data.setValue(0, 1, 40 + Math.round(60 * Math.random()));
-          chart.draw(data, options);
-      }, 13000);
-      setInterval(function() {
-          data.setValue(1, 1, 40 + Math.round(60 * Math.random()));
-          chart.draw(data, options);
-      }, 5000);
-      setInterval(function() {
-          data.setValue(2, 1, 60 + Math.round(20 * Math.random()));
-          chart.draw(data, options);
-      }, 26000);
-  }
-
-  function getSum(total, num) {
+function getSum(total, num) {
     return total + num;
 }
 
@@ -1761,14 +1837,14 @@ function addMarker(location,label,active,parent){
         for(var i=0;i<array.length;i++){
             // sum += parseFloat(array[i]);
             if(parseFloat(array[i][0]) != 0){
-                    sum += parseFloat(array[i][1]) / parseFloat(array[i][0]);
-                }else{
-                    sum += 0;
-                }
-                for(var j=2;j<array[i].length;j++){
-                    sum_rssi += parseFloat(array[i][j]);
-                    num_channel ++;
-                }
+                sum += parseFloat(array[i][1]) / parseFloat(array[i][0]);
+            }else{
+                sum += 0;
+            }
+            for(var j=2;j<array[i].length;j++){
+                sum_rssi += parseFloat(array[i][j]);
+                num_channel ++;
+            }
         }
         var avg_rssi = sum_rssi / num_channel;
         // sum_network += sum;
