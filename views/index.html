@@ -2,89 +2,89 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>IoT</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IoT</title>
 
-    <!-- Bootstrap -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet">
+  <!-- Bootstrap -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
 
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <title>Simple markers</title>
-    <style>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
+  <title>Simple markers</title>
+  <style>
       /* Always set the map height explicitly to define the size of the div
       * element that contains the map. */
       #map {
         height: 100%;
-    }
-    #legend {
+      }
+      #legend {
         font-family: Arial, sans-serif;
         background: #fff;
         padding: 10px;
         margin: 10px;
         border: 3px solid #000;
-    }
-    #legend h3 {
+      }
+      #legend h3 {
         margin-top: 0;
-    }
-    #legend img {
+      }
+      #legend img {
         vertical-align: middle;
-    }
+      }
 
-    /* Optional: Makes the sample page fill the window. */
-    html, body {
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
         height: 100%;
         margin: 0;
         padding: 0;
+      }
+      #map,
+      #wrapper,
+      #page-content-wrapper {
+        height: 100%;
+        width: 100%;
+      }
+      .container-fluid,
+      .row,
+      .col-lg-12 {
+        height: 100%;
+        width: 100%;
+      }
     }
-    #map,
-    #wrapper,
-    #page-content-wrapper {
-      height: 100%;
-      width: 100%;
-  }
-  .container-fluid,
-  .row,
-  .col-lg-12 {
-      height: 100%;
-      width: 100%;
-  }
-}
-/* hamburger menu pseudo element */
+    /* hamburger menu pseudo element */
 
-.box-shadow-menu {
-  position: relative;
-  padding-left: 1.25em;
-}
-.box-shadow-menu:before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.25em;
-  width: 1em;
-  height: 0.15em;
-  background: black;
-  box-shadow: 0 0.25em 0 0 black, 0 0.5em 0 0 black;
-}
-/* hamburger menu pseudo element gradient */
+    .box-shadow-menu {
+      position: relative;
+      padding-left: 1.25em;
+    }
+    .box-shadow-menu:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.25em;
+      width: 1em;
+      height: 0.15em;
+      background: black;
+      box-shadow: 0 0.25em 0 0 black, 0 0.5em 0 0 black;
+    }
+    /* hamburger menu pseudo element gradient */
 
-.gradient-menu {
-  padding-left: 1.25em;
-  position: relative;
-}
-.gradient-menu:before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.21em;
-  bottom: 0.21em;
-  width: 1em;
-  background: linear-gradient(to bottom, black, black 20%, white 20%, white 40%, black 40%, black 60%, white 60%, white 80%, black 80%, black 100%);
-}
-/* http://www.jqueryscript.net/demo/Bootstrap-Sidebar-Extension-With-jQuery-CSS-CSS3/ */
+    .gradient-menu {
+      padding-left: 1.25em;
+      position: relative;
+    }
+    .gradient-menu:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.21em;
+      bottom: 0.21em;
+      width: 1em;
+      background: linear-gradient(to bottom, black, black 20%, white 20%, white 40%, black 40%, black 60%, white 60%, white 80%, black 80%, black 100%);
+    }
+    /* http://www.jqueryscript.net/demo/Bootstrap-Sidebar-Extension-With-jQuery-CSS-CSS3/ */
 
     /*!
      * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
@@ -96,27 +96,27 @@
 
      .nav-tabs>li {
       float: none;
-  }
-  .nav-tabs {
+    }
+    .nav-tabs {
       border-bottom: 0;
-  }
-  .nav-tabs>li.active>a,
-  .nav-tabs>li.active>a:focus,
-  .nav-tabs>li.active>a:hover {
+    }
+    .nav-tabs>li.active>a,
+    .nav-tabs>li.active>a:focus,
+    .nav-tabs>li.active>a:hover {
       margin: 0;
       border-radius: 0;
-  }
-  #wrapper {
+    }
+    #wrapper {
       padding-left: 0;
       -webkit-transition: all 0.5s ease;
       -moz-transition: all 0.5s ease;
       -o-transition: all 0.5s ease;
       transition: all 0.5s ease;
-  }
-  #wrapper.toggled {
+    }
+    #wrapper.toggled {
       padding-left: 250px;
-  }
-  #sidebar-wrapper {
+    }
+    #sidebar-wrapper {
       z-index: 1000;
       position: fixed;
       left: 250px;
@@ -129,236 +129,236 @@
       -moz-transition: all 0.5s ease;
       -o-transition: all 0.5s ease;
       transition: all 0.5s ease;
-  }
-  #wrapper.toggled #sidebar-wrapper {
+    }
+    #wrapper.toggled #sidebar-wrapper {
       width: 250px;
-  }
-  #page-content-wrapper {
+    }
+    #page-content-wrapper {
       width: 100%;
       position: absolute;
       padding: 15px;
-  }
-  #wrapper.toggled #page-content-wrapper {
+    }
+    #wrapper.toggled #page-content-wrapper {
       position: absolute;
       margin-right: -250px;
-  }
-  /* Sidebar Styles */
+    }
+    /* Sidebar Styles */
 
-  .sidebar-nav {
+    .sidebar-nav {
       position: absolute;
       top: 0;
       width: 250px;
       margin: 0;
       padding: 0;
       list-style: none;
-  }
-  .sidebar-nav li {
+    }
+    .sidebar-nav li {
       text-indent: 20px;
       line-height: 40px;
-  }
-  .sidebar-nav li a {
+    }
+    .sidebar-nav li a {
       display: block;
       text-decoration: none;
       color: #000000;
-  }
-  .sidebar-nav li a:hover {
+    }
+    .sidebar-nav li a:hover {
       text-decoration: none;
       color: #000080;
       background: rgba(255, 255, 255, 0.2);
-  }
-  .sidebar-nav li a:active,
-  .sidebar-nav li a:focus {
+    }
+    .sidebar-nav li a:active,
+    .sidebar-nav li a:focus {
       text-decoration: none;
       /*display: inline-block;*/
-  }
-  .sidebar-nav > .sidebar-brand {
+    }
+    .sidebar-nav > .sidebar-brand {
       height: 65px;
       font-size: 18px;
       line-height: 60px;
-  }
-  .sidebar-nav > .sidebar-brand a {
+    }
+    .sidebar-nav > .sidebar-brand a {
       color: #999999;
-  }
-  .sidebar-nav > .sidebar-brand a:hover {
+    }
+    .sidebar-nav > .sidebar-brand a:hover {
       color: #fff;
       background: none;
-  }
-  @media(min-width:768px) {
+    }
+    @media(min-width:768px) {
       #wrapper {
         padding-left: 250px;
-    }
-    #wrapper.toggled {
+      }
+      #wrapper.toggled {
         padding-left: 0;
-    }
-    #sidebar-wrapper {
+      }
+      #sidebar-wrapper {
         width: 250px;
-    }
-    #wrapper.toggled #sidebar-wrapper {
+      }
+      #wrapper.toggled #sidebar-wrapper {
         width: 0;
-    }
-    #page-content-wrapper {
+      }
+      #page-content-wrapper {
         padding: 20px;
         position: relative;
-    }
-    #wrapper.toggled #page-content-wrapper {
+      }
+      #wrapper.toggled #page-content-wrapper {
         position: relative;
         margin-right: 0;
+      }
     }
-}
-ul {
-    text-align: left;
-    /*display:inline-block;*/
-    /*box-sizing:border-box;*/
-    /*padding-left: 5px;*/
-}
-.ulleft {
-    display: inline;
-    float: left;
-}
-.ulright {
-    display: inline;
-    float: right;
-}
-#overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #000;
-    filter:alpha(opacity=50);
-    -moz-opacity:0.5;
-    -khtml-opacity: 0.5;
-    opacity: 0.8;
-    z-index: 10000;
-}
-#confirm{
-    color: black;
-}
-#text{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    font-size: 50px;
-    color: white;
-    transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%,-50%);
-}
-#myBtn {
-  display: none;
-  position: fixed;
-  bottom: 5px;
-  left: 250px;
-  z-index: 99;
-  border: none;
-  outline: none;
-  background-color: black;
-  color: white;
-  cursor: pointer;
-  padding: 5px;
-  border-radius: 50px;
-  font-size: 40px;
-  height: 50px;
-  width: 50px;
-}
+    ul {
+      text-align: left;
+      /*display:inline-block;*/
+      /*box-sizing:border-box;*/
+      /*padding-left: 5px;*/
+    }
+    .ulleft {
+      display: inline;
+      float: left;
+    }
+    .ulright {
+      display: inline;
+      float: right;
+    }
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+      filter:alpha(opacity=50);
+      -moz-opacity:0.5;
+      -khtml-opacity: 0.5;
+      opacity: 0.8;
+      z-index: 10000;
+    }
+    #confirm{
+      color: black;
+    }
+    #text{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      font-size: 50px;
+      color: white;
+      transform: translate(-50%,-50%);
+      -ms-transform: translate(-50%,-50%);
+    }
+    #myBtn {
+      display: none;
+      position: fixed;
+      bottom: 5px;
+      left: 250px;
+      z-index: 99;
+      border: none;
+      outline: none;
+      background-color: black;
+      color: white;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 50px;
+      font-size: 40px;
+      height: 50px;
+      width: 50px;
+    }
 
-#myBtn:hover {
-  background-color: #555;
-}
+    #myBtn:hover {
+      background-color: #555;
+    }
 
-#mapresetbtn {
-  /*position: fixed;*/
-  bottom: 5px;
-  left: 250px;
-  z-index: 99;
-  border: none;
-  outline: none;
-  background-color: black;
-  color: white;
-  cursor: pointer;
-  padding: 5px;
-  border-radius: 50px;
-  font-size: 40px;
-  height: 50px;
-  width: 50px;
-  margin: 10px;
-}
-#mapresetbtn:hover{
-    background-color: #555;
-}
+    #mapresetbtn {
+      /*position: fixed;*/
+      bottom: 5px;
+      left: 250px;
+      z-index: 99;
+      border: none;
+      outline: none;
+      background-color: black;
+      color: white;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 50px;
+      font-size: 40px;
+      height: 50px;
+      width: 50px;
+      margin: 10px;
+    }
+    #mapresetbtn:hover{
+      background-color: #555;
+    }
 
-hr {
-    display: block;
-    border: 2px solid;
-    border-top: 1px solid #ccc;
-    margin: 1em 0;
-    padding: 0; 
-    border-color: #000000;
-}
-#container {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-.sidenav {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    right: 0;
-    background-color: #a9cce3;
-    overflow-x: hidden;
-    transition: 0.5s;
-    /*padding-top: 60px;*/
-}
-.sidenav a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-    transition: 0.3s;
-}
+    hr {
+      display: block;
+      border: 2px solid;
+      border-top: 1px solid #ccc;
+      margin: 1em 0;
+      padding: 0; 
+      border-color: #000000;
+    }
+    #container {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    .sidenav {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      right: 0;
+      background-color: #a9cce3;
+      overflow-x: hidden;
+      transition: 0.5s;
+      /*padding-top: 60px;*/
+    }
+    .sidenav a {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 25px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+    }
 
-.sidenav a:hover, .offcanvas a:focus{
-    color: #f1f1f1;
-}
+    .sidenav a:hover, .offcanvas a:focus{
+      color: #f1f1f1;
+    }
 
 
-.sidenav .closebtn {
-    /*position: absolute;*/
-    top: 0;
-    right: 25px;
-    font-size: 46px;
-    /*margin-left: 50px;*/
-}
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
-}
-#toolkit {
-    display: inline-block;
-    padding-left: 50px;
-}
-#close{
-    float: right;
-}
+    .sidenav .closebtn {
+      /*position: absolute;*/
+      top: 0;
+      right: 25px;
+      font-size: 46px;
+      /*margin-left: 50px;*/
+    }
+    @media screen and (max-height: 450px) {
+      .sidenav {padding-top: 15px;}
+      .sidenav a {font-size: 18px;}
+    }
+    #toolkit {
+      display: inline-block;
+      padding-left: 50px;
+    }
+    #close{
+      float: right;
+    }
 
-</style>
+  </style>
 
 
 </head>
 
 <body>
-    <div class="container">
-        <h1>Network Performance Map: Noisy Zone</h1>
+  <div class="container">
+    <h1>Network Performance Map: Noisy Zone</h1>
         <!-- <p>my test value is:
         <script type="text/javascript">
         var test = localStorage.getItem('myFirstKey');
         document.write(test);
         </script>
-    </p> -->
+      </p> -->
         <!-- <div id="nameInput" class="input-group-lg center-block helloInput">
             <p class="lead">What is your name?</p>
             <input id="user_name" type="text" class="form-control" placeholder="name" aria-describedby="sizing-addon1" value="" />
@@ -366,43 +366,43 @@ hr {
         <p id="response" class="lead text-center"></p>
 
         <p id="databaseNames" class="lead text-center"></p> -->
-    </div>
-    <div id="wrapper" class="toggled">
-      <!-- Sidebar -->
-      <div id="sidebar-wrapper">
+      </div>
+      <div id="wrapper" class="toggled">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
           <button onclick="topFunction()" id="myBtn" title="Go to top">&#8963;</button>
           <ul class="sidebar-nav" id="side_bar">
-              <li class="sidebar-brand" style="font-weight: bold; color: #000000;">
-                <h1>Summary</h1>
+            <li class="sidebar-brand" style="font-weight: bold; color: #000000;">
+              <h1>Summary</h1>
 
             </li>
             <hr>
             <div id="demo" class="collapse"></div>
             <div id="demo2" class="collapse"></div>
-        </ul>
-    </div>
-    <!-- /#sidebar-wrapper -->
-    <!-- Page Content -->
-    <div id="page-content-wrapper">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-lg-12">
-              <h1>
+          </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-12">
+                <h1>
                   <span style="font-size:50px;cursor:pointer;float:right" onclick="openNav()">&#9881;</span>
                   <a href="#menu-toggle" class="gradient-menu" id="menu-toggle"></a>
                   <!-- &nbsp;Network Map&nbsp;a href="#menu-toggle" class="btn btn-default" >Toggle Sidebar</a -->
-              </h1>
-              <div id="mySidenav" class="sidenav">
+                </h1>
+                <div id="mySidenav" class="sidenav">
                   <h1 id="toolkit">Toolkit</h1>
                   <b>
-                      <a id="close" href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                    <a id="close" href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                   </b>
                   <hr>
 
                   <div style="padding:30px">Choose analytic task:
-                      <p>
-                          <select id="box1" name="task" style="max-width:90%;">
-                            <option selected disabled>Choose one</option>
+                    <p>
+                      <select id="box1" name="task" style="max-width:90%;">
+                        <option selected disabled>Choose one</option>
               <!-- <option value="noisy">Topology Evaluation</option>
               <option value="phm">Prognostics and Health Management</option>
               <option value="schedule">Smart Scheduling</option>
@@ -411,81 +411,81 @@ hr {
                 <option value="health">Health monitoring</option>
                 <option value="fault">Fault detection</option>
                 <option value="maintenance">Maintenance recommendation</option>
-            </optgroup>
-            <optgroup label="Node aspect">
+              </optgroup>
+              <optgroup label="Node aspect">
                 <option value="topology">Topology comparision and optimization</option>
                 <option value="network">Network reliability</option>
                 <option value="giwsns">GIWSNs</option>
-            </optgroup>
-            <optgroup label="Environment aspect">
+              </optgroup>
+              <optgroup label="Environment aspect">
                 <option value="noisy">Spatial-temporal noisy zone detection</option>
                 <option value="intervention">Surrounding intervention</option>
-            </optgroup>
-        </select>
-    </p>
-</div>
+              </optgroup>
+            </select>
+          </p>
+        </div>
 
-<div style="padding:30px">Choose target: 
-  <p>
-      <select id="box2" name="target" style="max-width:90%;">
-          <option selected disabled>Choose one</option>
-          <option value="network1">Network 1</option>
-          <option value="network2">Network 2</option>
-          <option value="network3">Network 3</option>
-          <option value="network4">Network 4</option>
-      </select>
-  </p>
-</div>
+        <div style="padding:30px">Choose target: 
+          <p>
+            <select id="box2" name="target" style="max-width:90%;">
+              <option selected disabled>Choose one</option>
+              <option value="network1">Network 1</option>
+              <option value="network2">Network 2</option>
+              <option value="network3">Network 3</option>
+              <option value="network4">Network 4</option>
+            </select>
+          </p>
+        </div>
 
-<div style="padding:30px">
-  <form action="javascript:analyze();">
-      <input type="submit" value="Run">
-  </form>
-</div>
+        <div style="padding:30px">
+          <form action="javascript:analyze();">
+            <input type="submit" value="Run">
+          </form>
+        </div>
 
-<hr>
+        <hr>
 
-<div id="numbox" style="padding: 10px; display: none">
-  <p>
-      <select id="box3" name="num" style="max-width:90%;" onchange="selectfunction()">
-          <option selected="selected" value="0">0</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">11</option>
-          <option value="12">12</option>
-          <option value="13">13</option>
-          <option value="14">14</option>
-          <option value="15">15</option>
-          <option value="16">16</option>
-          <option value="17">17</option>
-          <option value="18">18</option>
-      </select>
-  </p>
-</div>
+        <div id="numbox" style="padding: 10px; display: none">
+          <p>
+            <select id="box3" name="num" style="max-width:90%;" onchange="selectfunction()">
+              <option selected="selected" value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option>
+              <option value="17">17</option>
+              <option value="18">18</option>
+            </select>
+          </p>
+        </div>
 
-<div id="result" style="padding:10px; width: 450px; height: 240px;">
-    <textarea id="mytext" rows="20" cols="35">Result goes here.</textarea>  
-</div>
+        <div id="result" style="padding:10px; width: 450px; height: 240px;">
+          <textarea id="mytext" rows="20" cols="35">Result goes here.</textarea>  
+        </div>
 
-<div id="reset" style="padding:10px; position: absolute; bottom: 0; right: 0">
-  <input type="button" value="Reset" onclick="javascript:eraseText();"> 
-</div>
+        <div id="reset" style="padding:10px; position: absolute; bottom: 0; right: 0">
+          <input type="button" value="Reset" onclick="javascript:eraseText();"> 
+        </div>
 
 
-</div>
-<!-- you can use tables or divs for the overall layout -->
-<div id="map"></div>
-<!-- <h1>Simple Sidebar</h1> -->
-</div>
-</div>
+      </div>
+      <!-- you can use tables or divs for the overall layout -->
+      <div id="map"></div>
+      <!-- <h1>Simple Sidebar</h1> -->
+    </div>
+  </div>
 </div>
 </div>
 <!-- /#page-content-wrapper -->
@@ -501,20 +501,20 @@ hr {
 <!-- <script src="../server.js" type="text/javascript"></script>  -->
 
 <script type="text/javascript">
-    function openNav() {
-        document.getElementById("mySidenav").style.width = "450px";
+  function openNav() {
+    document.getElementById("mySidenav").style.width = "450px";
             // google.maps.event.trigger(map, 'resize');
-        }
+          }
 
-        function closeNav() {
+          function closeNav() {
             document.getElementById("mySidenav").style.width = "0";
-        }
+          }
 
-        function eraseText(){
+          function eraseText(){
             document.getElementById('mytext').value = "";
-        }
+          }
 
-        function viewchart(marker){
+          function viewchart(marker){
             var node_id = parseInt(marker.label);
             var node_data = getCustomInfo(marker);
             var node_time = getCustomInfoTime(marker);
@@ -524,19 +524,19 @@ hr {
             data.addColumn('number','RSSI');
             var temp_length = node_data.length;
             for(var i=0;i<node_data.length;i++){
-                var time_data = convertTime(node_time[i]);
-                if(parseFloat(node_data[i][0]) != 0){
-                    var avg_per_data = parseFloat(node_data[i][1]) / parseFloat(node_data[i][0]) * 100;
-                }else{
-                    var avg_per_data = 1;
-                }
-                var sum_rssi_data = 0;
-                for(var j=2; j<node_data[i].length;j++){
-                    sum_rssi_data += parseFloat(node_data[i][j]);
-                }
-                var avg_rssi_data = sum_rssi_data / (node_data[i].length -2);    
-                
-                data.addRow([time_data, avg_per_data, avg_rssi_data]);
+              var time_data = convertTime(node_time[i]);
+              if(parseFloat(node_data[i][0]) != 0){
+                var avg_per_data = parseFloat(node_data[i][1]) / parseFloat(node_data[i][0]) * 100;
+              }else{
+                var avg_per_data = 1;
+              }
+              var sum_rssi_data = 0;
+              for(var j=2; j<node_data[i].length;j++){
+                sum_rssi_data += parseFloat(node_data[i][j]);
+              }
+              var avg_rssi_data = sum_rssi_data / (node_data[i].length -2);    
+
+              data.addRow([time_data, avg_per_data, avg_rssi_data]);
             }
             var node = document.createElement('div');
             node.setAttribute('id', 'node');
@@ -556,20 +556,20 @@ hr {
           legend: { position: 'none' },
           displayAnnotations: true,
           scaleType:'allfixed',
-      };
-      chart.draw(data, options);
-  }
+        };
+        chart.draw(data, options);
+      }
 
-  function confirm(){
-    window.location = window.location + '#loaded';
-    window.location.reload();
-  }
+      function confirm(){
+        window.location = window.location + '#loaded';
+        window.location.reload();
+      }
 
-  function analyze(){
+      function analyze(){
             // document.getElementById('mytext').value = $("#box1 option:selected").text();;
             if($("#box1").val()=="giwsns" && $("#box2").val()=="network1"){
-                var similarity_string = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 Event similarity \n\n";
-                for(var i=3;i<21;i++){
+              var similarity_string = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 Event similarity \n\n";
+              for(var i=3;i<21;i++){
                   // console.log(i + ':');
                   similarity_string += "Node" + i + ": \n"
                   var curr_dict = checkSimilarity(i);
@@ -577,68 +577,73 @@ hr {
                     curr_dict.sort(compare_rate);
                     // console.log(curr_dict[j][0] + " " + curr_dict[j][1]);
                     similarity_string += "\xa0\xa0 Node " + curr_dict[j][0] + "\xa0\xa0\xa0\xa0\xa0\xa0 similarity rate " + (curr_dict[j][1]*100).toFixed(2) + "% \n";
-                }
-                similarity_string += "\n";
+                  }
+                  similarity_string += "\n";
                 //   // console.log(i + ':');
                 //   var curr_dict = checkSimilarity(i);
                 //   Object.keys(curr_dict).forEach(function(currentKey) {
                 //   // console.log(curr_dict[currentKey]);
                 //   document.getElementById('mytext').value = curr_dict[currentKey];
                 //   });
+              }
+              document.getElementById('mytext').value = similarity_string;
             }
-            document.getElementById('mytext').value = similarity_string;
-        }
-        else if($("#box1").val()=="fault" && $("#box2").val()=="network1"){
-            document.getElementById('numbox').style.display = "block";
-            var fault_val = $("#box3").val();
-            faultDetection(parseInt(fault_val));
-            var time_string = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 Fault time period \n\n";
+            else if($("#box1").val()=="fault" && $("#box2").val()=="network1"){
+              document.getElementById('numbox').style.display = "block";
+              var fault_val = $("#box3").val();
+              faultDetection(parseInt(fault_val));
+              var time_string = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 Fault time period \n\n";
                 // alert(array_time.length);
                 for(var i=0;i<array_time.length;i++){
                     // var day = convertTime2(array_time[i][0]);
                     var current_string = convertTime2(array_time[i][0]) + " - " + convertTime2(array_time[i][1]) + "\n";
                     time_string += current_string;
-                }
+                  }
                 // document.getElementById('mytext').value = time_string;
                 // alert(array_time_all[0][1]);
                 google.charts.load('current', {'packages':['annotatedtimeline']});
                 google.charts.setOnLoadCallback(drawHistogram);
 
+              }
             }
-        }
 
-        function convertTimeView(raw_time){
-            var date_array = raw_time.split("-");
-            var year = date_array[0];
-            var month = date_array[1];
-            var day = date_array[2];
-            var result_time = new Date(year, month, day);
-            return result_time;
-        }
-
-        var chart; 
-        var data;
-        var options;
-        function view(){
-            chart.hideDataColumns(0);
-            chart.hideDataColumns(1);
-            chart.hideDataColumns(2);
-            var chart_start_date = new Date($('#chart_start_date').val().toString());
-            var chart_end_date = new Date($('#chart_end_date').val().toString());            
-            if(document.getElementById('app_per').checked){
-                chart.showDataColumns(0); //time app_per rssi
+            function convertTimeView(raw_time){
+              var date_array = raw_time.split("-");
+              var year = date_array[0];
+              var month = date_array[1];
+              var day = date_array[2];
+              var result_time = new Date(year, month, day);
+              return result_time;
             }
-            if(document.getElementById('rssi').checked){
-                chart.showDataColumns(1); //time app_per rssi
-            }
-            chart.draw(data, options);
-            chart.setVisibleChartRange(chart_start_date, chart_end_date);
-        }
 
-        function selectfunction(){
-            var fault_val = $("#box3").val();
-            array_time_all = [];
-            faultDetection(parseInt(fault_val));
+            var chart2; 
+            var data2;
+            var options2;
+            function view(){
+              chart2.hideDataColumns(0);
+              chart2.hideDataColumns(1);
+              chart2.hideDataColumns(2);
+              var chart_start_date = new Date($('#chart_start_date').val().toString());
+              var chart_end_date = new Date($('#chart_end_date').val().toString());            
+              if(document.getElementById('app_per').checked){
+                chart2.showDataColumns(0); //time app_per rssi
+              }
+              if(document.getElementById('mac_per').checked){
+                chart2.showDataColumns(1); //time app_per rssi
+              }
+              if(document.getElementById('rssi').checked){
+                chart2.showDataColumns(2); //time app_per rssi
+              }
+              chart2.draw(data2, options2);
+              if(!isNaN(chart_start_date) && !isNaN(chart_end_date)){
+                chart2.setVisibleChartRange(chart_start_date, chart_end_date);
+              } 
+            }
+
+            function selectfunction(){
+              var fault_val = $("#box3").val();
+              array_time_all = [];
+              faultDetection(parseInt(fault_val));
                 // var time_string = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 Fault time period \n\n";
                 // // alert(array_time.length);
                 // for(var i=0;i<array_time.length;i++){
@@ -650,9 +655,9 @@ hr {
                 // alert(array_time_all[0][1]);
                 google.charts.load('current', {'packages':['annotatedtimeline']});
                 google.charts.setOnLoadCallback(drawHistogram);
-            }
+              }
 
-            function drawHistogram(){
+              function drawHistogram(){
                 var data_hist = new google.visualization.DataTable();
                 data_hist.addColumn('date','TIME');
                 data_hist.addColumn('number','FREQ');
@@ -661,25 +666,25 @@ hr {
                 // data.addRow([new Date(parseInt(node_time[i])).toString(), parseFloat(node_data[i])]);
                 // data.addRow(['123', 0.001]);
                 data_hist.addRow([convertTime3(array_time_all[i][0].toString()), parseInt(array_time_all[i][1])]);
-            }
+              }
 
-            var options = {
-              title: 'Fault detection',
-              legend: { position: 'none' },
-              displayAnnotations: true,
+              var options = {
+                title: 'Fault detection',
+                legend: { position: 'none' },
+                displayAnnotations: true,
               // legend: 
-          };
+            };
 
-          var chart_hist = new google.visualization.AnnotatedTimeLine(document.getElementById('result'));
+            var chart_hist = new google.visualization.AnnotatedTimeLine(document.getElementById('result'));
 
-          chart_hist.draw(data_hist, options);
+            chart_hist.draw(data_hist, options);
 
             // var chart_hist = new google.visualization.Histogram(document.getElementById('result'));
             // chart_hist.draw(data_hist, {});
 
-        }
+          }
 
-        function convertTime3(timestamp_string){
+          function convertTime3(timestamp_string){
             var timestamp = parseInt(timestamp_string);
             var date = new Date(timestamp);
             var year = date.getFullYear();
@@ -693,9 +698,9 @@ hr {
             // return formattedTime;
             return result_time;
 
-        }
+          }
 
-        function convertTime2(timestamp_string){
+          function convertTime2(timestamp_string){
             var timestamp = parseInt(timestamp_string);
             var date = new Date(timestamp);
             var year = date.getFullYear();
@@ -709,7 +714,7 @@ hr {
             // return day;
             return formattedTime;
 
-        }
+          }
 
         // var similarity_rate_sum = 0;
         function checkSimilarity(id1){
@@ -720,108 +725,108 @@ hr {
               var arrayB = [];
               for(var i=0;i<data_test[id1].length;i++){
                 arrayA[i] = data_test[id1][i][1];
-            }
-            for(var j=0;j<data_test[id2].length;j++){
+              }
+              for(var j=0;j<data_test[id2].length;j++){
                 arrayB[j] = data_test[id2][j][1];
-            }
+              }
               // arrayA.filter(function(el){
               //   return arrayB.indexOf(el) >= 0;
               // }).length;
               var matches = 0;
               for (i=0;i<arrayA.length;i++) {
                 if (Math.abs(arrayA[i]-arrayB[i])/arrayB[i] < 0.2)
-                    matches++;
-            }
-            var similarity_rate = matches/Math.min(arrayA.length, arrayB.length);
-            if(similarity_rate > 0.2){
+                  matches++;
+              }
+              var similarity_rate = matches/Math.min(arrayA.length, arrayB.length);
+              if(similarity_rate > 0.2){
                 similarity_dict.push([id2, similarity_rate]);
-            }
+              }
                 // return similarity_rate;
+              }
             }
-        }
-        return similarity_dict;
-    }
+            return similarity_dict;
+          }
 
-    function compare_rate(a,b){
-      return b[1] - a[1];
-  }
+          function compare_rate(a,b){
+            return b[1] - a[1];
+          }
 
-  var array_time = [];
-  var array_time_all = [];
-  function faultDetection(num){
-    var min_length = 0;
-    var time_start = null;
-    var time_end = null;
-    for(var id=3;id<19;id++){
-        min_length = Math.min(data_test[id].length, data_test[id+1].length);
-    }
+          var array_time = [];
+          var array_time_all = [];
+          function faultDetection(num){
+            var min_length = 0;
+            var time_start = null;
+            var time_end = null;
+            for(var id=3;id<19;id++){
+              min_length = Math.min(data_test[id].length, data_test[id+1].length);
+            }
             // var fault_count = 0;
             for(var i=0;i<min_length;i++){
-                var fault_count = 0;
-                for(var id=3;id<20;id++){
-                    if(data_test[id][i][1] > 0.05){
-                        fault_count++;
-                    }
+              var fault_count = 0;
+              for(var id=3;id<20;id++){
+                if(data_test[id][i][1] > 0.05){
+                  fault_count++;
                 }
+              }
                 if(fault_count >= 7){ // one third of the entire network
-                    if(time_start){
-                        time_end = data_test[id][i][0];
-                    }
-                    else{
-                        time_start = data_test[id][i][0];
-                    }
+                  if(time_start){
+                    time_end = data_test[id][i][0];
+                  }
+                  else{
+                    time_start = data_test[id][i][0];
+                  }
                 }
 
                 if(fault_count >= num){
-                    array_time_all.push([data_test[id][i][0].toString(), fault_count]);
+                  array_time_all.push([data_test[id][i][0].toString(), fault_count]);
                 }
                 if(time_start && time_end){
-                    if(array_time.indexOf([time_start, time_end]) == -1){
-                        array_time.push([time_start, time_end]);
-                        time_start = null;
-                        time_end = null;
-                    }
+                  if(array_time.indexOf([time_start, time_end]) == -1){
+                    array_time.push([time_start, time_end]);
+                    time_start = null;
+                    time_end = null;
+                  }
                 }
-            }
+              }
             // var data = google.visualization.arrayToDataTable();
             // data.addColumn('date','TIME');
             // data.addColumn('number','PER');
-        }
-    </script>
+          }
+        </script>
 
-    <script>
+        <script>
     	//Submit data when enter key is pressed
-        $('#user_name').keydown(function(e) {
-        	var name = $('#user_name').val();
-            if (e.which == 13 && name.length > 0) { //catch Enter key
-            	//POST request to API to create a new visitor entry in the database
-                $.ajax({
-                  method: "POST",
-                  url: "./api/sensor",
-                  contentType: "application/json",
-                  data: JSON.stringify({name: name })
-              })
-                .done(function(data) {
-                    $('#response').html(AntiXSS.sanitizeInput(data));
-                    $('#nameInput').hide();
-                    getNames();
-                });
-            }
-        });
+        // $('#user_name').keydown(function(e) {
+        // 	var name = $('#user_name').val();
+        //     if (e.which == 13 && name.length > 0) { //catch Enter key
+        //     	//POST request to API to create a new visitor entry in the database
+        //         $.ajax({
+        //           method: "POST",
+        //           url: "./api/sensor",
+        //           contentType: "application/json",
+        //           data: JSON.stringify({name: name })
+        //       })
+        //         .done(function(data) {
+        //             $('#response').html(AntiXSS.sanitizeInput(data));
+        //             $('#nameInput').hide();
+        //             getNames();
+        //         });
+        //     }
+        // });
 
         var data_gateway_test = [];
         function getGateway(){
-            $.get("./api/gateway")
-            .done(function(data){
-                for(var i=0;i<data.length;i++){
-                    data_gateway_test[i] = data[i];
-                }
-                if(data.length>0){
-                    data.forEach(function(element, index){
-                        data[index] = AntiXSS.sanitizeInput(element)
-                    });
-                }
-            });
+          $.get("./api/gateway")
+          .done(function(data){
+            for(var i=0;i<data.length;i++){
+              data_gateway_test[i] = data[i];
+            }
+            if(data.length>0){
+              data.forEach(function(element, index){
+                data[index] = AntiXSS.sanitizeInput(element)
+              });
+            }
+          });
         }
 
 
@@ -833,59 +838,42 @@ hr {
           .done(function(data) {
                 // alert(data[1][0]);
                 for(var i=0;i<data.length;i++){
-                    data_test[i] = data[i];
+                  data_test[i] = data[i];
                 }
                 sensorComplete = true;
                 // alert(data_test[5][0]['TS']);
                 if(data.length > 0) {
-                    data.forEach(function(element, index) {
-                      data[index] = AntiXSS.sanitizeInput(element)
+                  data.forEach(function(element, index) {
+                    data[index] = AntiXSS.sanitizeInput(element)
                   });
-                    // $('#databaseNames').html("Database contents: " + JSON.stringify(data));
-                    // for(var i=0;i<data.length;i++){
-                    //     data_test.push(data[i]);
-                    // }
-                    // data_test = data;
-                    // alert(JSON.stringify(data[1][0]));
-                    // alert(data[3]);
-                    // alert(data_test[20]);
                 }
-            });
-      }
+              });
+        }
 
-      var data_topo_test = [];
-      function getTopo(){
-        $.get("./api/topology")
-        .done(function(data){
+        var data_topo_test = [];
+        function getTopology(){
+          $.get("./api/topology")
+          .done(function(data){
             for(var i=0;i<data.length;i++){
-                data_topo_test[i] = data[i];
+              data_topo_test[i] = data[i];
             }
             if(data.length>0){
-                data.forEach(function(element, index){
-                    data[index] = AntiXSS.sanitizeInput(element)
-                });
+              data.forEach(function(element, index){
+                data[index] = AntiXSS.sanitizeInput(element)
+              });
             }
-        });
-    }
+          });
+        }
 
           //Call getNames on page load.
           getGateway();
-          getTopo();    
+          getTopology();    
           getSensor();
-          if(window.location.hash) {
-            alert('Topology uploaded!');
-          }else{
-            alert('Gateway uploaded!');
-          }
-          // alert(data_test[7]);
-          // while (data_test[7] == ''){
-          //   alert('wait');
-          // }
-          // alert('sensor uploaded');
-          
-          // alert(data_test[0]);
-          // setInterval(getNames,1000);
-          // alert(data_test[1]);
+        //   if(window.location.hash) {
+        //     alert('Topology uploaded!');
+        // }else{
+        //     alert('Gateway uploaded!');
+        // }
 
 
 
@@ -897,274 +885,139 @@ hr {
       <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
       <!-- <script src="/home/ubuntu/Documents/get-started-node/server.js" type="text/javascript"></script> -->
       <script type="text/javascript">
-          var map;
-          function mapReset(){
-            map.setZoom(5);
-            map.setCenter(new google.maps.LatLng(41.850033, -87.6500523));
+        var map;
+        function mapReset(){
+          map.setZoom(5);
+          map.setCenter(new google.maps.LatLng(41.850033, -87.6500523));
         }
-    </script>
-    <div id="mapreset">
-      <button id="mapresetbtn" type="button" onclick="mapReset()">&#8634;</button>
-  </div>
-  <!-- <div id="map"></div> -->
-  <div id="legend"><h3>Status</h3>
-    <canvas id="myCanvas" width="150" height="40">
-    </div>
+      </script>
+      <div id="mapreset">
+        <button id="mapresetbtn" type="button" onclick="mapReset()">&#8634;</button>
+      </div>
+      <!-- <div id="map"></div> -->
+      <div id="legend"><h3>Status</h3>
+        <canvas id="myCanvas" width="150" height="40">
+        </div>
 
 
-    <script>
-        var marker;
-        var markers = [];
-        var markers_location = [];
-        var markers2 = [];
-        var sum_network = 0;
-        var sum_network_rssi = 0;
-        var zoomChange = null;
+        <script>
+          var marker;
+          var markers = [];
+          var markers_location = [];
+          var markers2 = [];
+          var sum_network = 0;
+          var sum_network_rssi = 0;
+          var zoomChange = null;
 
 
-        function initMap() {
-        // alert(data_test[]);
-        // var tools = require('./tools');
-        // var result = fetchData();
-        // alert(result);
+          function initMap() {
 
-        // while(localStorage.getItem('test') == null){
-        //     // alert("local storage : "+localStorage);
-        //     // alert("test : "+localStorage.getItem('test'));
-        //     var temp = localStorage.getItem('test');
-        // }
-        // console.log(temp);
-        // alert(localStorage);
-
-
-        var myWrapper = $("#wrapper");
-        $("#menu-toggle").click(function(e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
+            var myWrapper = $("#wrapper");
+            $("#menu-toggle").click(function(e) {
+              e.preventDefault();
+              $("#wrapper").toggleClass("toggled");
             // alert($("#wrapper").hasClass("toggled"));
             if($("#wrapper").hasClass("toggled")){
-                document.getElementById("myBtn").style.display = "none";
+              document.getElementById("myBtn").style.display = "none";
             }
             myWrapper.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
-                google.maps.event.trigger(map, 'resize');
+              google.maps.event.trigger(map, 'resize');
             });
-        });
+          });
 
+            map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 5,
+              center: new google.maps.LatLng(41.850033, -87.6500523)
+            });
 
-        // var node21 = new google.maps.LatLng(32.925167, -96.757725);
-        // var node23 = new google.maps.LatLng(32.92515, -96.75778);
-        // var node24 = new google.maps.LatLng(32.925150, -96.757650);
-        // var node25 = new google.maps.LatLng(32.9250795, -96.757841);
-        // var node26 = new google.maps.LatLng(32.9252, -96.75752);
-        // var node27 = new google.maps.LatLng(32.925078, -96.75749);
-        // var node28 = new google.maps.LatLng(32.92540, -96.757743);
-        // var node29 = new google.maps.LatLng(32.9255, -96.7575);
-        // var node30 = new google.maps.LatLng(32.9255, -96.7573);
-        // var node31 = new google.maps.LatLng(32.92519, -96.75780);
-        // var node32 = new google.maps.LatLng(32.925000, -96.757700);
-        // var node33 = new google.maps.LatLng(32.925000, -96.757750);
-        // var node34 = new google.maps.LatLng(32.924790, -96.757800);
-        // var node35 = new google.maps.LatLng(32.924840, -96.757820);
-        // var node36 = new google.maps.LatLng(32.924790, -96.75763);
-        // var node37 = new google.maps.LatLng(32.92483, -96.75758);
-        // var node38 = new google.maps.LatLng(32.924695, -96.757495);
-        // var node39 = new google.maps.LatLng(32.924705, -96.757385);
-        // var node40 = new google.maps.LatLng(32.92481, -96.75758);
+            google.maps.event.addListener(map, 'click', function() {
+              infowindow.close();
+              clearInterval(myinterval);
+            });
 
+            var iconBase = 'http://labs.google.com/ridefinder/images/';
 
-        // var node1 = new google.maps.LatLng(41.8066521,-72.2527231);
-        // var node3 = new google.maps.LatLng(41.8066351,-72.2527781);
-        // var node4 = new google.maps.LatLng(41.8066351,-72.2526481);
-        // var node5 = new google.maps.LatLng(41.8065646,-72.2528391);
-        // var node6 = new google.maps.LatLng(41.806685099999996,-72.2525181);
-        var node1 = new google.maps.LatLng(data_topo_test[1]['2'], data_topo_test[1]['3']);
-        var node3 = new google.maps.LatLng(data_topo_test[3]['2'], data_topo_test[3]['3']);
-        var node4 = new google.maps.LatLng(data_topo_test[4]['2'], data_topo_test[4]['3']);
-        var node5 = new google.maps.LatLng(data_topo_test[5]['2'], data_topo_test[5]['3']);
-        var node6 = new google.maps.LatLng(data_topo_test[6]['2'], data_topo_test[6]['3']);
+            var icons = {
+              active: {
+                name: 'Active',
+                icon: iconBase + 'mm_20_green.png'
+              },
+              warning: {
+                name: 'Warning',
+                icon: iconBase + 'mm_20_orange.png'
+              },
+              critical: {
+                name: 'Critical',
+                icon: iconBase + 'mm_20_red.png'
+              }
+            };
 
-        // var node7 = new google.maps.LatLng(41.8065631,-72.25248810000001);
-        // var node8 = new google.maps.LatLng(41.8068851,-72.25274110000001);
-        // var node9 = new google.maps.LatLng(41.8069851,-72.2524981);
-        // var node10 = new google.maps.LatLng(41.8069851,-72.2522981);
-        // var node11 = new google.maps.LatLng(41.8066751,-72.2527981);
-        // var node12 = new google.maps.LatLng(41.806485099999996,-72.2526981);
-        // var node13 = new google.maps.LatLng(41.806485099999996,-72.2527481);
-        // var node14 = new google.maps.LatLng(41.8062751,-72.2527981);
-        // var node15 = new google.maps.LatLng(41.8063251,-72.2528181);
-        // var node16 = new google.maps.LatLng(41.8062751,-72.25262810000001);
-        // var node17 = new google.maps.LatLng(41.8063151,-72.25257810000001);
-        // var node18 = new google.maps.LatLng(41.8061801,-72.25249310000001);
-        // var node19 = new google.maps.LatLng(41.8061901,-72.2523831);
-        // var node20 = new google.maps.LatLng(41.8062951,-72.25257810000001);
+            var contentString = '<div id="content">'+
+            '<div id="siteNotice">'+
+            '</div>'+
+            '<h1 id="firstHeading" class="firstHeading">PER</h1>'+
+            '<div id="bodyContent">'+
+            '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
+            'sandstone rock formation in the southern part of the '+
+            'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
+            'south west of the nearest large town, Alice Springs; 450&#160;km '+
+            '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
+            'features of the Uluru - Kata Tjuta National Park. Uluru is '+
+            'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
+            'Aboriginal people of the area. It has many springs, waterholes, '+
+            'rock caves and ancient paintings. Uluru is listed as a World '+
+            'Heritage Site.</p>'+
+            '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
+            'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
+            '(last visited June 22, 2009).</p>'+
+            '</div>'+
+            '</div>';
 
-
-        map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 5,
-          center: new google.maps.LatLng(41.850033, -87.6500523)
-          // center: new google.maps.LatLng(data_topo_test[1]['2'], data_topo_test[1]['3'])
-          // mapTypeControl: true,
-          // mapTypeControlOptions: {
-          //   style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-          // },
-          // navigationControl: true
-      });
-
-        google.maps.event.addListener(map, 'click', function() {
-            infowindow.close();
-            clearInterval(myinterval);
-            // for(var i=0;i<markers.length;i++){
-            //     if(markers[i]){
-            //         var li = document.getElementById("newid"+i);
-            //         li.style.backgroundColor="#000000";
-            //     }
-            // }
-            // var num = 3;
-            // var li = document.getElementById("newid"+3);
-            // li.style.backgroundColor="#000000";
-            // infoWindow.close();
-        });
-
-        var iconBase = 'http://labs.google.com/ridefinder/images/';
-
-        var icons = {
-          active: {
-            name: 'Active',
-            icon: iconBase + 'mm_20_green.png'
-        },
-        warning: {
-            name: 'Warning',
-            icon: iconBase + 'mm_20_orange.png'
-        },
-        critical: {
-            name: 'Critical',
-            icon: iconBase + 'mm_20_red.png'
-        }
-    };
-
-    var contentString = '<div id="content">'+
-    '<div id="siteNotice">'+
-    '</div>'+
-    '<h1 id="firstHeading" class="firstHeading">PER</h1>'+
-    '<div id="bodyContent">'+
-    '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-    'sandstone rock formation in the southern part of the '+
-    'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
-    'south west of the nearest large town, Alice Springs; 450&#160;km '+
-    '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
-    'features of the Uluru - Kata Tjuta National Park. Uluru is '+
-    'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
-    'Aboriginal people of the area. It has many springs, waterholes, '+
-    'rock caves and ancient paintings. Uluru is listed as a World '+
-    'Heritage Site.</p>'+
-    '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
-    'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
-    '(last visited June 22, 2009).</p>'+
-    '</div>'+
-    '</div>';
-
-    var infowindow = new google.maps.InfoWindow({
-        content: contentString,
-    });
+            var infowindow = new google.maps.InfoWindow({
+              content: contentString,
+            });
         // var infoWindow = new google.maps.InfoWindow({
         //     content: contentString,
         // });
 
-        addMarker(node1,'1',"active",'0');
-        addMarker(node3,'3',"active",'1');
-        addMarker(node4,'4',"active",'1');
-        addMarker(node5,'5',"active",'1');
-        addMarker(node6,'6',"active",'1');
-        // addMarker(node7,'7',"active",'1');
-        // addMarker(node8,'8',"active",'1');
-        // addMarker(node9,'9',"active",'1');
-        // addMarker(node10,'10',"active",'1');
-        // addMarker(node11,'11',"active",'1');
-        // addMarker(node12,'12',"active",'1');
-        // addMarker(node13,'13',"active",'1');
-        // addMarker(node14,'14',"active",'1');
-        // addMarker(node15,'15',"active",'1');
-        // addMarker(node16,'16',"active",'1');
-        // addMarker(node17,'17',"active",'1');
-        // addMarker(node18,'18',"active",'1');
-        // addMarker(node19,'19',"active",'1');
-        // addMarker(node20,'20',"active",'1');
+        for(var i=0; i<data_topo_test.length;i++){
+          if(data_topo_test[i] != ''){
+            var newNode = new google.maps.LatLng(data_topo_test[i]['2'], data_topo_test[i]['3']);
+            addMarker(newNode,i.toString(),"active",'1');
+          }
+        }
 
         addNetwork(markers,1);
-
-        // addMarker(node21,'21',"active",'0');
-        // addMarker(node23,'23',"active",'21');
-        // addMarker(node24,'24',"active",'21');
-        // addMarker(node25,'25',"active",'23');
-        // addMarker(node26,'26',"active",'24');
-        // addMarker(node27,'27',"active",'24');
-        // addMarker(node28,'28',"active",'21');
-        // addMarker(node29,'29',"active",'28');
-        // addMarker(node30,'30',"active",'28');
-        // addMarker(node31,'31',"active",'21');
-        // addMarker(node32,'32',"active",'21');
-        // addMarker(node33,'33',"active",'21');
-        // addMarker(node34,'34',"active",'32');
-        // addMarker(node35,'35',"active",'33');
-        // addMarker(node36,'36',"active",'32');
-        // addMarker(node37,'37',"active",'33');
-        // addMarker(node38,'38',"active",'37');
-        // addMarker(node39,'39',"active",'38');
-        // addMarker(node40,'40',"active",'36');
-
         addNetwork(markers2,2);
 
         var markerCluster1 = new MarkerClusterer(map, markers_location,
         {
-            maxZoom: 15,
-            imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+          maxZoom: 15,
+          imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
         });
-        // addNetwork(markers,2);
 
-  //       function drawChart(marker) {
-
-  //   // Create the data table.
-  //   var data = new google.visualization.DataTable();
-  //   data.addColumn('string', 'Topping');
-  //   data.addColumn('number', 'Slices');
-  //   data.addRows([
-  //     ['Mushrooms', 3],
-  //     ['Onions', 1],
-  //     ['Olives', 1],
-  //     ['Zucchini', 1],
-  //     ['Pepperoni', 2]
-  //   ]);
-
-  //   // Set chart options
-  //   var options = {'title':'Pizza sold @ '+
-  //                          marker.getPosition().toString(),
-  //                  'width':300,
-  //                  'height':200};
-
-  //   var node        = document.createElement('div'),
-  //       infoWindow  = new google.maps.InfoWindow(),
-  //       chart       = new google.visualization.PieChart(node);
-
-  //       chart.draw(data, options);
-  //       infoWindow.setContent(node);
-  //       infoWindow.open(marker.getMap(),marker);
-  // }
-  function convertTime(timestamp_string){
-    var timestamp = parseInt(timestamp_string);
-    var date = new Date(timestamp);
-    var year = date.getFullYear();
-    var month = date.getMonth();
-    var day = date.getDate();
-    var hours = date.getHours();
-    var minutes = "0" + date.getMinutes();
-    var seconds = "0" + date.getSeconds();
-    var formattedTime = year + '/' + month + '/' + day + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-    var result_time = new Date(year, month, day, hours, minutes.substr(-2), seconds.substr(-2));
+        function convertTime(timestamp_string){
+          var timestamp = parseInt(timestamp_string);
+          var date = new Date(timestamp);
+          var year = date.getFullYear();
+          var month = date.getMonth();
+          var day = date.getDate();
+          var hours = date.getHours();
+          var minutes = "0" + date.getMinutes();
+          var seconds = "0" + date.getSeconds();
+          var formattedTime = year + '/' + month + '/' + day + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+          var result_time = new Date(year, month, day, hours, minutes.substr(-2), seconds.substr(-2));
     // return formattedTime;
     return result_time;
 
-}
-function findLineByLeastSquares(values_x, values_y) {
+  }
+
+  function convertTime4(date_string, time_string){
+    var date_temp_array = date_string.split('-');
+    var time_temp_array = time_string.split(':');
+    return new Date(date_temp_array[0], date_temp_array[1]-1, date_temp_array[2], time_temp_array[0], time_temp_array[1], time_temp_array[2], 0);
+  }
+  function findLineByLeastSquares(values_x, values_y) {
     var sum_x = 0;
     var sum_y = 0;
     var sum_xy = 0;
@@ -1186,20 +1039,20 @@ function findLineByLeastSquares(values_x, values_y) {
      * Nothing to do.
      */
      if (values_length === 0) {
-        return [ [], [] ];
+      return [ [], [] ];
     }
 
     /*
      * Calculate the sum for each of the parts necessary.
      */
      for (var v = 0; v < values_length; v++) {
-        x = values_x[v];
-        y = values_y[v];
-        sum_x += x;
-        sum_y += y;
-        sum_xx += x*x;
-        sum_xy += x*y;
-        count++;
+      x = values_x[v];
+      y = values_y[v];
+      sum_x += x;
+      sum_y += y;
+      sum_xx += x*x;
+      sum_xy += x*y;
+      count++;
     }
 
     /*
@@ -1216,105 +1069,105 @@ function findLineByLeastSquares(values_x, values_y) {
      var result_values_y = [];
 
      for (var v = 0; v < values_length; v++) {
-        x = values_x[v];
-        y = x * m + b;
-        result_values_x.push(x);
-        result_values_y.push(y);
+      x = values_x[v];
+      y = x * m + b;
+      result_values_x.push(x);
+      result_values_y.push(y);
     }
 
     return [result_values_x, result_values_y];
-}
-function getCustomInfo(marker){
+  }
+  function getCustomInfo(marker){
     return marker.customInfo;
-}
-function getCustomInfoTime(marker){
+  }
+  function getCustomInfoTime(marker){
     return marker.customInfoTime;
-}
-function getMarker(id){
+  }
+  function getMarker(id){
     return markers[parseInt(id)];
-}
-function generateRandom(){
+  }
+  function generateRandom(){
     return Math.random() * (0.06 - 0.00) + 0.00;
-}
-function calcMid(marker){
+  }
+  function calcMid(marker){
     var parent_id = marker.parentInfo;
     var parent_marker = getMarker(parent_id);
     if(parent_marker){
-        var x = (marker.getPosition().lat() + parent_marker.getPosition().lat())/2;
-        var y = (marker.getPosition().lng() + parent_marker.getPosition().lng())/2;
-        var midpoint = new google.maps.LatLng(x, y);
-        return midpoint;
+      var x = (marker.getPosition().lat() + parent_marker.getPosition().lat())/2;
+      var y = (marker.getPosition().lng() + parent_marker.getPosition().lng())/2;
+      var midpoint = new google.maps.LatLng(x, y);
+      return midpoint;
     }
-}
-function calcDistance(marker1,marker2){
+  }
+  function calcDistance(marker1,marker2){
     var x = marker1.getPosition().lat() - marker2.getPosition().lat();
     var y = marker1.getPosition().lng() - marker2.getPosition().lng();
     var distance = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
     return distance;
-}
-function getParent(marker){
+  }
+  function getParent(marker){
     var parent_id = marker.parentInfo;
     var parent_marker = getMarker(parent_id);
     return parent_marker;
-}
-function searchArea(position, area){
+  }
+  function searchArea(position, area){
     if(area.shapeType == 1){ // is a circle
-        var center = area.getCenter();
-        var radius = area.getRadius();
+      var center = area.getCenter();
+      var radius = area.getRadius();
         // alert(radius+"   "+google.maps.geometry.spherical.computeDistanceBetween(position, center));
         // console.log(google.maps.geometry.spherical.computeDistanceBetween(position, center));
         if(google.maps.geometry.spherical.computeDistanceBetween(position, center) < radius){
             // alert("overlap");
             return true;
 
-        }else{
+          }else{
             return false;
-        }
+          }
     }else if(area.shapeType == 0){ // is a polygon
-        return google.maps.geometry.poly.containsLocation(position, area);
+      return google.maps.geometry.poly.containsLocation(position, area);
     }else{
-        return false;
+      return false;
     }
-}
-var shapes = [];
-function markRegion(){
+  }
+  var shapes = [];
+  function markRegion(){
     // var cluster = [];
     
     while(markers.length > 0){
-        var current_marker = markers.pop();
-        if(current_marker && current_marker.isCritical==1){
-            var cluster = [];
-            var affected = [];
-            var sum_lossRate_mult = current_marker.lossRate;
-            var sum_lossRate = current_marker.lossRate*0.05;
-            affected.push(current_marker.label);
-            cluster.push(current_marker.getPosition());
+      var current_marker = markers.pop();
+      if(current_marker && current_marker.isCritical==1){
+        var cluster = [];
+        var affected = [];
+        var sum_lossRate_mult = current_marker.lossRate;
+        var sum_lossRate = current_marker.lossRate*0.05;
+        affected.push(current_marker.label);
+        cluster.push(current_marker.getPosition());
             // markers.shift();
             while(getParent(current_marker) && getParent(current_marker).isCritical==1){
-                var first_marker = current_marker;
-                sum_lossRate_mult += current_marker.lossRate;
-                sum_lossRate += current_marker.lossRate*0.05;
-                current_marker = getParent(current_marker);
-                var second_marker = current_marker;
-                sum_lossRate_mult += current_marker.lossRate;
-                sum_lossRate += current_marker.lossRate*0.05;
-                affected.push(current_marker.label);
-                cluster.push(current_marker.getPosition());
+              var first_marker = current_marker;
+              sum_lossRate_mult += current_marker.lossRate;
+              sum_lossRate += current_marker.lossRate*0.05;
+              current_marker = getParent(current_marker);
+              var second_marker = current_marker;
+              sum_lossRate_mult += current_marker.lossRate;
+              sum_lossRate += current_marker.lossRate*0.05;
+              affected.push(current_marker.label);
+              cluster.push(current_marker.getPosition());
                 // markers.splice(current_marker,1);
-            }
-            var avg_lossRate_mult = sum_lossRate_mult / cluster.length;
-            var avg_lossRate = sum_lossRate / cluster.length;
-            if(cluster.length > 2){
+              }
+              var avg_lossRate_mult = sum_lossRate_mult / cluster.length;
+              var avg_lossRate = sum_lossRate / cluster.length;
+              if(cluster.length > 2){
                 var shape = new google.maps.Polygon({
-                    paths: cluster,
-                    strokeColor: ' #FF5733 ',
-                    strokeOpacity: 0,
-                    strokeWeight: 0,
-                    fillColor: ' #FF5733 ',
-                    fillOpacity: 0.2 * avg_lossRate_mult,
-                    lossInfo: avg_lossRate,
-                    shapeType: 0,
-                    affected: affected
+                  paths: cluster,
+                  strokeColor: ' #FF5733 ',
+                  strokeOpacity: 0,
+                  strokeWeight: 0,
+                  fillColor: ' #FF5733 ',
+                  fillOpacity: 0.2 * avg_lossRate_mult,
+                  lossInfo: avg_lossRate,
+                  shapeType: 0,
+                  affected: affected
                 });
                 
                 shape.setMap(map);
@@ -1343,20 +1196,20 @@ function markRegion(){
                 // });
                 // shape.setMap(map);
                 shapes.push(shape);
-            }
-            else if(cluster.length == 2){
+              }
+              else if(cluster.length == 2){
                 var cityCircle = new google.maps.Circle({
-                    strokeColor: '#FF5733',
-                    strokeOpacity: 0,
-                    strokeWeight: 0,
-                    fillColor: '#FF5733',
-                    fillOpacity: 0.2 * avg_lossRate_mult,
-                    map: map,
-                    center: calcMid(first_marker),
-                    radius: calcDistance(first_marker,second_marker)/2*100000+4,
-                    lossInfo: avg_lossRate,
-                    shapeType: 1,
-                    affected: affected
+                  strokeColor: '#FF5733',
+                  strokeOpacity: 0,
+                  strokeWeight: 0,
+                  fillColor: '#FF5733',
+                  fillOpacity: 0.2 * avg_lossRate_mult,
+                  map: map,
+                  center: calcMid(first_marker),
+                  radius: calcDistance(first_marker,second_marker)/2*100000+4,
+                  lossInfo: avg_lossRate,
+                  shapeType: 1,
+                  affected: affected
                 });
                 shapes.push(cityCircle);
                 // createInfoWindow(cityCircle, "PER: " + avg_lossRate);
@@ -1386,22 +1239,22 @@ function markRegion(){
                 // });
                 // shapes.push(cityCircle);
 
+              }
             }
+          }
         }
-    }
-}
-function drawAdditionalHAxis(chart,dataTable){
-    var layout = chart.getChartLayoutInterface();
-    var chartArea = layout.getChartAreaBoundingBox();
+        function drawAdditionalHAxis(chart,dataTable){
+          var layout = chart.getChartLayoutInterface();
+          var chartArea = layout.getChartAreaBoundingBox();
 
-    var svg = chart.getContainer().getElementsByTagName('svg')[0];
-    var lastVal = 0.05;
+          var svg = chart.getContainer().getElementsByTagName('svg')[0];
+          var lastVal = 0.05;
     // var lastVal_temp = 0.1;
     var yLoc = layout.getYLocation(lastVal);
     svg.appendChild(createLine(chartArea.left,yLoc,chartArea.width + chartArea.left,yLoc,'#FF0000',3,2)); // axis line
     svg.appendChild(createText(chartArea.width + chartArea.left + 20 ,yLoc + 5,'Arial','13','red',lastVal)); // axis label 
-}
-function createLine(x1, y1, x2, y2, color, w, dash) {
+  }
+  function createLine(x1, y1, x2, y2, color, w, dash) {
     var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
     line.setAttribute('x1', x1);
     line.setAttribute('y1', y1);
@@ -1411,9 +1264,9 @@ function createLine(x1, y1, x2, y2, color, w, dash) {
     line.setAttribute('stroke-width', w);
     line.setAttribute('stroke-dasharray', dash);
     return line;
-}
+  }
 
-function createText(x, y, fontFamily, fontSize,fontColor,value) {
+  function createText(x, y, fontFamily, fontSize,fontColor,value) {
     var text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     text.setAttribute('x', x);
     text.setAttribute('y', y);
@@ -1422,67 +1275,59 @@ function createText(x, y, fontFamily, fontSize,fontColor,value) {
     text.setAttribute('fill', fontColor);
     text.innerHTML = value;
     return text;
-}
+  }
 
-function createInfoWindow(poly, content) {  
+  function createInfoWindow(poly, content) {  
     google.maps.event.addListener(poly, 'click', function(event) {
-        infowindow.setContent(content);
-        infowindow.setPosition(event.latLng);
-        infowindow.open(map);
+      infowindow.setContent(content);
+      infowindow.setPosition(event.latLng);
+      infowindow.open(map);
     });
-}
+  }
 
-function drawInsideHistogram(data_point, marker){
+  function drawInsideHistogram(data_point, marker){
     var node_data = getCustomInfo(marker);                            
     var data_his = google.visualization.arrayToDataTable([
-        ['channel', 'RSSI'],
-        ['CH11', parseFloat(node_data[data_point][2])],
-        ['CH12', parseFloat(node_data[data_point][3])],
-        ['CH13', parseFloat(node_data[data_point][4])],
-        ['CH14', parseFloat(node_data[data_point][5])],
-        ['CH15', parseFloat(node_data[data_point][6])],
-        ['CH16', parseFloat(node_data[data_point][7])],
-        ['CH17', parseFloat(node_data[data_point][8])],
-        ['CH18', parseFloat(node_data[data_point][9])],
-        ['CH19', parseFloat(node_data[data_point][10])],
-        ['CH20', parseFloat(node_data[data_point][11])],
-        ['CH21', parseFloat(node_data[data_point][12])],
-        ['CH22', parseFloat(node_data[data_point][13])],
-        ['CH23', parseFloat(node_data[data_point][14])],
-        ['CH24', parseFloat(node_data[data_point][15])],
-        ['CH25', parseFloat(node_data[data_point][16])],
-        ]);
+      ['channel', 'RSSI'],
+      ['CH11', parseFloat(node_data[data_point][2])],
+      ['CH12', parseFloat(node_data[data_point][3])],
+      ['CH13', parseFloat(node_data[data_point][4])],
+      ['CH14', parseFloat(node_data[data_point][5])],
+      ['CH15', parseFloat(node_data[data_point][6])],
+      ['CH16', parseFloat(node_data[data_point][7])],
+      ['CH17', parseFloat(node_data[data_point][8])],
+      ['CH18', parseFloat(node_data[data_point][9])],
+      ['CH19', parseFloat(node_data[data_point][10])],
+      ['CH20', parseFloat(node_data[data_point][11])],
+      ['CH21', parseFloat(node_data[data_point][12])],
+      ['CH22', parseFloat(node_data[data_point][13])],
+      ['CH23', parseFloat(node_data[data_point][14])],
+      ['CH24', parseFloat(node_data[data_point][15])],
+      ['CH25', parseFloat(node_data[data_point][16])],
+      ]);
     var options_his = {
-        'legend':'top',
-        width: 700,
+      'legend':'top',
+      width: 700,
                 // height: 400,
-            };
-            var node_his = document.createElement('div');
-            var infoWindow_his  = new google.maps.InfoWindow();
-            var chart_his = new google.visualization.ColumnChart(node_his);
-            chart_his.draw(data_his, options_his);
-            infoWindow_his.setContent(node_his);
-            infoWindow_his.open(marker.getMap(),marker);
-        }
+              };
+              var node_his = document.createElement('div');
+              var infoWindow_his  = new google.maps.InfoWindow();
+              var chart_his = new google.visualization.ColumnChart(node_his);
+              chart_his.draw(data_his, options_his);
+              infoWindow_his.setContent(node_his);
+              infoWindow_his.open(marker.getMap(),marker);
+            }
 
 
-        function drawChart(marker,avg,current,predict,fault_pbb) {
-        // var data = google.visualization.arrayToDataTable([
-        //   ['Time', 'PER'],
-        //   ['7/13',  parseFloat(getCustomInfo(marker)[0])],
-        //   ['7/14',  parseFloat(getCustomInfo(marker)[1])],
-        //   ['7/15',  parseFloat(getCustomInfo(marker)[2])],
-        //   ['7/16',  parseFloat(getCustomInfo(marker)[3])],
-        //   ['7/17',  parseFloat(getCustomInfo(marker)[4])],
-        //   ['7/18',  parseFloat(getCustomInfo(marker)[5])]
-        // ]);
-        var node_id = parseInt(marker.label);
-        var node_data = getCustomInfo(marker);
-        var node_time = getCustomInfoTime(marker);
+            function drawChart(marker,avg,current,predict,fault_pbb) {
+              var node_id = parseInt(marker.label);
+              var node_data = getCustomInfo(marker);
+              var node_time = getCustomInfoTime(marker);
         // alert(node_data.length);
         data = new google.visualization.DataTable();
         data.addColumn('date','TIME');
-        data.addColumn('number','PER');
+        data.addColumn('number','APP_PER');
+        data.addColumn('number','MAC_PER');
         data.addColumn('number','RSSI');
         // data.addColumn('string', 'title');
         // data.addColumn('string', 'text');
@@ -1491,20 +1336,21 @@ function drawInsideHistogram(data_point, marker){
             // data.addRow([new Date(parseInt(node_time[i])).toString(), parseFloat(node_data[i])]);
             // data.addRow(['123', 0.001]);
             var time_data = convertTime(node_time[i]);
+            // var time_data = node_time[i];
             if(parseFloat(node_data[i][0]) != 0){
-                var avg_per_data = parseFloat(node_data[i][1]) / parseFloat(node_data[i][0]) * 100;
+              var avg_per_data = parseFloat(node_data[i][1]) / parseFloat(node_data[i][0]) * 100;
             }else{
-                var avg_per_data = 1;
+              var avg_per_data = 1;
             }
             // var avg_rssi_data = (parseFloat(node_data[i][2])+parseFloat(node_data[i][3]))/2;
             var sum_rssi_data = 0;
-            for(var j=2; j<node_data[i].length;j++){
-                sum_rssi_data += parseFloat(node_data[i][j]);
+            for(var j=4; j<node_data[i].length;j++){
+              sum_rssi_data += parseFloat(node_data[i][j]);
             }
             var avg_rssi_data = sum_rssi_data / (node_data[i].length -2);    
             
             data.addRow([time_data, avg_per_data, avg_rssi_data]);
-        }
+          }
         // setInterval(function(){
         //     if(node_data.length > temp_length){
         //         for(var i=temp_length;i<node_data.length;i++){
@@ -1524,17 +1370,17 @@ function drawInsideHistogram(data_point, marker){
         // });
 
         jQuery.swap = function( elem, options, callback, args ) {
-            var ret, name, old = {};
-            for ( name in options ) {
-                old[ name ] = elem.style[ name ];
-                elem.style[ name ] = options[ name ];
-            }
+          var ret, name, old = {};
+          for ( name in options ) {
+            old[ name ] = elem.style[ name ];
+            elem.style[ name ] = options[ name ];
+          }
 
-            ret = callback.apply( elem, args || [] );
-            for ( name in options ) {
-                elem.style[ name ] = old[ name ];
-            }                                                                                                               
-            return ret;
+          ret = callback.apply( elem, args || [] );
+          for ( name in options ) {
+            elem.style[ name ] = old[ name ];
+          }                                                                                                               
+          return ret;
         };
 
         webshims.setOptions('forms-ext', {types: 'date'});
@@ -1554,18 +1400,18 @@ function drawInsideHistogram(data_point, marker){
           scaleType:'allfixed',
           // tooltip: {isHtml: true},
           // legend: 
-      };
+        };
 
-      var node = document.createElement('div');
-      node.setAttribute('id', 'node');
-      node.style.height = "250px";
+        var node = document.createElement('div');
+        node.setAttribute('id', 'node');
+        node.style.height = "250px";
         // infowindow  = new google.maps.InfoWindow(),
         chart = new google.visualization.AnnotatedTimeLine(node);
         google.visualization.events.addListener(chart, 'select', selectHandler);
         function selectHandler(e) {
           var selected = chart.getSelection()[0].row;
           drawInsideHistogram(selected, marker);
-      }
+        }
       // view(marker);
       // chart.draw(data, options);
         // drawAdditionalHAxis(chart, data);
@@ -1593,55 +1439,88 @@ function drawInsideHistogram(data_point, marker){
         // google.maps.event.addListener(marker.getMap(), 'click', function() {
         //     infoWindow.close();
         // });
-    }
+      }
 
-    
-    function drawChart2(marker){
+      function conditionalDivision(a,b){
+        if(b==0){
+          return 0;
+        }else if(a>b){
+          return 1;
+        }else{
+          return a/b;
+        }
+      }
+
+      function getAvgRssi(rssi_string){
+        var res = rssi_string.split('rssi');
+        var c = 0;
+        for(var i=1; i<res.length;i++){
+          var b = res[i].substring(res[i].indexOf(":")+1,res[i].indexOf(","));
+          c += Number(b);
+        }
+        return c/res.length;
+      }
+
+
+      function drawChart2(marker){
         $.ajax({
-            url: "/api/sensor",
-            dataType: "json",
-            success: function (jsonData) {
+          url: "/api/sensor",
+          dataType: "json",
+          success: function (jsonData) {
                 // alert(jsonData[3]);
-                var data2 = new google.visualization.DataTable();
+                data2 = new google.visualization.DataTable();
                 data2.addColumn('date','TIME');
-                data2.addColumn('number','PER');
+                data2.addColumn('number','APP_PER');
+                data2.addColumn('number', 'MAC_PER');
+                data2.addColumn('number', 'RSSI');
 
                 var total2 = 0;
                 var predict2_time = [];
                 var predict2_per = [];
                 for(var i=0;i<jsonData[parseInt(marker.id)].length;i++){
-                    // data.addRow([convertTime(node_time[i]), parseFloat(node_data[i])]);
-                    data2.addRow([convertTime(jsonData[parseInt(marker.id)][i][0]),jsonData[parseInt(marker.id)][i][1]]);
-                    predict2_time.push(jsonData[parseInt(marker.id)][i][0]);
-                    predict2_per.push(jsonData[parseInt(marker.id)][i][1]);
-                    var current2 = jsonData[parseInt(marker.id)][i][1];
-                    total2 += current2;
+                  var data_time = convertTime4(jsonData[parseInt(marker.id)][i]['DATE'], jsonData[parseInt(marker.id)][i]['TIME']);
+                  var data_gateway = jsonData[parseInt(marker.id)][i]['GATEWAY_NAME'];
+                  var data_channel_info = jsonData[parseInt(marker.id)][i]['CHANNEL_INFO'];
+                  var channel_rssi_avg = getAvgRssi(data_channel_info);
+                  var data_mac_tx_total = jsonData[parseInt(marker.id)][i]['MAC_TX_TOTAL'];
+                  var data_mac_tx_fail = jsonData[parseInt(marker.id)][i]['MAC_TX_FAIL'];
+                  var data_app_per_sent = jsonData[parseInt(marker.id)][i]['APP_PER_SENT'];
+                  var data_app_per_lost = jsonData[parseInt(marker.id)][i]['APP_PER_LOST'];
+                  data2.addRow([data_time, conditionalDivision(data_app_per_lost, data_app_per_sent)*100, conditionalDivision(data_mac_tx_fail, data_mac_tx_total)*100, channel_rssi_avg]);
+                  predict2_time.push(jsonData[parseInt(marker.id)][i][0]);
+                  predict2_per.push(jsonData[parseInt(marker.id)][i][1]);
+                  var current2 = jsonData[parseInt(marker.id)][i][1];
+                  total2 += current2;
                     // var avg2 = total2/jsonData[parseInt(marker.id).length];
-                }
-                var avg2 = total2/jsonData[parseInt(marker.id)].length;
-                var predict2 = findLineByLeastSquares(predict2_time, predict2_per)[1][0];
-                if(predict2 > 0.05){
+                  }
+                  var avg2 = total2/jsonData[parseInt(marker.id)].length;
+                  var predict2 = findLineByLeastSquares(predict2_time, predict2_per)[1][0];
+                  if(predict2 > 0.05){
                     var fault_pbb2 = 1;
-                }else if(predict2 > 0.05 && current2 > predict2){
+                  }else if(predict2 > 0.05 && current2 > predict2){
                     var fault_pbb2 = 0;
-                }else if(current2 < 0.05 && current2 > predict2){
+                  }else if(current2 < 0.05 && current2 > predict2){
                     var fault_pbb2 = 0;
-                }else{
+                  }else{
                     var fault_pbb2 = 1/((0.05-current2)/(predict2-current2));
-                }
+                  }
 
-                var d = new Date();
-                d.setHours(d.getHours() - 2);
+                  var d = new Date();
+                  d.setHours(d.getHours() - 2);
 
-                var options2 = {
+                  options2 = {
                     title: 'new chart2',
                     displayAnnotations: false,
                     allowRedraw: true,
-                    zoomStartTime: d
-                };
+                    width: 625,
+                    scaleType: 'allfixed',
+                    // zoomStartTime: d
+                  };
 
-                var node2 = document.createElement('div');
-                var chart2 = new google.visualization.AnnotatedTimeLine(node2);
+                  var node2 = document.createElement('div');
+                  node2.style.height = "250px";
+                  // node2.style.width = '550px';
+                  chart2 = new google.visualization.AnnotatedTimeLine(node2);
 
                 // chart2.setVisibleChartRange();
                 // var range = chart2.getVisibleChartRange();
@@ -1672,14 +1551,19 @@ function drawInsideHistogram(data_point, marker){
                 // },1000);
 
                 var titlestring2 = '<div id="content">'+
-                '<h1 id="firstHeading" class="firstHeading">PER</h1>'+
+                '<h1 id="firstHeading" class="firstHeading">Node '+parseInt(marker.id)+' | PER vs. RSSI</h1>'+
                 '<div id="bodyContent">'+
                 '<p><b>Average: </b>'+(avg2*100).toFixed(2)+'%'+'</p>'+
                 '<p><b>Current: </b>'+(current2*100).toFixed(2)+'%'+'</p>'+
                 '<p><b>Predicted: </b>'+(predict2*100).toFixed(2)+'%'+'</p>'+
                 '<p><b>Fault probability: </b>'+(fault_pbb2*100).toFixed(2)+'%'+'</p>'+
+                '<p>'+'Start date: <input type="date" id="chart_start_date" />'+'</p>'+
+                '<p>'+'End date: <input type="date" id="chart_end_date" />'+'</p>'+
+                '<p>'+'Metric: <input type="checkbox" value="app_per" id="app_per" />Application Layer PER<input type="checkbox" value="mac_per" id="mac_per" />Mac Layer PER<input type="checkbox" value="rssi" id="rssi" />RSSI'+'</p>'+
                 '</div>'+
-                '</div>';
+                '</div>'+
+                '<div><form action="javascript:view();"><input type="submit" value="View"></form></div>';
+                ;
 
                 var div2 = document.createElement('div');
                 // div2.setAttribute('id', 'divv');
@@ -1698,13 +1582,13 @@ function drawInsideHistogram(data_point, marker){
                 // var infowindow = new google.maps.InfoWindow();
                 infowindow.setContent(div2);
                 infowindow.open(marker.getMap(),marker);
-            }
-        });
+              }
+            });
 }
 
 
 function getSum(total, num) {
-    return total + num;
+  return total + num;
 }
 
       // var sum_network = 0;
@@ -1722,12 +1606,12 @@ function getSum(total, num) {
         var avg_network_rssi = sum_network_rssi / markers.length;
         
         if(label==1){
-            var sidebar = $('#demo');
-            var sidebar_entry = $('<li/>', {
-                'html': '<a href="#demo" class="btn btn-link" data-toggle="collapse">Network '+label
-                +'<ul style="padding-left: 5px">Num. Nodes: '+(markers.length - 1 )+'</ul>'
-                +'<ul style="padding-left: 5px">Avg. PER: '+avg_network.toFixed(6)+'</ul>'
-                +'<ul style="padding-left: 5px">Avg. RSSI: '+avg_network_rssi.toFixed(6)+'</ul>'
+          var sidebar = $('#demo');
+          var sidebar_entry = $('<li/>', {
+            'html': '<a href="#demo" class="btn btn-link" data-toggle="collapse">Network '+label
+            +'<ul style="padding-left: 5px">Num. Nodes: '+(markers.length - 1 )+'</ul>'
+            +'<ul style="padding-left: 5px">Avg. PER: '+avg_network.toFixed(6)+'</ul>'
+            +'<ul style="padding-left: 5px">Avg. RSSI: '+avg_network_rssi.toFixed(6)+'</ul>'
             // +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
             // +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>'
             +'<ul style="padding-left: 5px">Energy status: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+(Math.random() * (0.8 - 0.1) + 0.1)+'">'+'</meter>'+'</ul>'
@@ -1761,14 +1645,14 @@ function getSum(total, num) {
             //     // alert($(this).attr('id'));
             //     // alert($(this).attr('id'));
             // }
-        }).insertBefore(sidebar);
+          }).insertBefore(sidebar);
         }else if(label ==2){
-            var sidebar2 = $('#demo2');
-            var sidebar_entry2 = $('<li/>', {
-                'html': '<a href="#demo2" class="btn btn-link" data-toggle="collapse">Network '+label
-                +'<ul style="padding-left: 5px">Num. Nodes: '+(markers2.length - 1 )+'</ul>'
-                +'<ul style="padding-left: 5px">Avg. PER: '+avg_network.toFixed(6)+'</ul>'
-                +'<ul style="padding-left: 5px">Avg. RSSI: '+avg_network_rssi.toFixed(6)+'</ul>'
+          var sidebar2 = $('#demo2');
+          var sidebar_entry2 = $('<li/>', {
+            'html': '<a href="#demo2" class="btn btn-link" data-toggle="collapse">Network '+label
+            +'<ul style="padding-left: 5px">Num. Nodes: '+(markers2.length - 1 )+'</ul>'
+            +'<ul style="padding-left: 5px">Avg. PER: '+avg_network.toFixed(6)+'</ul>'
+            +'<ul style="padding-left: 5px">Avg. RSSI: '+avg_network_rssi.toFixed(6)+'</ul>'
             // +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
             // +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>'
             +'<ul style="padding-left: 5px">Energy status: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+(Math.random() * (0.8 - 0.1) + 0.1)+'">'+'</meter>'+'</ul>'
@@ -1802,46 +1686,65 @@ function getSum(total, num) {
             //     // alert($(this).attr('id'));
             //     // alert($(this).attr('id'));
             // }
-        }).insertBefore(sidebar2);
+          }).insertBefore(sidebar2);
         // insertBefore( ".network1" );
+      }
     }
-}
 
-var myinterval = null;
-function addMarker(location,label,active,parent){
+    var myinterval = null;
+    function addMarker(location,label,active,parent){
         // var array = [generateRandom(),generateRandom(),generateRandom(),generateRandom(),generateRandom(),generateRandom()];
         // alert(data_test[0][1]);
         // var array = [data_test[100][1],data_test[101][1],data_test[102][1],data_test[103][1],data_test[104][1],data_test[105][1]];
         var node_id = parseInt(label);
         if(data_test[node_id]){
-            var node_data_length = data_test[node_id].length;
-            var array = [];
-            var array_time = [];
-            var array_x = [];
-            var array_y = [];
-            for(var i=0;i<node_data_length;i++){
-                array_time[i] = data_test[node_id][i]['TS'];
-                array[i] = [
-                data_test[node_id][i]['APP_PER_SENT'], data_test[node_id][i]['APP_PER_LOST'],
-                data_test[node_id][i]['CH11_RSSI'], data_test[node_id][i]['CH12_RSSI'],
-                data_test[node_id][i]['CH13_RSSI'], data_test[node_id][i]['CH14_RSSI'],
-                data_test[node_id][i]['CH15_RSSI'], data_test[node_id][i]['CH16_RSSI'],
-                data_test[node_id][i]['CH17_RSSI'], data_test[node_id][i]['CH18_RSSI'],
-                data_test[node_id][i]['CH19_RSSI'], data_test[node_id][i]['CH20_RSSI'],
-                data_test[node_id][i]['CH21_RSSI'], data_test[node_id][i]['CH22_RSSI'],
-                data_test[node_id][i]['CH23_RSSI'], data_test[node_id][i]['CH24_RSSI'],
-                data_test[node_id][i]['CH25_RSSI']
+          var node_data_length = data_test[node_id].length;
+          var array = [];
+          var array_time = [];
+          var array_x = [];
+          var array_y = [];
+          for(var i=0;i<node_data_length;i++){
+            var date_temp_array = data_test[node_id][i]['DATE'].split('-');
+            var time_temp_array = data_test[node_id][i]['TIME'].split(':');
+            array_time[i] = new Date(date_temp_array[0], date_temp_array[1], date_temp_array[2], time_temp_array[0], time_temp_array[1], time_temp_array[2], 0);
+            array[i] = [
+                data_test[node_id][i]['APP_PER_SENT'], data_test[node_id][i]['APP_PER_LOST'], //0-1
+                data_test[node_id][i]['MAC_TX_TOTAL'], data_test[node_id][i]['MAC_TX_FAIL'], //2-3
+                data_test[node_id][i]['0']['rssi'], //4
+                data_test[node_id][i]['1']['rssi'],
+                data_test[node_id][i]['2']['rssi'],
+                data_test[node_id][i]['3']['rssi'],
+                data_test[node_id][i]['4']['rssi'],
+                data_test[node_id][i]['5']['rssi'],
+                data_test[node_id][i]['6']['rssi'],
+                data_test[node_id][i]['7']['rssi'],
+                data_test[node_id][i]['8']['rssi'],
+                data_test[node_id][i]['9']['rssi'],
+                data_test[node_id][i]['10']['rssi'],
+                data_test[node_id][i]['11']['rssi'],
+                data_test[node_id][i]['12']['rssi'],
+                data_test[node_id][i]['13']['rssi'],
+                data_test[node_id][i]['14']['rssi'],
+                data_test[node_id][i]['15']['rssi'] //19
+                // data_test[node_id][i]['CH11_RSSI'], data_test[node_id][i]['CH12_RSSI'],
+                // data_test[node_id][i]['CH13_RSSI'], data_test[node_id][i]['CH14_RSSI'],
+                // data_test[node_id][i]['CH15_RSSI'], data_test[node_id][i]['CH16_RSSI'],
+                // data_test[node_id][i]['CH17_RSSI'], data_test[node_id][i]['CH18_RSSI'],
+                // data_test[node_id][i]['CH19_RSSI'], data_test[node_id][i]['CH20_RSSI'],
+                // data_test[node_id][i]['CH21_RSSI'], data_test[node_id][i]['CH22_RSSI'],
+                // data_test[node_id][i]['CH23_RSSI'], data_test[node_id][i]['CH24_RSSI'],
+                // data_test[node_id][i]['CH25_RSSI']
                 ];
 
                 array_x.push(parseInt(array_time[i]));
                 if(parseFloat(array[i][0]) != 0){
-                    array_y.push(parseFloat(array[i][1]) / parseFloat(array[i][0]));
-                    var current = parseFloat(array[i][1]) / parseFloat(array[i][0]);
+                  array_y.push(parseFloat(array[i][1]) / parseFloat(array[i][0]));
+                  var current = parseFloat(array[i][1]) / parseFloat(array[i][0]);
                 }else{
-                    array_y.push(0);
-                    var current = 0;
+                  array_y.push(0);
+                  var current = 0;
                 }
-            }
+              }
             // if(parseFloat(array[array.length-1][0]) != 0){
             //         var current = array[array.length-1][1] / parseFloat(array[array.length-1][0]);
             // }else{
@@ -1852,20 +1755,20 @@ function addMarker(location,label,active,parent){
             var predict_y = result[1][0];
             // var fault_pbb_temp = 1/((0.05-parseFloat(current))/(parseFloat(predict_y)-parseFloat(current)));
             if(parseFloat(predict_y) > 0.05){
-                var fault_pbb = 1;
+              var fault_pbb = 1;
             }else if(parseFloat(current) > 0.05 && parseFloat(current) > parseFloat(predict_y)){
-                var fault_pbb = 0;
+              var fault_pbb = 0;
             }else if(parseFloat(current) < 0.05 && parseFloat(current) > parseFloat(predict_y)){
-                var fault_pbb = 0;
+              var fault_pbb = 0;
             }else{
-                var fault_pbb = 1/((0.05-parseFloat(current))/(parseFloat(predict_y)-parseFloat(current)));
+              var fault_pbb = 1/((0.05-parseFloat(current))/(parseFloat(predict_y)-parseFloat(current)));
             }
-        }else{
+          }else{
             var array = ['0'];
             var array_time = ['0'];
             var current = ['0'];
             var predict_y = ['0'];
-        }
+          }
         // alert(data_test);
         var sum = 0;
         var sum_rssi = 0;
@@ -1873,28 +1776,28 @@ function addMarker(location,label,active,parent){
         for(var i=0;i<array.length;i++){
             // sum += parseFloat(array[i]);
             if(parseFloat(array[i][0]) != 0){
-                sum += parseFloat(array[i][1]) / parseFloat(array[i][0]);
+              sum += parseFloat(array[i][1]) / parseFloat(array[i][0]);
             }else{
-                sum += 0;
+              sum += 0;
             }
             for(var j=2;j<array[i].length;j++){
-                sum_rssi += parseFloat(array[i][j]);
-                num_channel ++;
+              sum_rssi += parseFloat(array[i][j]);
+              num_channel ++;
             }
-        }
-        var avg_rssi = sum_rssi / num_channel;
+          }
+          var avg_rssi = sum_rssi / num_channel;
         // sum_network += sum;
         var avg = sum / array.length;
         if(isNaN(avg)){
-            sum_network += 0;
+          sum_network += 0;
         }else{
-            sum_network += avg;
+          sum_network += avg;
         }
 
         if(isNaN(avg_rssi)){
-            sum_network_rssi += 0;
+          sum_network_rssi += 0;
         }else{
-            sum_network_rssi += avg_rssi;
+          sum_network_rssi += avg_rssi;
         }
 
         /** analysis **/
@@ -1920,117 +1823,117 @@ function addMarker(location,label,active,parent){
         /**************/
 
         var marker = new google.maps.Marker({
-            map: map,
-            icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 15,
-                strokeWeight:2,
-                fillColor: '#008000',
-                fillOpacity: 1.0
-            },
-            position: location,
-            label: label,
-            id: label,
-            status: active,
-            customInfo: array,
-            customInfoTime: array_time,
-            parentInfo: parent,
-            isCritical: 0,
-            lossRate: 0,
-            batteryInfo: Math.random() * (0.8 - 0.1) + 0.1
+          map: map,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 15,
+            strokeWeight:2,
+            fillColor: '#008000',
+            fillOpacity: 1.0
+          },
+          position: location,
+          label: label,
+          id: label,
+          status: active,
+          customInfo: array,
+          customInfoTime: array_time,
+          parentInfo: parent,
+          isCritical: 0,
+          lossRate: 0,
+          batteryInfo: Math.random() * (0.8 - 0.1) + 0.1
         });
         if(parseInt(marker.label)<=20){
-            markers[parseInt(label)] = marker;
+          markers[parseInt(label)] = marker;
 
-            markers_location.push(marker);
+          markers_location.push(marker);
         // $('#side_bar').append("<li>node" + label + "</li>");
         var sidebar = $('#demo');
         var sidebar_entry = $('<li/>', {
-            'html': '<a href="#infolist">Node '+label
-            +'<ul>Parent: '+parent+'</ul>'
-            +'<ul>Avg. PER: '+avg.toFixed(6)+'</ul>'
-            +'<ul>Avg. RSSI: '+avg_rssi.toFixed(6)+'</ul>'
-            +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
-            +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>'
-            +'<ul>Battey level: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+marker.batteryInfo+'">'+'</meter>'+'</ul>',
+          'html': '<a href="#infolist">Node '+label
+          +'<ul>Parent: '+parent+'</ul>'
+          +'<ul>Avg. PER: '+avg.toFixed(6)+'</ul>'
+          +'<ul>Avg. RSSI: '+avg_rssi.toFixed(6)+'</ul>'
+          +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
+          +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>'
+          +'<ul>Battey level: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+marker.batteryInfo+'">'+'</meter>'+'</ul>',
             // jQuery(this).attr("id","newId"),
             'click': function() {
-                google.maps.event.trigger(marker, 'click');
-                $(this).css('color','red');
+              google.maps.event.trigger(marker, 'click');
+              $(this).css('color','red');
                 // $(this).attr("id","newid");
-            },
-            'mouseenter': function() {
+              },
+              'mouseenter': function() {
                 $(this).css('color', 'red');
-            },
-            'mouseleave': function() {
+              },
+              'mouseleave': function() {
                 $(this).css('color', '#999999');
-            },
-            'focus': function() {
+              },
+              'focus': function() {
                 $(this).css('color', '#FF0000');
-            },
-            function() {
+              },
+              function() {
                 $(this).attr("id","newid"+label);
                 $(this).addClass('network1');
                 // alert($(this).attr('id'));
                 // alert($(this).attr('id'));
-            }
-        }).appendTo(sidebar);
-    }
-    else {
+              }
+            }).appendTo(sidebar);
+      }
+      else {
         markers2[parseInt(label)] = marker;
         
         markers_location.push(marker);
         // $('#side_bar').append("<li>node" + label + "</li>");
         var sidebar2 = $('#demo2');
         var sidebar_entry2 = $('<li/>', {
-            'html': '<a href="#infolist">Node '+label
-            +'<ul>Parent: '+parent+'</ul>'
-            +'<ul>Avg. PER: '+avg.toFixed(6)+'</ul>'
-            +'<ul>Avg. RSSI: '+avg_rssi.toFixed(6)+'</ul>'
-            +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
-            +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>'
-            +'<ul>Battey level: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+marker.batteryInfo+'">'+'</meter>'+'</ul>',
+          'html': '<a href="#infolist">Node '+label
+          +'<ul>Parent: '+parent+'</ul>'
+          +'<ul>Avg. PER: '+avg.toFixed(6)+'</ul>'
+          +'<ul>Avg. RSSI: '+avg_rssi.toFixed(6)+'</ul>'
+          +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
+          +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>'
+          +'<ul>Battey level: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+marker.batteryInfo+'">'+'</meter>'+'</ul>',
             // jQuery(this).attr("id","newId"),
             'click': function() {
-                google.maps.event.trigger(marker, 'click');
-                $(this).css('color','red');
+              google.maps.event.trigger(marker, 'click');
+              $(this).css('color','red');
                 // $(this).attr("id","newid");
-            },
-            'mouseenter': function() {
+              },
+              'mouseenter': function() {
                 $(this).css('color', 'red');
-            },
-            'mouseleave': function() {
+              },
+              'mouseleave': function() {
                 $(this).css('color', '#999999');
-            },
-            'focus': function() {
+              },
+              'focus': function() {
                 $(this).css('color', '#FF0000');
-            },
-            function() {
+              },
+              function() {
                 $(this).attr("id","newid"+label);
                 $(this).addClass('network2');
                 // alert($(this).attr('id'));
                 // alert($(this).attr('id'));
-            }
-        }).appendTo(sidebar2);
-    }
-    for(var i=0;i<array.length;i++){
+              }
+            }).appendTo(sidebar2);
+      }
+      for(var i=0;i<array.length;i++){
             if(predict_y>0.05){  //orange: predicted packet loss
                 // marker.setAnimation(google.maps.Animation.BOUNCE);
                 marker.icon.fillColor = ' #FFA500 ';
                 marker.isCritical = 1;
+              }
             }
-        }
         // var loss_rate = 1;
         if(avg>0.05){ //red: avg packet loss 
                 // marker.setAnimation(google.maps.Animation.BOUNCE);
                 marker.icon.fillColor = ' #FF0000 ';
                 marker.isCritical = 1;
                 marker.lossRate = avg/0.05;
-            }
+              }
 
-            marker.addListener('click', function(){
+              marker.addListener('click', function(){
                 // clearInterval(myinterval);
-                // google.charts.setOnLoadCallback(drawChart2(this));
+                google.charts.setOnLoadCallback(drawChart2(this));
                 // // $(document).ready(function(){
                 //     // drawChart2(this);
                 //     myinterval = setInterval(function(){
@@ -2044,7 +1947,7 @@ function addMarker(location,label,active,parent){
                 //         drawChart2(marker);
                 //     },5000); // refresh chart per 5 sec.
                 // });
-                google.charts.setOnLoadCallback(drawChart(this,avg,current,predict_y,fault_pbb));
+                // google.charts.setOnLoadCallback(drawChart(this,avg,current,predict_y,fault_pbb));
             // setInterval(function(){
             //     drawChart(this,avg,current,predict_y,fault_pbb);
             //     alert('draw');
@@ -2068,25 +1971,25 @@ function addMarker(location,label,active,parent){
             var color = li.style.backgroundColor;
             li.style.backgroundColor = " #5499c7 ";
             setTimeout(function(){
-                li.style.backgroundColor=color;
+              li.style.backgroundColor=color;
             }, 2000);
 
             li.scrollIntoView();
             // li.animate({backgroundColor:'#FF0000'},1000);
             // li.style.borderColor = "white";
             // alert(getCustomInfo(this));
-        });
+          });
         // marker.addListener('click', function() {
         //     infowindow.open(map, marker);
         // });
 
         var link_info = generateRandom();
         if(marker.parentInfo != '0'){
-            if(parseInt(marker.label)<=20){
-                var parentMarker = markers[parseInt(marker.parentInfo)];
-            }else{
-                var parentMarker = markers2[parseInt(marker.parentInfo)];
-            }
+          if(parseInt(marker.label)<=20){
+            var parentMarker = markers[parseInt(marker.parentInfo)];
+          }else{
+            var parentMarker = markers2[parseInt(marker.parentInfo)];
+          }
             // var lat = parentMarker.getPosition().lat();
             // var lng = parentMarker.getPosition().lng();
             var path = [
@@ -2094,43 +1997,43 @@ function addMarker(location,label,active,parent){
             {lat: parentMarker.getPosition().lat(), lng: parentMarker.getPosition().lng()}
             ];
             var link = new google.maps.Polyline({
-                path: path,
+              path: path,
             // geodesic: true,
             strokeColor: '#000080',
             strokeOpacity: 1.0,
             strokeWeight: 1 + link_info * 100,
             customInfo: link_info
-        });
+          });
             if(link_info > 0.04){
-                link.strokeColor = '#800000';
+              link.strokeColor = '#800000';
             }
             createInfoWindow(link, "Link traffic : " + link.customInfo);
             link.setMap(map);
+          }
         }
-    }
-    var legend = document.getElementById('legend');
-    for (var key in icons) {
-      var type = icons[key];
-      var name = type.name;
-      var icon = type.icon;
-      var div = document.createElement('div');
-      div.innerHTML = '<img src="' + icon + '"> ' + name;
-      legend.appendChild(div);
-  }
-  var c = document.getElementById("myCanvas");
-  var ctx = c.getContext("2d");
-  ctx.fillText("Low",5,12);
-  ctx.fillText("High",125,12);
-  ctx.fillText("Noisy zone (PER)",30,35);
-  var grd = ctx.createLinearGradient(0, 0, 170, 0);
-  grd.addColorStop(0, "white");
-  grd.addColorStop(1, " #ff5733");
-  ctx.fillStyle = grd;
-  ctx.fillRect(2, 15, 150, 10);
+        var legend = document.getElementById('legend');
+        for (var key in icons) {
+          var type = icons[key];
+          var name = type.name;
+          var icon = type.icon;
+          var div = document.createElement('div');
+          div.innerHTML = '<img src="' + icon + '"> ' + name;
+          legend.appendChild(div);
+        }
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        ctx.fillText("Low",5,12);
+        ctx.fillText("High",125,12);
+        ctx.fillText("Noisy zone (PER)",30,35);
+        var grd = ctx.createLinearGradient(0, 0, 170, 0);
+        grd.addColorStop(0, "white");
+        grd.addColorStop(1, " #ff5733");
+        ctx.fillStyle = grd;
+        ctx.fillRect(2, 15, 150, 10);
 
-  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
-  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(mapreset);
-  markRegion();
+        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
+        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(mapreset);
+        markRegion();
         // alert(shapes[0].shapeType+' '+shapes[1].shapeType+' '+shapes[2].shapeType+' '+shapes[3].shapeType);
         // for(var i=0;i<shapes.length;i++){
         //     alert(shapes[i].shapeType);
@@ -2144,49 +2047,49 @@ function addMarker(location,label,active,parent){
         //     }
         // });
         function shapeMouse(current_shape, index){
-            google.maps.event.addListener(current_shape, 'click', function(event) {
-                var dup_array = shapes.slice();
-                dup_array.splice(index, 1);
-                var overlap = 0;
-                for(var i=0; i<dup_array.length; i++){
-                    if(searchArea(event.latLng, dup_array[i])){
-                        overlap += dup_array[i].lossInfo;
-                    }
-                }
-                var areainfo = '<h4>Avg. PER: ' + (parseFloat(current_shape.lossInfo + overlap)*100).toFixed(2)+'%' + '<br />' + 'Affected nodes: ';
-                for(var i=current_shape.affected.length-1; i>=0;i--){
-                    areainfo += (current_shape.affected[i]);
-                    if(current_shape.affected[i-1]){
-                        areainfo += ', ';
-                    }
-                }
-                areainfo += '</h4>'
-                infowindow.setContent(areainfo);
-                infowindow.setPosition(event.latLng);
-                infowindow.open(map);
-                for(var i=0;i<shapes.length;i++){
-                    shapes[i].setOptions({strokeWeight: 0, fillColor: '#FF5733'});
-                }
-                current_shape.setOptions({strokeWeight: 5.0, fillColor: 'blue'});
-            });
-            google.maps.event.addListener(map, 'click', function() {
-                infowindow.close();
-                clearInterval(myinterval);
-                current_shape.setOptions({strokeWeight: 0, fillColor: '#FF5733'});
-            });
+          google.maps.event.addListener(current_shape, 'click', function(event) {
+            var dup_array = shapes.slice();
+            dup_array.splice(index, 1);
+            var overlap = 0;
+            for(var i=0; i<dup_array.length; i++){
+              if(searchArea(event.latLng, dup_array[i])){
+                overlap += dup_array[i].lossInfo;
+              }
+            }
+            var areainfo = '<h4>Avg. PER: ' + (parseFloat(current_shape.lossInfo + overlap)*100).toFixed(2)+'%' + '<br />' + 'Affected nodes: ';
+            for(var i=current_shape.affected.length-1; i>=0;i--){
+              areainfo += (current_shape.affected[i]);
+              if(current_shape.affected[i-1]){
+                areainfo += ', ';
+              }
+            }
+            areainfo += '</h4>'
+            infowindow.setContent(areainfo);
+            infowindow.setPosition(event.latLng);
+            infowindow.open(map);
+            for(var i=0;i<shapes.length;i++){
+              shapes[i].setOptions({strokeWeight: 0, fillColor: '#FF5733'});
+            }
+            current_shape.setOptions({strokeWeight: 5.0, fillColor: 'blue'});
+          });
+          google.maps.event.addListener(map, 'click', function() {
+            infowindow.close();
+            clearInterval(myinterval);
+            current_shape.setOptions({strokeWeight: 0, fillColor: '#FF5733'});
+          });
             // google.maps.event.addListener(current_shape, 'mouseout', function(event){
             //         // if(searchArea(e.latLng, shapes[i])){
             //             infowindow.close();
             //             current_shape.setOptions({strokeWeight: 0, fillColor: '#FF5733'});
             //         // }
             // });
-        }
-        function createAreaInfo(){
+          }
+          function createAreaInfo(){
             for(var i=0;i<shapes.length;i++){
-                var current_shape = shapes[i];
-                shapeMouse(current_shape, i);
+              var current_shape = shapes[i];
+              shapeMouse(current_shape, i);
             }
-        }
+          }
         // alert("total " + shapes.length + " shapes");
         createAreaInfo();
         // shapes[0].addListener('click', function(){
@@ -2226,7 +2129,7 @@ function addMarker(location,label,active,parent){
         //     // });
         // }
 
-    }
+      }
 
   // google.load('visualization', '1.0', {'packages':['corechart']});
   google.charts.load('current', {'packages':['annotatedtimeline']});
@@ -2236,41 +2139,41 @@ function addMarker(location,label,active,parent){
 
   function scrollFunction() {
     if (elmnt.scrollTop > 20) {
-        document.getElementById("myBtn").style.display = "block";
+      document.getElementById("myBtn").style.display = "block";
     } else {
-        document.getElementById("myBtn").style.display = "none";
+      document.getElementById("myBtn").style.display = "none";
     }
-}
+  }
 
 // When the user clicks on the button, scroll to the top of the document
 function topFunction() {
-    elmnt.scrollTop = 0;
+  elmnt.scrollTop = 0;
     // document.documentElement.scrollTop = 0;
-}
+  }
 
-var timeleft = 5;
-var downloadTimer = setInterval(function(){
+  var timeleft = 5;
+  var downloadTimer = setInterval(function(){
     timeleft--;
     if(document.getElementById("countdowntimer")){
-        document.getElementById("countdowntimer").textContent = timeleft;}
-        if(timeleft <= 0)
-            clearInterval(downloadTimer);
+      document.getElementById("countdowntimer").textContent = timeleft;}
+      if(timeleft <= 0)
+        clearInterval(downloadTimer);
     },1000);
 
-if(!window.location.hash){
+  if(!window.location.hash){
     var overlay = jQuery('<div id="overlay"><div id="text">Gateways: <form action="javascript:confirm();"><input type="checkbox">'+
      data_gateway_test[0]['GATEWAY_NAME']+
      '<br><input type="checkbox">'+
-      data_gateway_test[1]['GATEWAY_NAME']+
-      '<br><input type="checkbox">'+
-      data_gateway_test[2]['GATEWAY_NAME']+
-      '<br><input type="checkbox">'+
-      data_gateway_test[3]['GATEWAY_NAME']+
-      '<br><input id="confirm" type="submit" value="Confirm"></form>'+
+     data_gateway_test[1]['GATEWAY_NAME']+
+     '<br><input type="checkbox">'+
+     data_gateway_test[2]['GATEWAY_NAME']+
+     '<br><input type="checkbox">'+
+     data_gateway_test[3]['GATEWAY_NAME']+
+     '<br><input id="confirm" type="submit" value="Confirm"></form>'+
       // '<span id="countdowntimer">5 </span> seconds'+
       '</div></div>');
     overlay.appendTo(document.body)
-}
+  }
 
 // window.onload = setTimeout(function(){ 
 //     if(!window.location.hash) {
