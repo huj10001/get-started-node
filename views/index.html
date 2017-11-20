@@ -866,9 +866,9 @@
         }
 
           //Call getNames on page load.
-          getGateway();
-          getTopology();    
-          getSensor();
+          // getGateway();
+          // getTopology();    
+          // getSensor();
         //   if(window.location.hash) {
         //     alert('Topology uploaded!');
         // }else{
@@ -980,21 +980,25 @@
         //     content: contentString,
         // });
 
-        for(var i=0; i<data_topo_test.length;i++){
-          if(data_topo_test[i] != ''){
-            var newNode = new google.maps.LatLng(data_topo_test[i]['2'], data_topo_test[i]['3']);
-            addMarker(newNode,i.toString(),"active",'1');
-          }
-        }
-
-        addNetwork(markers,1);
-        addNetwork(markers2,2);
+        // for(var i=0; i<data_topo_test.length;i++){
+        //   if(data_topo_test[i] != ''){
+        //     var newNode = new google.maps.LatLng(data_topo_test[i]['2'], data_topo_test[i]['3']);
+        //     addMarker(newNode,i.toString(),"active",'1');
+        //   }
+        // }
 
         var markerCluster1 = new MarkerClusterer(map, markers_location,
         {
           maxZoom: 15,
           imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
         });
+
+        drawTopology();
+
+        addNetwork(markers,1);
+        addNetwork(markers2,2);
+
+        
 
         function convertTime(timestamp_string){
           var timestamp = parseInt(timestamp_string);
@@ -1451,6 +1455,36 @@
         }
       }
 
+      function drawChannelRssi(data_point, marker){
+        var node_id = parseInt(marker.id);
+        var channel_rssi_array = [];
+        $.ajax({
+          url: "/api/sensor",
+          dataType: "json",
+          success: function (jsonData) {
+            var channel_rssi = jsonData[node_id][data_point]['CHANNEL_INFO'];
+            var res = channel_rssi.split('rssi');
+            var data_cr = new google.visualization.DataTable();
+            data_cr.addColumn('string', 'channel');
+            data_cr.addColumn('number', 'Channel RSSI');
+            for(var i=1; i<res.length;i++){
+              var b = res[i].substring(res[i].indexOf(":")+1,res[i].indexOf(","));
+              data_cr.addRow([i.toString(), Number(b)]);
+            }
+            var options_cr = {
+              'legend':'top',
+              width: 700,
+            };
+            var node_cr = document.createElement('div');
+            var infoWindow_cr  = new google.maps.InfoWindow();
+            var chart_cr = new google.visualization.ColumnChart(node_cr);
+            chart_cr.draw(data_cr, options_cr);
+            infoWindow_cr.setContent(node_cr);
+            infoWindow_cr.open(marker.getMap(),marker);
+          }
+        }); 
+      }
+
       function getAvgRssi(rssi_string){
         var res = rssi_string.split('rssi');
         var c = 0;
@@ -1477,6 +1511,10 @@
                 var total2 = 0;
                 var predict2_time = [];
                 var predict2_per = [];
+                var start_date = jsonData[parseInt(marker.id)][0]['DATE'];
+                var end_date = jsonData[parseInt(marker.id)][jsonData[parseInt(marker.id)].length-1]['DATE'];
+                var start_time = jsonData[parseInt(marker.id)][0]['TIME'];
+                var end_time = jsonData[parseInt(marker.id)][jsonData[parseInt(marker.id)].length-1]['TIME'];
                 for(var i=0;i<jsonData[parseInt(marker.id)].length;i++){
                   var data_time = convertTime4(jsonData[parseInt(marker.id)][i]['DATE'], jsonData[parseInt(marker.id)][i]['TIME']);
                   var data_gateway = jsonData[parseInt(marker.id)][i]['GATEWAY_NAME'];
@@ -1557,13 +1595,12 @@
                 '<p><b>Current: </b>'+(current2*100).toFixed(2)+'%'+'</p>'+
                 '<p><b>Predicted: </b>'+(predict2*100).toFixed(2)+'%'+'</p>'+
                 '<p><b>Fault probability: </b>'+(fault_pbb2*100).toFixed(2)+'%'+'</p>'+
-                '<p>'+'Start date: <input type="date" id="chart_start_date" />'+'</p>'+
-                '<p>'+'End date: <input type="date" id="chart_end_date" />'+'</p>'+
-                '<p>'+'Metric: <input type="checkbox" value="app_per" id="app_per" />Application Layer PER<input type="checkbox" value="mac_per" id="mac_per" />Mac Layer PER<input type="checkbox" value="rssi" id="rssi" />RSSI'+'</p>'+
+                '<p>'+'Start date: <input type="date" id="chart_start_date" />'+'&emsp;Start time: <input type="time" id="chart_start_time" step="1"/>'+'</p>'+
+                '<p>'+'End date: <input type="date" id="chart_end_date" />'+'&emsp;End time: <input type="time" id="chart_end_time" step="1"/>'+'</p>'+
+                '<p>'+'Metric: <input type="checkbox" value="app_per" id="app_per" checked/>Application Layer PER&emsp;<input type="checkbox" value="mac_per" id="mac_per" checked/>Mac Layer PER&emsp;<input type="checkbox" value="rssi" id="rssi" checked/>RSSI'+'</p>'+
                 '</div>'+
                 '</div>'+
                 '<div><form action="javascript:view();"><input type="submit" value="View"></form></div>';
-                ;
 
                 var div2 = document.createElement('div');
                 // div2.setAttribute('id', 'divv');
@@ -1581,11 +1618,53 @@
 
                 // var infowindow = new google.maps.InfoWindow();
                 infowindow.setContent(div2);
+
                 infowindow.open(marker.getMap(),marker);
+                document.getElementById('chart_start_date').valueAsDate = new Date(start_date);
+                document.getElementById('chart_end_date').valueAsDate = new Date(end_date);
+                document.getElementById('chart_start_time').value = "00:00:00";
+                document.getElementById('chart_end_time').value = "23:59:59";
+
+                google.visualization.events.addListener(chart2, 'select', selectHandler);
+                function selectHandler(e) {
+                  var selected = chart2.getSelection()[0].row;
+                  drawChannelRssi(selected, marker);
+                }
               }
             });
 }
 
+function drawTopology(){
+  $.ajax({
+    url: "/api/topology",
+    dataType: "json",
+    success: function (jsonData) {
+      for(var i=0; i<jsonData.length;i++){
+        if(jsonData[i] != ''){
+          var newNode = new google.maps.LatLng(jsonData[i]['2'], jsonData[i]['3']);
+          addMarker(newNode,i.toString(),"active",'1');
+        }
+      }
+    }
+  });
+}
+
+function drawGateway(){
+  var gateways = [];
+  var gateway;
+  $.ajax({
+    url: "/api/gateway",
+    dataType: "json",
+    success: function (jsonData) {
+      for(var i=0; i<jsonData.length;i++){
+        if(jsonData[i] != ''){
+          gateway = jsonData[i]['GATEWAY_NAME'];
+          gateways.push(gateway);
+        }
+      }
+    }
+  });
+}
 
 function getSum(total, num) {
   return total + num;
@@ -1703,48 +1782,48 @@ function getSum(total, num) {
           var array_time = [];
           var array_x = [];
           var array_y = [];
-          for(var i=0;i<node_data_length;i++){
-            var date_temp_array = data_test[node_id][i]['DATE'].split('-');
-            var time_temp_array = data_test[node_id][i]['TIME'].split(':');
-            array_time[i] = new Date(date_temp_array[0], date_temp_array[1], date_temp_array[2], time_temp_array[0], time_temp_array[1], time_temp_array[2], 0);
-            array[i] = [
-                data_test[node_id][i]['APP_PER_SENT'], data_test[node_id][i]['APP_PER_LOST'], //0-1
-                data_test[node_id][i]['MAC_TX_TOTAL'], data_test[node_id][i]['MAC_TX_FAIL'], //2-3
-                data_test[node_id][i]['0']['rssi'], //4
-                data_test[node_id][i]['1']['rssi'],
-                data_test[node_id][i]['2']['rssi'],
-                data_test[node_id][i]['3']['rssi'],
-                data_test[node_id][i]['4']['rssi'],
-                data_test[node_id][i]['5']['rssi'],
-                data_test[node_id][i]['6']['rssi'],
-                data_test[node_id][i]['7']['rssi'],
-                data_test[node_id][i]['8']['rssi'],
-                data_test[node_id][i]['9']['rssi'],
-                data_test[node_id][i]['10']['rssi'],
-                data_test[node_id][i]['11']['rssi'],
-                data_test[node_id][i]['12']['rssi'],
-                data_test[node_id][i]['13']['rssi'],
-                data_test[node_id][i]['14']['rssi'],
-                data_test[node_id][i]['15']['rssi'] //19
-                // data_test[node_id][i]['CH11_RSSI'], data_test[node_id][i]['CH12_RSSI'],
-                // data_test[node_id][i]['CH13_RSSI'], data_test[node_id][i]['CH14_RSSI'],
-                // data_test[node_id][i]['CH15_RSSI'], data_test[node_id][i]['CH16_RSSI'],
-                // data_test[node_id][i]['CH17_RSSI'], data_test[node_id][i]['CH18_RSSI'],
-                // data_test[node_id][i]['CH19_RSSI'], data_test[node_id][i]['CH20_RSSI'],
-                // data_test[node_id][i]['CH21_RSSI'], data_test[node_id][i]['CH22_RSSI'],
-                // data_test[node_id][i]['CH23_RSSI'], data_test[node_id][i]['CH24_RSSI'],
-                // data_test[node_id][i]['CH25_RSSI']
-                ];
+          // for(var i=0;i<node_data_length;i++){
+          //   var date_temp_array = data_test[node_id][i]['DATE'].split('-');
+          //   var time_temp_array = data_test[node_id][i]['TIME'].split(':');
+          //   array_time[i] = new Date(date_temp_array[0], date_temp_array[1], date_temp_array[2], time_temp_array[0], time_temp_array[1], time_temp_array[2], 0);
+          //   array[i] = [
+          //       data_test[node_id][i]['APP_PER_SENT'], data_test[node_id][i]['APP_PER_LOST'], //0-1
+          //       data_test[node_id][i]['MAC_TX_TOTAL'], data_test[node_id][i]['MAC_TX_FAIL'], //2-3
+          //       data_test[node_id][i]['0']['rssi'], //4
+          //       data_test[node_id][i]['1']['rssi'],
+          //       data_test[node_id][i]['2']['rssi'],
+          //       data_test[node_id][i]['3']['rssi'],
+          //       data_test[node_id][i]['4']['rssi'],
+          //       data_test[node_id][i]['5']['rssi'],
+          //       data_test[node_id][i]['6']['rssi'],
+          //       data_test[node_id][i]['7']['rssi'],
+          //       data_test[node_id][i]['8']['rssi'],
+          //       data_test[node_id][i]['9']['rssi'],
+          //       data_test[node_id][i]['10']['rssi'],
+          //       data_test[node_id][i]['11']['rssi'],
+          //       data_test[node_id][i]['12']['rssi'],
+          //       data_test[node_id][i]['13']['rssi'],
+          //       data_test[node_id][i]['14']['rssi'],
+          //       data_test[node_id][i]['15']['rssi'] //19
+          //       // data_test[node_id][i]['CH11_RSSI'], data_test[node_id][i]['CH12_RSSI'],
+          //       // data_test[node_id][i]['CH13_RSSI'], data_test[node_id][i]['CH14_RSSI'],
+          //       // data_test[node_id][i]['CH15_RSSI'], data_test[node_id][i]['CH16_RSSI'],
+          //       // data_test[node_id][i]['CH17_RSSI'], data_test[node_id][i]['CH18_RSSI'],
+          //       // data_test[node_id][i]['CH19_RSSI'], data_test[node_id][i]['CH20_RSSI'],
+          //       // data_test[node_id][i]['CH21_RSSI'], data_test[node_id][i]['CH22_RSSI'],
+          //       // data_test[node_id][i]['CH23_RSSI'], data_test[node_id][i]['CH24_RSSI'],
+          //       // data_test[node_id][i]['CH25_RSSI']
+          //       ];
 
-                array_x.push(parseInt(array_time[i]));
-                if(parseFloat(array[i][0]) != 0){
-                  array_y.push(parseFloat(array[i][1]) / parseFloat(array[i][0]));
-                  var current = parseFloat(array[i][1]) / parseFloat(array[i][0]);
-                }else{
-                  array_y.push(0);
-                  var current = 0;
-                }
-              }
+          //       array_x.push(parseInt(array_time[i]));
+          //       if(parseFloat(array[i][0]) != 0){
+          //         array_y.push(parseFloat(array[i][1]) / parseFloat(array[i][0]));
+          //         var current = parseFloat(array[i][1]) / parseFloat(array[i][0]);
+          //       }else{
+          //         array_y.push(0);
+          //         var current = 0;
+          //       }
+          //     }
             // if(parseFloat(array[array.length-1][0]) != 0){
             //         var current = array[array.length-1][1] / parseFloat(array[array.length-1][0]);
             // }else{
@@ -1844,8 +1923,8 @@ function getSum(total, num) {
         });
         if(parseInt(marker.label)<=20){
           markers[parseInt(label)] = marker;
-
           markers_location.push(marker);
+          markerCluster1.addMarker(marker);
         // $('#side_bar').append("<li>node" + label + "</li>");
         var sidebar = $('#demo');
         var sidebar_entry = $('<li/>', {
@@ -1881,7 +1960,7 @@ function getSum(total, num) {
       }
       else {
         markers2[parseInt(label)] = marker;
-        
+        markerCluster1.addMarker(marker);
         markers_location.push(marker);
         // $('#side_bar').append("<li>node" + label + "</li>");
         var sidebar2 = $('#demo2');
@@ -2160,20 +2239,20 @@ function topFunction() {
         clearInterval(downloadTimer);
     },1000);
 
-  if(!window.location.hash){
-    var overlay = jQuery('<div id="overlay"><div id="text">Gateways: <form action="javascript:confirm();"><input type="checkbox">'+
-     data_gateway_test[0]['GATEWAY_NAME']+
-     '<br><input type="checkbox">'+
-     data_gateway_test[1]['GATEWAY_NAME']+
-     '<br><input type="checkbox">'+
-     data_gateway_test[2]['GATEWAY_NAME']+
-     '<br><input type="checkbox">'+
-     data_gateway_test[3]['GATEWAY_NAME']+
-     '<br><input id="confirm" type="submit" value="Confirm"></form>'+
-      // '<span id="countdowntimer">5 </span> seconds'+
-      '</div></div>');
-    overlay.appendTo(document.body)
-  }
+  // if(!window.location.hash){
+  //   var overlay = jQuery('<div id="overlay"><div id="text">Gateways: <form action="javascript:confirm();"><input type="checkbox">'+
+  //    data_gateway_test[0]['GATEWAY_NAME']+
+  //    '<br><input type="checkbox">'+
+  //    data_gateway_test[1]['GATEWAY_NAME']+
+  //    '<br><input type="checkbox">'+
+  //    data_gateway_test[2]['GATEWAY_NAME']+
+  //    '<br><input type="checkbox">'+
+  //    data_gateway_test[3]['GATEWAY_NAME']+
+  //    '<br><input id="confirm" type="submit" value="Confirm"></form>'+
+  //     // '<span id="countdowntimer">5 </span> seconds'+
+  //     '</div></div>');
+  //   overlay.appendTo(document.body)
+  // }
 
 // window.onload = setTimeout(function(){ 
 //     if(!window.location.hash) {
