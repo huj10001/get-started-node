@@ -108,43 +108,18 @@ app.post("/api/sensor", function (request, response) {
 });
 
 app.get("/api/gateway", function (request, response) {
-    response.json(gateway_data);
-    return;
+  response.json(gateway_data);
+  return;
 });
 
 app.get("/api/topology", function (request, response) {
-    response.json(topology_data);
-    return;
+  response.json(topology_data);
+  return;
 });
-/**
- * Endpoint to get a JSON array of all the visitors in the database
- * REST API example:
- * <code>
- * GET http://localhost:3000/api/visitors
- * </code>
- *
- * Response:
- * [ "Bob", "Jane" ]
- * @return An array of all the visitor names
- */
- app.get("/api/sensor", function (request, response) {
-  // var names = [];
-  // if(!ibmdb) {
-    response.json(sensor_data);
-    return;
-  // }
 
-  // ibmdb.list({ include_docs: true }, function(err, body) {
-  //   if (!err) {
-  //     // body.rows.forEach(function(row) {
-  //       // if(row.doc.name)
-  //         // names.push(row.doc.name);
-  //         // json = [];
-  //         // names.push(kilby_data);
-  //     // });
-  //     response.json(topo_data);
-  //   }
-  // });
+app.get("/api/sensor", function (request, response) {
+  response.json(sensor_data);
+  return;
 });
 
 // var googleMapsClient = require('@google/maps').createClient({
@@ -200,7 +175,7 @@ app.get("/api/topology", function (request, response) {
 // if (appEnv.services['DB2']) {
   // Load the Cloudant library.
   var Cloudant = require('cloudant');
- 
+
   var ibmdb = require('ibm_db');
 
   /* db2 gateway */
@@ -281,24 +256,26 @@ app.get("/api/topology", function (request, response) {
 
   // /* first data fetch, 0 sec delay */
   query1();
+  setTimeout(query1, 15000); // query every 15 sec
+  // query1();
   // setTimeout(query2, 3000);
   // setTimeout(query3, 6000);
   // setTimeout(query4, 9000);
-  setTimeout(function(){
-    console.log('final ts is %s', ts_temp);
-    last_ts = ts_temp;
-    // for(var i=4;i<21;i++){
-    //   console.log('similarity between %s and %s is: %s', 3, i, (checkSimilarity(3, i)*100).toFixed(2) + '%');
-    // }
-    // for(var i=3;i<21;i++){
-    //   console.log(i + ':');
-    //   var curr_dict = checkSimilarity(i);
-    //   for(var j=0;j<curr_dict.length;j++){
-    //     curr_dict.sort(compare_rate);
-    //     console.log(curr_dict[j][0] + " " + curr_dict[j][1]);
-    //   }
-    // }
-  },12000);
+  // setTimeout(function(){
+  //   console.log('final ts is %s', ts_temp);
+  //   last_ts = ts_temp;
+  //   // for(var i=4;i<21;i++){
+  //   //   console.log('similarity between %s and %s is: %s', 3, i, (checkSimilarity(3, i)*100).toFixed(2) + '%');
+  //   // }
+  //   // for(var i=3;i<21;i++){
+  //   //   console.log(i + ':');
+  //   //   var curr_dict = checkSimilarity(i);
+  //   //   for(var j=0;j<curr_dict.length;j++){
+  //   //     curr_dict.sort(compare_rate);
+  //   //     console.log(curr_dict[j][0] + " " + curr_dict[j][1]);
+  //   //   }
+  //   // }
+  // },12000);
   // /********************************/
 
   // /*** fault detection test ***/
@@ -416,8 +393,8 @@ app.get("/api/topology", function (request, response) {
 
 // }
 
-var last_ts = null;
-var ts_temp = 0;
+// var last_ts = null;
+// var ts_temp = 0;
 
 // var kilby_data_temp = [];
 // var kilby_all_temp = [];
@@ -436,18 +413,18 @@ var ts_temp = 0;
 //       }
 //     });
 // });
-function fetchData(node_id, ts){
+function fetchData(node_id, offset_start, offset_end){
   var sensor_id = parseInt(node_id);
   ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
     if(err) return console.log(err);
     conn.query(
       // 'select TS, APP_PER_SENT, APP_PER_LOST, CH11_RSSI, CH12_RSSI, CH13_RSSI, CH14_RSSI, CH15_RSSI from BLUADMIN.NW_DATA_SET_0 where SENSOR_ID=? fetch first 100 rows only'
       // 'select TS, APP_PER_SENT, APP_PER_LOST, CH11_RSSI, CH12_RSSI, CH13_RSSI, CH14_RSSI, CH15_RSSI, CH16_RSSI, CH17_RSSI, CH18_RSSI, CH19_RSSI, CH20_RSSI, CH21_RSSI, CH22_RSSI, CH23_RSSI, CH24_RSSI, CH25_RSSI from BLUADMIN.NW_DATA_SET_0 where SENSOR_ID=?'
-      'select * from BLUADMIN.NW_DATA_SET_PER where SENSOR_ID=?'
-      ,[sensor_id], function (err, data) {
-      console.log('Found %d documents with id %s', data.length, node_id);
-      if(data.length>0){
-        for(var i=0;i<data.length;i++){
+      'select * from BLUADMIN.NW_DATA_SET_PER where SENSOR_ID=? limit ?,?'
+      ,[sensor_id, offset_start, offset_end], function (err, data) {
+        console.log('Found %d new data with id %s', data.length, node_id);
+        if(data.length>0){
+          for(var i=0;i<data.length;i++){
           // console.log("testtest:",data[i]['TS']);
           sensor_data[parseInt(node_id)].push(data[i]);
         }
@@ -625,49 +602,28 @@ function convertTime(timestamp_string){
   return formattedTime;
 }
 
+var num_of_rows = 0;
 function query1(){
-  fetchData('1',last_ts);
-  fetchData('3',last_ts);
-  fetchData('4',last_ts);
-  fetchData('5',last_ts);
-  fetchData('6',last_ts);
-  fetchData('7',last_ts);
-
-  fetchData('8',last_ts);
-  fetchData('9',last_ts);
-  fetchData('10',last_ts);
-  fetchData('11',last_ts);
-  fetchData('12',last_ts);
-  fetchData('13',last_ts);
-
-  fetchData('14',last_ts);
-  fetchData('15',last_ts);
-  fetchData('16',last_ts);
-  fetchData('17',last_ts);
-  fetchData('18',last_ts);
-
-  fetchData('19',last_ts);
-  fetchData('20',last_ts);
+  ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
+    if(err) return console.log(err);
+    conn.query('select count(*) from BLUADMIN.NW_DATA_SET_PER', function (err, data) {
+      console.log('Num of rows: '+data[0]['1']);
+      if(data[0]['1'] > num_of_rows){
+        var offset_start = num_of_rows;
+        var offset_end = data[0]['1'] - num_of_rows;
+        num_of_rows = data[0]['1'];
+        conn.query('select distinct SENSOR_ID from BLUADMIN.NW_DATA_SET_PER', function (err, data) {
+          for(var i=0;i<data.length;i++){
+            fetchData(data[i]['SENSOR_ID'].toString(), offset_start, offset_end);
+          }
+        });
+      }else{
+        console.log('No new data.');
+      }
+    });
+  });
 }
-// function query2(){
-//   fetchData('8',last_ts);
-//   fetchData('9',last_ts);
-//   fetchData('10',last_ts);
-//   fetchData('11',last_ts);
-//   fetchData('12',last_ts);
-//   fetchData('13',last_ts);
-// }
-// function query3(){
-//   fetchData('14',last_ts);
-//   fetchData('15',last_ts);
-//   fetchData('16',last_ts);
-//   fetchData('17',last_ts);
-//   fetchData('18',last_ts);
-// }
-// function query4(){
-//   fetchData('19',last_ts);
-//   fetchData('20',last_ts);
-// }
+
 function checkSimilarity(id1){
   var similarity_dict = [];
   var sorted = [];
