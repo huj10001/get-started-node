@@ -9,19 +9,25 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
+
+var ibmdb = require('ibm_db');
 var mydb;
 var mydb_kilby;
 var kilby_data = [];
 var sensor_data = [];
 var topology_data = [];
 var gateway_data = [];
-for(var j=0;j<25;j++){
-  kilby_data[j] = [];
-  sensor_data[j] = [];
-  topology_data[j] = [];
-}
+var num_of_sensor = 0;
+loadNumSensor();
+// for(var j=0;j<50;j++){
+//   kilby_data[j] = [];
+//   sensor_data[j] = [];
+//   topology_data[j] = [];
+// }
 var kilby_all= [];
-myurl = "https://89c13691-0906-4a2b-98ef-801692e3590a-bluemix:4e714e8e0d041063bd2a4e439f057e60c034dd4afdee04224e3e6f4f8441bf55@89c13691-0906-4a2b-98ef-801692e3590a-bluemix.cloudant.com"
+var myurl = "https://89c13691-0906-4a2b-98ef-801692e3590a-bluemix:4e714e8e0d041063bd2a4e439f057e60c034dd4afdee04224e3e6f4f8441bf55@89c13691-0906-4a2b-98ef-801692e3590a-bluemix.cloudant.com";
+var ibmdb_url = "DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4";
+
 
 // if (typeof localStorage === "undefined" || localStorage === null) {
 //   var LocalStorage = require('node-localstorage').LocalStorage;
@@ -176,8 +182,6 @@ app.get("/api/sensor", function (request, response) {
   // Load the Cloudant library.
   var Cloudant = require('cloudant');
 
-  var ibmdb = require('ibm_db');
-
   /* db2 gateway */
   ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
     if(err) return console.log(err);
@@ -255,6 +259,7 @@ app.get("/api/sensor", function (request, response) {
   // // console.log('similarity is: ' + checkSimilarity(array1, array2));
 
   // /* first data fetch, 0 sec delay */
+  var num_of_rows = 0;
   query1();
   setTimeout(query1, 15000); // query every 15 sec
   // query1();
@@ -425,12 +430,11 @@ function fetchData(node_id, offset_start, offset_end){
         console.log('Found %d new data with id %s', data.length, node_id);
         if(data.length>0){
           for(var i=0;i<data.length;i++){
-          // console.log("testtest:",data[i]['TS']);
-          sensor_data[parseInt(node_id)].push(data[i]);
+            sensor_data[parseInt(node_id)].push(data[i]);
+          }
+          console.log(sensor_data[parseInt(node_id)]);
         }
-        console.log(sensor_data[parseInt(node_id)]);
-      }
-    });
+      });
   });
 }
   // mydb_kilby.find({"selector":{"id":parseInt(node_id), 
@@ -602,7 +606,20 @@ function convertTime(timestamp_string){
   return formattedTime;
 }
 
-var num_of_rows = 0;
+function loadNumSensor(){
+  ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function(err, conn) {
+    if(err) return console.log(err);
+    conn.query('select MAX(SENSOR_ID) from TOPOLOGY_DATA', function (err, data) {
+      console.log('Num of sensors: '+data[0]['1']);
+      num_of_sensor = data[0]['1']+1;
+      for(var j=0;j<num_of_sensor;j++){
+        sensor_data[j] = [];
+        topology_data[j] = [];
+      }
+    })
+  });
+}
+
 function query1(){
   ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
     if(err) return console.log(err);
@@ -611,12 +628,12 @@ function query1(){
       if(data[0]['1'] > num_of_rows){
         var offset_start = num_of_rows;
         var offset_end = data[0]['1'] - num_of_rows;
-        num_of_rows = data[0]['1'];
         conn.query('select distinct SENSOR_ID from BLUADMIN.NW_DATA_SET_PER', function (err, data) {
           for(var i=0;i<data.length;i++){
             fetchData(data[i]['SENSOR_ID'].toString(), offset_start, offset_end);
           }
         });
+        num_of_rows = data[0]['1'];
       }else{
         console.log('No new data.');
       }

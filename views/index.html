@@ -353,197 +353,168 @@
 <body>
   <div class="container">
     <h1>Network Performance Map: Noisy Zone</h1>
-        <!-- <p>my test value is:
-        <script type="text/javascript">
-        var test = localStorage.getItem('myFirstKey');
-        document.write(test);
-        </script>
-      </p> -->
-        <!-- <div id="nameInput" class="input-group-lg center-block helloInput">
-            <p class="lead">What is your name?</p>
-            <input id="user_name" type="text" class="form-control" placeholder="name" aria-describedby="sizing-addon1" value="" />
-        </div>
-        <p id="response" class="lead text-center"></p>
-
-        <p id="databaseNames" class="lead text-center"></p> -->
-      </div>
-      <div id="wrapper" class="toggled">
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-          <button onclick="topFunction()" id="myBtn" title="Go to top">&#8963;</button>
-          <ul class="sidebar-nav" id="side_bar">
-            <li class="sidebar-brand" style="font-weight: bold; color: #000000;">
-              <h1>Summary</h1>
-
-            </li>
-            <hr>
-            <div id="demo" class="collapse"></div>
-            <div id="demo2" class="collapse"></div>
-          </ul>
-        </div>
-        <!-- /#sidebar-wrapper -->
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-lg-12">
-                <h1>
-                  <span style="font-size:50px;cursor:pointer;float:right" onclick="openNav()">&#9881;</span>
-                  <a href="#menu-toggle" class="gradient-menu" id="menu-toggle"></a>
-                  <!-- &nbsp;Network Map&nbsp;a href="#menu-toggle" class="btn btn-default" >Toggle Sidebar</a -->
-                </h1>
-                <div id="mySidenav" class="sidenav">
-                  <h1 id="toolkit">Toolkit</h1>
-                  <b>
-                    <a id="close" href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                  </b>
-                  <hr>
-
-                  <div style="padding:30px">Choose analytic task:
-                    <p>
-                      <select id="box1" name="task" style="max-width:90%;">
-                        <option selected disabled>Choose one</option>
-              <!-- <option value="noisy">Topology Evaluation</option>
-              <option value="phm">Prognostics and Health Management</option>
-              <option value="schedule">Smart Scheduling</option>
-              <option value="fault">Fault Detection</option> -->
-              <optgroup label="Node aspect">
-                <option value="health">Health monitoring</option>
-                <option value="fault">Fault detection</option>
-                <option value="maintenance">Maintenance recommendation</option>
-              </optgroup>
-              <optgroup label="Node aspect">
-                <option value="topology">Topology comparision and optimization</option>
-                <option value="network">Network reliability</option>
-                <option value="giwsns">GIWSNs</option>
-              </optgroup>
-              <optgroup label="Environment aspect">
-                <option value="noisy">Spatial-temporal noisy zone detection</option>
-                <option value="intervention">Surrounding intervention</option>
-              </optgroup>
-            </select>
-          </p>
-        </div>
-
-        <div style="padding:30px">Choose target: 
-          <p>
-            <select id="box2" name="target" style="max-width:90%;">
-              <option selected disabled>Choose one</option>
-              <option value="network1">Network 1</option>
-              <option value="network2">Network 2</option>
-              <option value="network3">Network 3</option>
-              <option value="network4">Network 4</option>
-            </select>
-          </p>
-        </div>
-
-        <div style="padding:30px">
-          <form action="javascript:analyze();">
-            <input type="submit" value="Run">
-          </form>
-        </div>
-
+  </div>
+  <div id="wrapper" class="toggled">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+      <button onclick="topFunction()" id="myBtn" title="Go to top">&#8963;</button>
+      <ul class="sidebar-nav" id="side_bar">
+        <li class="sidebar-brand" style="font-weight: bold; color: #000000;">
+          <h1>Summary</h1>
+        </li>
         <hr>
+        <div id="demo" class="collapse"></div>
+        <div id="demo2" class="collapse"></div>
+      </ul>
+    </div>
+    <div id="page-content-wrapper">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <h1>
+              <span style="font-size:50px;cursor:pointer;float:right" onclick="openNav()">&#9881;</span>
+              <a href="#menu-toggle" class="gradient-menu" id="menu-toggle"></a>
+            </h1>
+            <div id="mySidenav" class="sidenav">
+              <h1 id="toolkit">Toolkit</h1>
+              <b>
+                <a id="close" href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+              </b>
+              <hr>
 
-        <div id="numbox" style="padding: 10px; display: none">
-          <p>
-            <select id="box3" name="num" style="max-width:90%;" onchange="selectfunction()">
-              <option selected="selected" value="0">0</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-              <option value="11">11</option>
-              <option value="12">12</option>
-              <option value="13">13</option>
-              <option value="14">14</option>
-              <option value="15">15</option>
-              <option value="16">16</option>
-              <option value="17">17</option>
-              <option value="18">18</option>
-            </select>
-          </p>
+              <div style="padding:30px">Choose analytic task:
+                <p>
+                  <select id="box1" name="task" style="max-width:90%;">
+                    <option selected disabled>Choose one</option>
+                    <optgroup label="Node aspect">
+                      <option value="health">Health monitoring</option>
+                      <option value="fault">Fault detection</option>
+                      <option value="maintenance">Maintenance recommendation</option>
+                    </optgroup>
+                    <optgroup label="Node aspect">
+                      <option value="topology">Topology comparision and optimization</option>
+                      <option value="network">Network reliability</option>
+                      <option value="giwsns">GIWSNs</option>
+                    </optgroup>
+                    <optgroup label="Environment aspect">
+                      <option value="noisy">Spatial-temporal noisy zone detection</option>
+                      <option value="intervention">Surrounding intervention</option>
+                    </optgroup>
+                  </select>
+                </p>
+              </div>
+
+              <div style="padding:30px">Choose target: 
+                <p>
+                  <select id="box2" name="target" style="max-width:90%;">
+                    <option selected disabled>Choose one</option>
+                    <option value="network1">Network 1</option>
+                    <option value="network2">Network 2</option>
+                    <option value="network3">Network 3</option>
+                    <option value="network4">Network 4</option>
+                  </select>
+                </p>
+              </div>
+
+              <div style="padding:30px">
+                <form action="javascript:analyze();">
+                  <input type="submit" value="Run">
+                </form>
+              </div>
+
+              <hr>
+
+              <div id="numbox" style="padding: 10px; display: none">
+                <p>
+                  <select id="box3" name="num" style="max-width:90%;" onchange="selectfunction()">
+                    <option selected="selected" value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                  </select>
+                </p>
+              </div>
+
+              <div id="result" style="padding:10px; width: 450px; height: 240px;">
+                <textarea id="mytext" rows="20" cols="35">Result goes here.</textarea>  
+              </div>
+
+              <div id="reset" style="padding:10px; position: absolute; bottom: 0; right: 0">
+                <input type="button" value="Reset" onclick="javascript:eraseText();"> 
+              </div>
+
+
+            </div>
+            <div id="map"></div>
+          </div>
         </div>
-
-        <div id="result" style="padding:10px; width: 450px; height: 240px;">
-          <textarea id="mytext" rows="20" cols="35">Result goes here.</textarea>  
-        </div>
-
-        <div id="reset" style="padding:10px; position: absolute; bottom: 0; right: 0">
-          <input type="button" value="Reset" onclick="javascript:eraseText();"> 
-        </div>
-
-
       </div>
-      <!-- you can use tables or divs for the overall layout -->
-      <div id="map"></div>
-      <!-- <h1>Simple Sidebar</h1> -->
     </div>
   </div>
-</div>
-</div>
-<!-- /#page-content-wrapper -->
-</div>
-<!-- /#wrapper -->
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="antixss.js" type="text/javascript"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<script src="//cdn.jsdelivr.net/webshim/1.14.5/polyfiller.js"></script>
-<!-- <script src="../server.js" type="text/javascript"></script>  -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="antixss.js" type="text/javascript"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <script src="//cdn.jsdelivr.net/webshim/1.14.5/polyfiller.js"></script>
 
-<script type="text/javascript">
-  function openNav() {
-    document.getElementById("mySidenav").style.width = "450px";
-            // google.maps.event.trigger(map, 'resize');
-          }
+  <script type="text/javascript">
+    function openNav() {
+      document.getElementById("mySidenav").style.width = "450px";
+    }
 
-          function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-          }
+    function closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+    }
 
-          function eraseText(){
-            document.getElementById('mytext').value = "";
-          }
+    function eraseText(){
+      document.getElementById('mytext').value = "";
+    }
 
-          function viewchart(marker){
-            var node_id = parseInt(marker.label);
-            var node_data = getCustomInfo(marker);
-            var node_time = getCustomInfoTime(marker);
-            var data = new google.visualization.DataTable();
-            data.addColumn('date','TIME');
-            data.addColumn('number','PER');
-            data.addColumn('number','RSSI');
-            var temp_length = node_data.length;
-            for(var i=0;i<node_data.length;i++){
-              var time_data = convertTime(node_time[i]);
-              if(parseFloat(node_data[i][0]) != 0){
-                var avg_per_data = parseFloat(node_data[i][1]) / parseFloat(node_data[i][0]) * 100;
-              }else{
-                var avg_per_data = 1;
-              }
-              var sum_rssi_data = 0;
-              for(var j=2; j<node_data[i].length;j++){
-                sum_rssi_data += parseFloat(node_data[i][j]);
-              }
-              var avg_rssi_data = sum_rssi_data / (node_data[i].length -2);    
+    function viewchart(marker){
+      var node_id = parseInt(marker.label);
+      var node_data = getCustomInfo(marker);
+      var node_time = getCustomInfoTime(marker);
+      var data = new google.visualization.DataTable();
+      data.addColumn('date','TIME');
+      data.addColumn('number','PER');
+      data.addColumn('number','RSSI');
+      var temp_length = node_data.length;
+      for(var i=0;i<node_data.length;i++){
+        var time_data = convertTime(node_time[i]);
+        if(parseFloat(node_data[i][0]) != 0){
+          var avg_per_data = parseFloat(node_data[i][1]) / parseFloat(node_data[i][0]) * 100;
+        }else{
+          var avg_per_data = 1;
+        }
+        var sum_rssi_data = 0;
+        for(var j=2; j<node_data[i].length;j++){
+          sum_rssi_data += parseFloat(node_data[i][j]);
+        }
+        var avg_rssi_data = sum_rssi_data / (node_data[i].length -2);    
 
-              data.addRow([time_data, avg_per_data, avg_rssi_data]);
-            }
-            var node = document.createElement('div');
-            node.setAttribute('id', 'node');
-            node.style.height = "250px";
-            var chart = new google.visualization.AnnotatedTimeLine(node);
-            var chart_start_date = $("#chart_start_date").val();
-            var chart_end_date = $("#chart_end_date").val();
+        data.addRow([time_data, avg_per_data, avg_rssi_data]);
+      }
+      var node = document.createElement('div');
+      node.setAttribute('id', 'node');
+      node.style.height = "250px";
+      var chart = new google.visualization.AnnotatedTimeLine(node);
+      var chart_start_date = $("#chart_start_date").val();
+      var chart_end_date = $("#chart_end_date").val();
         // if(!document.getElementById('app_per').checked) {
         //     chart.hideDataColumns(1);
         // }else if(!document.getElementById('rssi').checked){
@@ -891,31 +862,36 @@
           map.setCenter(new google.maps.LatLng(41.850033, -87.6500523));
         }
       </script>
-      <div id="mapreset">
-        <button id="mapresetbtn" type="button" onclick="mapReset()">&#8634;</button>
+      <div id="gateway" style="font-size:20px; background-color: lightblue; margin-left: 10px;">
+       Gateway:
+       <select id=gateway_names></select> 
+     </div>
+     <div id="mapreset">
+      <button id="mapresetbtn" type="button" onclick="mapReset()">&#8634;</button>
+    </div>
+    <!-- <div id="map"></div> -->
+    <div id="legend"><h3>Status</h3>
+      <canvas id="myCanvas" width="150" height="40">
       </div>
-      <!-- <div id="map"></div> -->
-      <div id="legend"><h3>Status</h3>
-        <canvas id="myCanvas" width="150" height="40">
-        </div>
 
 
-        <script>
-          var marker;
-          var markers = [];
-          var markers_location = [];
-          var markers2 = [];
-          var sum_network = 0;
-          var sum_network_rssi = 0;
-          var zoomChange = null;
+      <script>
+        var marker;
+        var markers = [];
+        var links = [];
+        var markers_location = [];
+        var markers2 = [];
+        var sum_network = 0;
+        var sum_network_rssi = 0;
+        var zoomChange = null;
 
 
-          function initMap() {
+        function initMap() {
 
-            var myWrapper = $("#wrapper");
-            $("#menu-toggle").click(function(e) {
-              e.preventDefault();
-              $("#wrapper").toggleClass("toggled");
+          var myWrapper = $("#wrapper");
+          $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
             // alert($("#wrapper").hasClass("toggled"));
             if($("#wrapper").hasClass("toggled")){
               document.getElementById("myBtn").style.display = "none";
@@ -925,108 +901,97 @@
             });
           });
 
-            map = new google.maps.Map(document.getElementById('map'), {
-              zoom: 5,
-              center: new google.maps.LatLng(41.850033, -87.6500523)
-            });
+          map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 5,
+            center: new google.maps.LatLng(41.850033, -87.6500523)
+          });
 
-            google.maps.event.addListener(map, 'click', function() {
-              infowindow.close();
-              clearInterval(myinterval);
-            });
+          google.maps.event.addListener(map, 'click', function() {
+            infowindow.close();
+            clearInterval(myinterval);
+          });
 
-            var iconBase = 'http://labs.google.com/ridefinder/images/';
+          var iconBase = 'http://labs.google.com/ridefinder/images/';
 
-            var icons = {
-              active: {
-                name: 'Active',
-                icon: iconBase + 'mm_20_green.png'
-              },
-              warning: {
-                name: 'Warning',
-                icon: iconBase + 'mm_20_orange.png'
-              },
-              critical: {
-                name: 'Critical',
-                icon: iconBase + 'mm_20_red.png'
-              }
-            };
+          var icons = {
+            active: {
+              name: 'Active',
+              icon: iconBase + 'mm_20_green.png'
+            },
+            warning: {
+              name: 'Warning',
+              icon: iconBase + 'mm_20_orange.png'
+            },
+            critical: {
+              name: 'Critical',
+              icon: iconBase + 'mm_20_red.png'
+            }
+          };
 
-            var contentString = '<div id="content">'+
-            '<div id="siteNotice">'+
-            '</div>'+
-            '<h1 id="firstHeading" class="firstHeading">PER</h1>'+
-            '<div id="bodyContent">'+
-            '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-            'sandstone rock formation in the southern part of the '+
-            'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
-            'south west of the nearest large town, Alice Springs; 450&#160;km '+
-            '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
-            'features of the Uluru - Kata Tjuta National Park. Uluru is '+
-            'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
-            'Aboriginal people of the area. It has many springs, waterholes, '+
-            'rock caves and ancient paintings. Uluru is listed as a World '+
-            'Heritage Site.</p>'+
-            '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
-            'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
-            '(last visited June 22, 2009).</p>'+
-            '</div>'+
-            '</div>';
+          var contentString = '<div id="content">'+
+          '<div id="siteNotice">'+
+          '</div>'+
+          '<h1 id="firstHeading" class="firstHeading">PER</h1>'+
+          '<div id="bodyContent">'+
+          '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
+          'sandstone rock formation in the southern part of the '+
+          'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
+          'south west of the nearest large town, Alice Springs; 450&#160;km '+
+          '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
+          'features of the Uluru - Kata Tjuta National Park. Uluru is '+
+          'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
+          'Aboriginal people of the area. It has many springs, waterholes, '+
+          'rock caves and ancient paintings. Uluru is listed as a World '+
+          'Heritage Site.</p>'+
+          '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
+          'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
+          '(last visited June 22, 2009).</p>'+
+          '</div>'+
+          '</div>';
 
-            var infowindow = new google.maps.InfoWindow({
-              content: contentString,
-            });
-        // var infoWindow = new google.maps.InfoWindow({
-        //     content: contentString,
-        // });
+          var infowindow = new google.maps.InfoWindow({
+            content: contentString,
+          });
 
-        // for(var i=0; i<data_topo_test.length;i++){
-        //   if(data_topo_test[i] != ''){
-        //     var newNode = new google.maps.LatLng(data_topo_test[i]['2'], data_topo_test[i]['3']);
-        //     addMarker(newNode,i.toString(),"active",'1');
-        //   }
-        // }
+          var markerCluster1 = new MarkerClusterer(map, markers_location,
+          {
+            maxZoom: 15,
+            imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
+            ignoreHidden: true
+          });
+          loadGateway();
+          drawTopology();
 
-        var markerCluster1 = new MarkerClusterer(map, markers_location,
-        {
-          maxZoom: 15,
-          imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
-        });
+          // addNetwork(markers,1);
+          addNetwork(markers2,2);
 
-        drawTopology();
+          updateGateway();
 
-        addNetwork(markers,1);
-        addNetwork(markers2,2);
+          function convertTime(timestamp_string){
+            var timestamp = parseInt(timestamp_string);
+            var date = new Date(timestamp);
+            var year = date.getFullYear();
+            var month = date.getMonth();
+            var day = date.getDate();
+            var hours = date.getHours();
+            var minutes = "0" + date.getMinutes();
+            var seconds = "0" + date.getSeconds();
+            var formattedTime = year + '/' + month + '/' + day + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+            var result_time = new Date(year, month, day, hours, minutes.substr(-2), seconds.substr(-2));
+            return result_time;
+          }
 
-        
-
-        function convertTime(timestamp_string){
-          var timestamp = parseInt(timestamp_string);
-          var date = new Date(timestamp);
-          var year = date.getFullYear();
-          var month = date.getMonth();
-          var day = date.getDate();
-          var hours = date.getHours();
-          var minutes = "0" + date.getMinutes();
-          var seconds = "0" + date.getSeconds();
-          var formattedTime = year + '/' + month + '/' + day + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-          var result_time = new Date(year, month, day, hours, minutes.substr(-2), seconds.substr(-2));
-    // return formattedTime;
-    return result_time;
-
-  }
-
-  function convertTime4(date_string, time_string){
-    var date_temp_array = date_string.split('-');
-    var time_temp_array = time_string.split(':');
-    return new Date(date_temp_array[0], date_temp_array[1]-1, date_temp_array[2], time_temp_array[0], time_temp_array[1], time_temp_array[2], 0);
-  }
-  function findLineByLeastSquares(values_x, values_y) {
-    var sum_x = 0;
-    var sum_y = 0;
-    var sum_xy = 0;
-    var sum_xx = 0;
-    var count = 0;
+          function convertTime4(date_string, time_string){
+            var date_temp_array = date_string.split('-');
+            var time_temp_array = time_string.split(':');
+            return new Date(date_temp_array[0], date_temp_array[1]-1, date_temp_array[2], time_temp_array[0], time_temp_array[1], time_temp_array[2], 0);
+          }
+          function findLineByLeastSquares(values_x, values_y) {
+            var sum_x = 0;
+            var sum_y = 0;
+            var sum_xy = 0;
+            var sum_xx = 0;
+            var count = 0;
 
     /*
      * We'll use those variables for faster read/write access.
@@ -1455,6 +1420,20 @@
         }
       }
 
+      function loadGateway(){
+        $.ajax({
+          url: "/api/gateway",
+          dataType: "json",
+          success: function(jsonData){
+            var gateway_names = document.getElementById('gateway_names');
+            for(var i=0;i<jsonData.length;i++){
+              var gateway_item = jsonData[i]['GATEWAY_NAME'];
+              gateway_names.append(new Option(gateway_item));
+            }
+          }
+        })
+      }
+
       function drawChannelRssi(data_point, marker){
         var node_id = parseInt(marker.id);
         var channel_rssi_array = [];
@@ -1495,63 +1474,61 @@
         return c/res.length;
       }
 
-
       function drawChart2(marker){
         $.ajax({
           url: "/api/sensor",
           dataType: "json",
           success: function (jsonData) {
-                // alert(jsonData[3]);
-                data2 = new google.visualization.DataTable();
-                data2.addColumn('date','TIME');
-                data2.addColumn('number','APP_PER');
-                data2.addColumn('number', 'MAC_PER');
-                data2.addColumn('number', 'RSSI');
+            data2 = new google.visualization.DataTable();
+            data2.addColumn('date','TIME');
+            data2.addColumn('number','APP_PER');
+            data2.addColumn('number', 'MAC_PER');
+            data2.addColumn('number', 'RSSI');
 
-                var total2 = 0;
-                var predict2_time = [];
-                var predict2_per = [];
-                var start_date = jsonData[parseInt(marker.id)][0]['DATE'];
-                var end_date = jsonData[parseInt(marker.id)][jsonData[parseInt(marker.id)].length-1]['DATE'];
-                var start_time = jsonData[parseInt(marker.id)][0]['TIME'];
-                var end_time = jsonData[parseInt(marker.id)][jsonData[parseInt(marker.id)].length-1]['TIME'];
-                for(var i=0;i<jsonData[parseInt(marker.id)].length;i++){
-                  var data_time = convertTime4(jsonData[parseInt(marker.id)][i]['DATE'], jsonData[parseInt(marker.id)][i]['TIME']);
-                  var data_gateway = jsonData[parseInt(marker.id)][i]['GATEWAY_NAME'];
-                  var data_channel_info = jsonData[parseInt(marker.id)][i]['CHANNEL_INFO'];
-                  var channel_rssi_avg = getAvgRssi(data_channel_info);
-                  var data_mac_tx_total = jsonData[parseInt(marker.id)][i]['MAC_TX_TOTAL'];
-                  var data_mac_tx_fail = jsonData[parseInt(marker.id)][i]['MAC_TX_FAIL'];
-                  var data_app_per_sent = jsonData[parseInt(marker.id)][i]['APP_PER_SENT'];
-                  var data_app_per_lost = jsonData[parseInt(marker.id)][i]['APP_PER_LOST'];
-                  data2.addRow([data_time, conditionalDivision(data_app_per_lost, data_app_per_sent)*100, conditionalDivision(data_mac_tx_fail, data_mac_tx_total)*100, channel_rssi_avg]);
-                  predict2_time.push(jsonData[parseInt(marker.id)][i][0]);
-                  predict2_per.push(jsonData[parseInt(marker.id)][i][1]);
-                  var current2 = jsonData[parseInt(marker.id)][i][1];
-                  total2 += current2;
-                    // var avg2 = total2/jsonData[parseInt(marker.id).length];
-                  }
-                  var avg2 = total2/jsonData[parseInt(marker.id)].length;
-                  var predict2 = findLineByLeastSquares(predict2_time, predict2_per)[1][0];
-                  if(predict2 > 0.05){
-                    var fault_pbb2 = 1;
-                  }else if(predict2 > 0.05 && current2 > predict2){
-                    var fault_pbb2 = 0;
-                  }else if(current2 < 0.05 && current2 > predict2){
-                    var fault_pbb2 = 0;
-                  }else{
-                    var fault_pbb2 = 1/((0.05-current2)/(predict2-current2));
-                  }
+            var total2 = 0;
+            var current2 = 0;
+            var predict2_time = [];
+            var predict2_per = [];
+            var start_date = jsonData[parseInt(marker.id)][0]['DATE'];
+            var end_date = jsonData[parseInt(marker.id)][jsonData[parseInt(marker.id)].length-1]['DATE'];
+            var start_time = jsonData[parseInt(marker.id)][0]['TIME'];
+            var end_time = jsonData[parseInt(marker.id)][jsonData[parseInt(marker.id)].length-1]['TIME'];
+            for(var i=0;i<jsonData[parseInt(marker.id)].length;i++){
+              var data_time = convertTime4(jsonData[parseInt(marker.id)][i]['DATE'], jsonData[parseInt(marker.id)][i]['TIME']);
+              var data_gateway = jsonData[parseInt(marker.id)][i]['GATEWAY_NAME'];
+              var data_channel_info = jsonData[parseInt(marker.id)][i]['CHANNEL_INFO'];
+              var channel_rssi_avg = getAvgRssi(data_channel_info);
+              var data_mac_tx_total = jsonData[parseInt(marker.id)][i]['MAC_TX_TOTAL'];
+              var data_mac_tx_fail = jsonData[parseInt(marker.id)][i]['MAC_TX_FAIL'];
+              var data_app_per_sent = jsonData[parseInt(marker.id)][i]['APP_PER_SENT'];
+              var data_app_per_lost = jsonData[parseInt(marker.id)][i]['APP_PER_LOST'];
+              data2.addRow([data_time, conditionalDivision(data_app_per_lost, data_app_per_sent)*100, conditionalDivision(data_mac_tx_fail, data_mac_tx_total)*100, channel_rssi_avg]);
+              predict2_time.push(i);
+              current2 = conditionalDivision(data_app_per_lost, data_app_per_sent);
+              predict2_per.push(current2);
+              total2 += current2;
+            }
+            var avg2 = total2/jsonData[parseInt(marker.id)].length;
+            var predict2 = findLineByLeastSquares(predict2_time, predict2_per)[1][0];
+            if(predict2 > 0.05){
+              var fault_pbb2 = 1;
+            }else if(predict2 > 0.05 && current2 > predict2){
+              var fault_pbb2 = 0;
+            }else if(current2 < 0.05 && current2 > predict2){
+              var fault_pbb2 = 0;
+            }else{
+              var fault_pbb2 = 1/((0.05-current2)/(predict2-current2));
+            }
 
-                  var d = new Date();
-                  d.setHours(d.getHours() - 2);
+            var d = new Date();
+            d.setHours(d.getHours() - 2);
 
-                  options2 = {
-                    title: 'new chart2',
-                    displayAnnotations: false,
-                    allowRedraw: true,
-                    width: 625,
-                    scaleType: 'allfixed',
+            options2 = {
+              title: 'new chart2',
+              displayAnnotations: false,
+              allowRedraw: true,
+              width: 625,
+              scaleType: 'allfixed',
                     // zoomStartTime: d
                   };
 
@@ -1575,7 +1552,6 @@
                 //     // chart2.setVisibleChartRange(range2['start'], null);
                 // });
                 chart2.draw(data2, options2);
-
                 // getVisibleChartRange()
                 // if(chart2.getVisibleChartRange()){
                 //     var range = chart2.getVisibleChartRange();
@@ -1591,9 +1567,9 @@
                 var titlestring2 = '<div id="content">'+
                 '<h1 id="firstHeading" class="firstHeading">Node '+parseInt(marker.id)+' | PER vs. RSSI</h1>'+
                 '<div id="bodyContent">'+
-                '<p><b>Average: </b>'+(avg2*100).toFixed(2)+'%'+'</p>'+
-                '<p><b>Current: </b>'+(current2*100).toFixed(2)+'%'+'</p>'+
-                '<p><b>Predicted: </b>'+(predict2*100).toFixed(2)+'%'+'</p>'+
+                '<p><b>Average PER: </b>'+(avg2*100).toFixed(2)+'%'+'</p>'+
+                '<p><b>Current PER: </b>'+(current2*100).toFixed(2)+'%'+'</p>'+
+                '<p><b>Predicted PER: </b>'+(predict2*100).toFixed(2)+'%'+'</p>'+
                 '<p><b>Fault probability: </b>'+(fault_pbb2*100).toFixed(2)+'%'+'</p>'+
                 '<p>'+'Start date: <input type="date" id="chart_start_date" />'+'&emsp;Start time: <input type="time" id="chart_start_time" step="1"/>'+'</p>'+
                 '<p>'+'End date: <input type="date" id="chart_end_date" />'+'&emsp;End time: <input type="time" id="chart_end_time" step="1"/>'+'</p>'+
@@ -1645,24 +1621,31 @@ function drawTopology(){
           addMarker(newNode,i.toString(),"active",'1');
         }
       }
+      addNetwork(markers,1);
     }
   });
 }
 
-function drawGateway(){
-  var gateways = [];
-  var gateway;
-  $.ajax({
-    url: "/api/gateway",
-    dataType: "json",
-    success: function (jsonData) {
-      for(var i=0; i<jsonData.length;i++){
-        if(jsonData[i] != ''){
-          gateway = jsonData[i]['GATEWAY_NAME'];
-          gateways.push(gateway);
-        }
+function updateGateway(){
+  $('#gateway_names').change(function(){
+    markers.forEach(function(marker){
+      if($('#gateway_names').val() == 'TEST'){
+        // marker.setVisible(false);
+        markerCluster1.clearMarkers();
       }
-    }
+      else{
+        markerCluster1.addMarker(marker);
+        // marker.setVisible(true);
+      }
+    });
+    links.forEach(function(link){
+      if($('#gateway_names').val() == 'TEST'){
+        link.setVisible(false);
+      }
+      else{
+        link.setVisible(true);
+      }
+    });
   });
 }
 
@@ -1670,27 +1653,17 @@ function getSum(total, num) {
   return total + num;
 }
 
-      // var sum_network = 0;
-      function addNetwork(markers,label){
-        // var sum_network = 0;
-        // var network_data = [];
-        // for(var i=0;i<markers.length;i++){
-        //     if(markers[i]){
-        //         var sum_node = markers[i].customInfo.reduce(getSum);
-        //         sum_network += sum_node;
-        //     }
-        // }
-        // alert(sum_network);
-        var avg_network = sum_network / markers.length;
-        var avg_network_rssi = sum_network_rssi / markers.length;
-        
-        if(label==1){
-          var sidebar = $('#demo');
-          var sidebar_entry = $('<li/>', {
-            'html': '<a href="#demo" class="btn btn-link" data-toggle="collapse">Network '+label
-            +'<ul style="padding-left: 5px">Num. Nodes: '+(markers.length - 1 )+'</ul>'
-            +'<ul style="padding-left: 5px">Avg. PER: '+avg_network.toFixed(6)+'</ul>'
-            +'<ul style="padding-left: 5px">Avg. RSSI: '+avg_network_rssi.toFixed(6)+'</ul>'
+function addNetwork(markers,label){
+  var avg_network = sum_network / markers.length;
+  var avg_network_rssi = sum_network_rssi / markers.length;
+
+  if(label==1){
+    var sidebar = $('#demo');
+    var sidebar_entry = $('<li/>', {
+      'html': '<a href="#demo" class="btn btn-link" data-toggle="collapse">Network '+label
+      +'<ul style="padding-left: 5px">Num. Nodes: '+(markers.length - 1 )+'</ul>'
+      +'<ul style="padding-left: 5px">Avg. PER: '+avg_network.toFixed(6)+'</ul>'
+      +'<ul style="padding-left: 5px">Avg. RSSI: '+avg_network_rssi.toFixed(6)+'</ul>'
             // +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
             // +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>'
             +'<ul style="padding-left: 5px">Energy status: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+(Math.random() * (0.8 - 0.1) + 0.1)+'">'+'</meter>'+'</ul>'
@@ -1725,13 +1698,13 @@ function getSum(total, num) {
             //     // alert($(this).attr('id'));
             // }
           }).insertBefore(sidebar);
-        }else if(label ==2){
-          var sidebar2 = $('#demo2');
-          var sidebar_entry2 = $('<li/>', {
-            'html': '<a href="#demo2" class="btn btn-link" data-toggle="collapse">Network '+label
-            +'<ul style="padding-left: 5px">Num. Nodes: '+(markers2.length - 1 )+'</ul>'
-            +'<ul style="padding-left: 5px">Avg. PER: '+avg_network.toFixed(6)+'</ul>'
-            +'<ul style="padding-left: 5px">Avg. RSSI: '+avg_network_rssi.toFixed(6)+'</ul>'
+  }else if(label ==2){
+    var sidebar2 = $('#demo2');
+    var sidebar_entry2 = $('<li/>', {
+      'html': '<a href="#demo2" class="btn btn-link" data-toggle="collapse">Network '+label
+      +'<ul style="padding-left: 5px">Num. Nodes: '+(markers2.length - 1 )+'</ul>'
+      +'<ul style="padding-left: 5px">Avg. PER: '+avg_network.toFixed(6)+'</ul>'
+      +'<ul style="padding-left: 5px">Avg. RSSI: '+avg_network_rssi.toFixed(6)+'</ul>'
             // +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
             // +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>'
             +'<ul style="padding-left: 5px">Energy status: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+(Math.random() * (0.8 - 0.1) + 0.1)+'">'+'</meter>'+'</ul>'
@@ -1772,159 +1745,82 @@ function getSum(total, num) {
 
     var myinterval = null;
     function addMarker(location,label,active,parent){
-        // var array = [generateRandom(),generateRandom(),generateRandom(),generateRandom(),generateRandom(),generateRandom()];
-        // alert(data_test[0][1]);
-        // var array = [data_test[100][1],data_test[101][1],data_test[102][1],data_test[103][1],data_test[104][1],data_test[105][1]];
-        var node_id = parseInt(label);
-        if(data_test[node_id]){
-          var node_data_length = data_test[node_id].length;
-          var array = [];
-          var array_time = [];
-          var array_x = [];
-          var array_y = [];
-          // for(var i=0;i<node_data_length;i++){
-          //   var date_temp_array = data_test[node_id][i]['DATE'].split('-');
-          //   var time_temp_array = data_test[node_id][i]['TIME'].split(':');
-          //   array_time[i] = new Date(date_temp_array[0], date_temp_array[1], date_temp_array[2], time_temp_array[0], time_temp_array[1], time_temp_array[2], 0);
-          //   array[i] = [
-          //       data_test[node_id][i]['APP_PER_SENT'], data_test[node_id][i]['APP_PER_LOST'], //0-1
-          //       data_test[node_id][i]['MAC_TX_TOTAL'], data_test[node_id][i]['MAC_TX_FAIL'], //2-3
-          //       data_test[node_id][i]['0']['rssi'], //4
-          //       data_test[node_id][i]['1']['rssi'],
-          //       data_test[node_id][i]['2']['rssi'],
-          //       data_test[node_id][i]['3']['rssi'],
-          //       data_test[node_id][i]['4']['rssi'],
-          //       data_test[node_id][i]['5']['rssi'],
-          //       data_test[node_id][i]['6']['rssi'],
-          //       data_test[node_id][i]['7']['rssi'],
-          //       data_test[node_id][i]['8']['rssi'],
-          //       data_test[node_id][i]['9']['rssi'],
-          //       data_test[node_id][i]['10']['rssi'],
-          //       data_test[node_id][i]['11']['rssi'],
-          //       data_test[node_id][i]['12']['rssi'],
-          //       data_test[node_id][i]['13']['rssi'],
-          //       data_test[node_id][i]['14']['rssi'],
-          //       data_test[node_id][i]['15']['rssi'] //19
-          //       // data_test[node_id][i]['CH11_RSSI'], data_test[node_id][i]['CH12_RSSI'],
-          //       // data_test[node_id][i]['CH13_RSSI'], data_test[node_id][i]['CH14_RSSI'],
-          //       // data_test[node_id][i]['CH15_RSSI'], data_test[node_id][i]['CH16_RSSI'],
-          //       // data_test[node_id][i]['CH17_RSSI'], data_test[node_id][i]['CH18_RSSI'],
-          //       // data_test[node_id][i]['CH19_RSSI'], data_test[node_id][i]['CH20_RSSI'],
-          //       // data_test[node_id][i]['CH21_RSSI'], data_test[node_id][i]['CH22_RSSI'],
-          //       // data_test[node_id][i]['CH23_RSSI'], data_test[node_id][i]['CH24_RSSI'],
-          //       // data_test[node_id][i]['CH25_RSSI']
-          //       ];
-
-          //       array_x.push(parseInt(array_time[i]));
-          //       if(parseFloat(array[i][0]) != 0){
-          //         array_y.push(parseFloat(array[i][1]) / parseFloat(array[i][0]));
-          //         var current = parseFloat(array[i][1]) / parseFloat(array[i][0]);
-          //       }else{
-          //         array_y.push(0);
-          //         var current = 0;
-          //       }
-          //     }
-            // if(parseFloat(array[array.length-1][0]) != 0){
-            //         var current = array[array.length-1][1] / parseFloat(array[array.length-1][0]);
-            // }else{
-            //         var current = 0;
-            // }
-            // var current = 0;
-            var result = findLineByLeastSquares(array_x, array_y);
-            var predict_y = result[1][0];
-            // var fault_pbb_temp = 1/((0.05-parseFloat(current))/(parseFloat(predict_y)-parseFloat(current)));
-            if(parseFloat(predict_y) > 0.05){
-              var fault_pbb = 1;
-            }else if(parseFloat(current) > 0.05 && parseFloat(current) > parseFloat(predict_y)){
-              var fault_pbb = 0;
-            }else if(parseFloat(current) < 0.05 && parseFloat(current) > parseFloat(predict_y)){
-              var fault_pbb = 0;
-            }else{
-              var fault_pbb = 1/((0.05-parseFloat(current))/(parseFloat(predict_y)-parseFloat(current)));
-            }
-          }else{
-            var array = ['0'];
-            var array_time = ['0'];
-            var current = ['0'];
-            var predict_y = ['0'];
-          }
-        // alert(data_test);
-        var sum = 0;
-        var sum_rssi = 0;
-        var num_channel = 0;
-        for(var i=0;i<array.length;i++){
-            // sum += parseFloat(array[i]);
-            if(parseFloat(array[i][0]) != 0){
-              sum += parseFloat(array[i][1]) / parseFloat(array[i][0]);
-            }else{
-              sum += 0;
-            }
-            for(var j=2;j<array[i].length;j++){
-              sum_rssi += parseFloat(array[i][j]);
-              num_channel ++;
-            }
-          }
-          var avg_rssi = sum_rssi / num_channel;
-        // sum_network += sum;
-        var avg = sum / array.length;
-        if(isNaN(avg)){
-          sum_network += 0;
+      var node_id = parseInt(label);
+      if(data_test[node_id]){
+        var node_data_length = data_test[node_id].length;
+        var array = [];
+        var array_time = [];
+        var array_x = [];
+        var array_y = [];
+        var result = findLineByLeastSquares(array_x, array_y);
+        var predict_y = result[1][0];
+        if(parseFloat(predict_y) > 0.05){
+          var fault_pbb = 1;
+        }else if(parseFloat(current) > 0.05 && parseFloat(current) > parseFloat(predict_y)){
+          var fault_pbb = 0;
+        }else if(parseFloat(current) < 0.05 && parseFloat(current) > parseFloat(predict_y)){
+          var fault_pbb = 0;
         }else{
-          sum_network += avg;
+          var fault_pbb = 1/((0.05-parseFloat(current))/(parseFloat(predict_y)-parseFloat(current)));
         }
-
-        if(isNaN(avg_rssi)){
-          sum_network_rssi += 0;
+      }else{
+        var array = ['0'];
+        var array_time = ['0'];
+        var current = ['0'];
+        var predict_y = ['0'];
+      }
+      var sum = 0;
+      var sum_rssi = 0;
+      var num_channel = 0;
+      for(var i=0;i<array.length;i++){
+        if(parseFloat(array[i][0]) != 0){
+          sum += parseFloat(array[i][1]) / parseFloat(array[i][0]);
         }else{
-          sum_network_rssi += avg_rssi;
+          sum += 0;
         }
+        for(var j=2;j<array[i].length;j++){
+          sum_rssi += parseFloat(array[i][j]);
+          num_channel ++;
+        }
+      }
+      var avg_rssi = sum_rssi / num_channel;
+      var avg = sum / array.length;
+      if(isNaN(avg)){
+        sum_network += 0;
+      }else{
+        sum_network += avg;
+      }
 
-        /** analysis **/
-        // var timeseries = require("timeseries-analysis");
-        // var t     = new timeseries.main(timeseries.adapter.fromArray(data));
-        // t.ma().lwma();
-        // var processed = t.ma().output();
-        // var chart_url = t.ma({period: 14}).chart();
-        // var min = t.min();
-        // var max = t.max(); 
-        // var mean = t.mean();
-        // var stdev = t.stdev();
-        // var forecastDatapoint   = 7;   
-        // var coeffs = t.ARMaxEntropy({
-        //     data:   t.data.slice(0,6)
-        // });
-        // console.log(coeffs);
-        // var forecast    = 0;    // Init the value at 0.
-        // for (var i=0;i<coeffs.length;i++) { // Loop through the coefficients
-        //     forecast -= t.data[6-i][1]*coeffs[i];
-        // }
-        // console.log("forecast",forecast);
-        /**************/
+      if(isNaN(avg_rssi)){
+        sum_network_rssi += 0;
+      }else{
+        sum_network_rssi += avg_rssi;
+      }
 
-        var marker = new google.maps.Marker({
-          map: map,
-          icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            scale: 15,
-            strokeWeight:2,
-            fillColor: '#008000',
-            fillOpacity: 1.0
-          },
-          position: location,
-          label: label,
-          id: label,
-          status: active,
-          customInfo: array,
-          customInfoTime: array_time,
-          parentInfo: parent,
-          isCritical: 0,
-          lossRate: 0,
-          batteryInfo: Math.random() * (0.8 - 0.1) + 0.1
-        });
-        if(parseInt(marker.label)<=20){
-          markers[parseInt(label)] = marker;
-          markers_location.push(marker);
-          markerCluster1.addMarker(marker);
+      var marker = new google.maps.Marker({
+        map: map,
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 15,
+          strokeWeight:2,
+          fillColor: '#008000',
+          fillOpacity: 1.0
+        },
+        position: location,
+        label: label,
+        id: label,
+        status: active,
+        customInfo: array,
+        customInfoTime: array_time,
+        parentInfo: parent,
+        isCritical: 0,
+        lossRate: 0,
+        batteryInfo: Math.random() * (0.8 - 0.1) + 0.1
+      });
+      if(parseInt(marker.label)<=100){
+        markers[parseInt(label)] = marker;
+        markers_location.push(marker);
+        markerCluster1.addMarker(marker);
         // $('#side_bar').append("<li>node" + label + "</li>");
         var sidebar = $('#demo');
         var sidebar_entry = $('<li/>', {
@@ -2064,55 +1960,54 @@ function getSum(total, num) {
 
         var link_info = generateRandom();
         if(marker.parentInfo != '0'){
-          if(parseInt(marker.label)<=20){
+          if(parseInt(marker.label)){
             var parentMarker = markers[parseInt(marker.parentInfo)];
           }else{
             var parentMarker = markers2[parseInt(marker.parentInfo)];
           }
-            // var lat = parentMarker.getPosition().lat();
-            // var lng = parentMarker.getPosition().lng();
-            var path = [
-            {lat: marker.getPosition().lat(), lng: marker.getPosition().lng()},
-            {lat: parentMarker.getPosition().lat(), lng: parentMarker.getPosition().lng()}
-            ];
-            var link = new google.maps.Polyline({
-              path: path,
-            // geodesic: true,
+          var path = [
+          {lat: marker.getPosition().lat(), lng: marker.getPosition().lng()},
+          {lat: parentMarker.getPosition().lat(), lng: parentMarker.getPosition().lng()}
+          ];
+          var link = new google.maps.Polyline({
+            path: path,
             strokeColor: '#000080',
             strokeOpacity: 1.0,
             strokeWeight: 1 + link_info * 100,
             customInfo: link_info
           });
-            if(link_info > 0.04){
-              link.strokeColor = '#800000';
-            }
-            createInfoWindow(link, "Link traffic : " + link.customInfo);
-            link.setMap(map);
+          links.push(link);
+          if(link_info > 0.04){
+            link.strokeColor = '#800000';
           }
+          createInfoWindow(link, "Link traffic : " + link.customInfo);
+          link.setMap(map);
         }
-        var legend = document.getElementById('legend');
-        for (var key in icons) {
-          var type = icons[key];
-          var name = type.name;
-          var icon = type.icon;
-          var div = document.createElement('div');
-          div.innerHTML = '<img src="' + icon + '"> ' + name;
-          legend.appendChild(div);
-        }
-        var c = document.getElementById("myCanvas");
-        var ctx = c.getContext("2d");
-        ctx.fillText("Low",5,12);
-        ctx.fillText("High",125,12);
-        ctx.fillText("Noisy zone (PER)",30,35);
-        var grd = ctx.createLinearGradient(0, 0, 170, 0);
-        grd.addColorStop(0, "white");
-        grd.addColorStop(1, " #ff5733");
-        ctx.fillStyle = grd;
-        ctx.fillRect(2, 15, 150, 10);
+      }
+      var legend = document.getElementById('legend');
+      for (var key in icons) {
+        var type = icons[key];
+        var name = type.name;
+        var icon = type.icon;
+        var div = document.createElement('div');
+        div.innerHTML = '<img src="' + icon + '"> ' + name;
+        legend.appendChild(div);
+      }
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+      ctx.fillText("Low",5,12);
+      ctx.fillText("High",125,12);
+      ctx.fillText("Noisy zone (PER)",30,35);
+      var grd = ctx.createLinearGradient(0, 0, 170, 0);
+      grd.addColorStop(0, "white");
+      grd.addColorStop(1, " #ff5733");
+      ctx.fillStyle = grd;
+      ctx.fillRect(2, 15, 150, 10);
 
-        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
-        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(mapreset);
-        markRegion();
+      map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
+      map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(mapreset);
+      map.controls[google.maps.ControlPosition.LEFT_TOP].push(gateway);
+      markRegion();
         // alert(shapes[0].shapeType+' '+shapes[1].shapeType+' '+shapes[2].shapeType+' '+shapes[3].shapeType);
         // for(var i=0;i<shapes.length;i++){
         //     alert(shapes[i].shapeType);
