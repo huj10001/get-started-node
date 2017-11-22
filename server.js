@@ -261,7 +261,7 @@ app.get("/api/sensor", function (request, response) {
   // /* first data fetch, 0 sec delay */
   var num_of_rows = 0;
   query1();
-  setTimeout(query1, 15000); // query every 15 sec
+  setInterval(query1, 15000); // query every 15 sec
   // query1();
   // setTimeout(query2, 3000);
   // setTimeout(query3, 6000);
@@ -628,6 +628,7 @@ function query1(){
       if(data[0]['1'] > num_of_rows){
         var offset_start = num_of_rows;
         var offset_end = data[0]['1'] - num_of_rows;
+        console.log('start offset: '+offset_start+', end offset: '+offset_end);
         conn.query('select distinct SENSOR_ID from BLUADMIN.NW_DATA_SET_PER', function (err, data) {
           for(var i=0;i<data.length;i++){
             fetchData(data[i]['SENSOR_ID'].toString(), offset_start, offset_end);
