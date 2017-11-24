@@ -1606,7 +1606,7 @@ function addMarker(location,label,active,parent){
     marker.icon.fillColor = ' #FFA500 ';
     marker.isCritical = 1;
   }
-  if(app_per_avg>=0.00005){
+  if(app_per_avg>=0.05){
     marker.icon.fillColor = ' #FF0000 ';
     marker.isCritical = 1;
     marker.lossRate = app_per_avg/0.05;
