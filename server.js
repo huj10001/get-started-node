@@ -196,7 +196,7 @@ app.get("/api/sensor", function (request, response) {
   /* db2 topology*/
   ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
     if(err) return console.log(err);
-    conn.query('select SENSOR_ID, min(GPS_LAT), min(GPS_LONG) from BLUADMIN.TOPOLOGY_DATA group by SENSOR_ID', function (err, data) {
+    conn.query('select SENSOR_ID, min(GPS_LAT), min(GPS_LONG), max(PARENT) from BLUADMIN.TOPOLOGY_DATA group by SENSOR_ID', function (err, data) {
       console.log('topology data:', data);
       for(var i=0;i<data.length;i++){
         var sid = data[i]['SENSOR_ID'];
@@ -609,12 +609,11 @@ function convertTime(timestamp_string){
 function loadNumSensor(){
   ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function(err, conn) {
     if(err) return console.log(err);
-    conn.query('select MAX(SENSOR_ID) from TOPOLOGY_DATA', function (err, data) {
+    conn.query('select MAX(SENSOR_ID) from BLUADMIN.TOPOLOGY_DATA', function (err, data) {
       console.log('Num of sensors: '+data[0]['1']);
       num_of_sensor = data[0]['1']+1;
       for(var j=0;j<num_of_sensor;j++){
         sensor_data[j] = [];
-        topology_data[j] = [];
       }
     })
   });
