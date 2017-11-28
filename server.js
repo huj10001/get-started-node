@@ -261,7 +261,7 @@ app.get("/api/sensor", function (request, response) {
   // /* first data fetch, 0 sec delay */
   var num_of_rows = 0;
   query1();
-  setInterval(query1, 15000); // query every 15 sec
+  // setInterval(query1, 15000); // query every 15 sec
   // query1();
   // setTimeout(query2, 3000);
   // setTimeout(query3, 6000);
@@ -425,16 +425,24 @@ function fetchData(node_id, offset_start, offset_end){
     conn.query(
       // 'select TS, APP_PER_SENT, APP_PER_LOST, CH11_RSSI, CH12_RSSI, CH13_RSSI, CH14_RSSI, CH15_RSSI from BLUADMIN.NW_DATA_SET_0 where SENSOR_ID=? fetch first 100 rows only'
       // 'select TS, APP_PER_SENT, APP_PER_LOST, CH11_RSSI, CH12_RSSI, CH13_RSSI, CH14_RSSI, CH15_RSSI, CH16_RSSI, CH17_RSSI, CH18_RSSI, CH19_RSSI, CH20_RSSI, CH21_RSSI, CH22_RSSI, CH23_RSSI, CH24_RSSI, CH25_RSSI from BLUADMIN.NW_DATA_SET_0 where SENSOR_ID=?'
-      'select * from BLUADMIN.NW_DATA_SET_PER where SENSOR_ID=? limit ?,?'
-      ,[sensor_id, offset_start, offset_end], function (err, data) {
-        console.log('Found %d new data with id %s', data.length, node_id);
-        if(data.length>0){
-          for(var i=0;i<data.length;i++){
-            sensor_data[parseInt(node_id)].push(data[i]);
+      // 'select * from BLUADMIN.NW_DATA_SET_PER where SENSOR_ID=? limit ?,?'
+      // ,[sensor_id, offset_start, offset_end], function (err, data) {
+        'select * from BLUADMIN.NW_DATA_SET_PER where SENSOR_ID=? fetch first 100 rows only'
+        ,[sensor_id], function (err, data) {
+          console.log('Found %d new data with id %s', data.length, node_id);
+          if(data.length>0){
+            for(var i=0;i<data.length;i++){
+              if(sensor_data[parseInt(node_id)] == null){
+                sensor_data[parseInt(node_id)] = [];
+                sensor_data[parseInt(node_id)].push(data[i]);
+              }
+              else{
+                sensor_data[parseInt(node_id)].push(data[i]);
+              }  
+            }
+            console.log(sensor_data[parseInt(node_id)]);
           }
-          console.log(sensor_data[parseInt(node_id)]);
-        }
-      });
+        });
   });
 }
   // mydb_kilby.find({"selector":{"id":parseInt(node_id), 
@@ -612,9 +620,6 @@ function loadNumSensor(){
     conn.query('select MAX(SENSOR_ID) from BLUADMIN.TOPOLOGY_DATA', function (err, data) {
       console.log('Num of sensors: '+data[0]['1']);
       num_of_sensor = data[0]['1']+1;
-      for(var j=0;j<num_of_sensor;j++){
-        sensor_data[j] = [];
-      }
     })
   });
 }

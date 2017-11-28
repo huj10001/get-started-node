@@ -571,7 +571,8 @@
     var chart2; 
     var data2;
     var options2;
-    function view(){
+    var curr_marker;
+    function update(){
       chart2.hideDataColumns(0);
       chart2.hideDataColumns(1);
       chart2.hideDataColumns(2);
@@ -590,6 +591,18 @@
       if(!isNaN(chart_start_date) && !isNaN(chart_end_date)){
         chart2.setVisibleChartRange(chart_start_date, chart_end_date);
       } 
+    }
+
+    function drawCorr(){
+      var data_corr = data2;
+      // data_corr.hideDataColumns(1);
+      var options_corr = {};
+      var node_corr = document.createElement('div');
+      var infoWindow_corr  = new google.maps.InfoWindow();
+      var chart_corr = new google.visualization.ScatterChart(node_corr);
+      chart_corr.draw(data_corr, options_corr);
+      infoWindow_corr.setContent(node_corr);
+      infoWindow_corr.open(curr_marker.getMap(),marker);
     }
 
     function selectfunction(){
@@ -1209,7 +1222,8 @@
         '<p>'+'Metric: <input type="checkbox" value="app_per" id="app_per" />Application Layer PER<input type="checkbox" value="mac_per" id="mac_per" />Mac Layer PER<input type="checkbox" value="rssi" id="rssi" />RSSI'+'</p>'+
         '</div>'+
         '</div>'+
-        '<div><form action="javascript:view();"><input type="submit" value="View"></form></div>';
+        '<div><form action="javascript:update();"><input type="submit" value="Update"></form></div>'+
+        '<div><form action="javascript:viewCorr();"><input type="submit" value="View correlation"></form></div>';
 
         div.innerHTML = titlestring;
         div.appendChild(node);
@@ -1282,6 +1296,7 @@
       }
 
       function drawChart2(marker){
+        curr_marker = marker;
         $.ajax({
           url: "/api/sensor",
           dataType: "json",
@@ -1382,7 +1397,8 @@
                 '<p>'+'Metric: <input type="checkbox" value="app_per" id="app_per" checked/>Application Layer PER&emsp;<input type="checkbox" value="mac_per" id="mac_per" checked/>Mac Layer PER&emsp;<input type="checkbox" value="rssi" id="rssi" checked/>RSSI'+'</p>'+
                 '</div>'+
                 '</div>'+
-                '<div><form action="javascript:view();"><input type="submit" value="View"></form></div>';
+                '<div><form action="javascript:update();"><input type="submit" value="Update"></form></div>'+
+                '<div><form action="javascript:drawCorr();"><input type="submit" value="View correlation"></form></div>';
 
                 var div2 = document.createElement('div');
                 div2.innerHTML = titlestring2;
@@ -1635,15 +1651,16 @@ function addMarker(location,label,active,parent){
             // }, 1000);
             // drawChart(this,avg,current,predict_y,fault_pbb);
             var sidebar = document.getElementById("demo");
-            var sidebar2 = document.getElementById("demo2")
+            var sidebar2 = document.getElementById("demo2");
             var li = document.getElementById("newid"+label);
-            var color = li.style.backgroundColor;
-            li.style.backgroundColor = " #5499c7 ";
-            setTimeout(function(){
-              li.style.backgroundColor=color;
-            }, 2000);
-
-            li.scrollIntoView();
+            if(li != null){
+              var color = li.style.backgroundColor;
+              li.style.backgroundColor = " #5499c7 ";
+              setTimeout(function(){
+                li.style.backgroundColor=color;
+              }, 2000);
+              li.scrollIntoView();
+            }
           });
 
   var link_info = generateRandom();
