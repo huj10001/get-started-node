@@ -344,6 +344,13 @@
     #close{
       float: right;
     }
+    #divleft{
+      display: inline-block;
+    }
+    #divright{
+      display: inline-block;
+      padding-left: 10px;
+    }
 
   </style>
 
@@ -572,6 +579,7 @@
     var data2;
     var options2;
     var curr_marker;
+    var data_corr;
     function update(){
       chart2.hideDataColumns(0);
       chart2.hideDataColumns(1);
@@ -594,8 +602,6 @@
     }
 
     function drawCorr(){
-      var data_corr = data2;
-      // data_corr.hideDataColumns(1);
       var options_corr = {};
       var node_corr = document.createElement('div');
       var infoWindow_corr  = new google.maps.InfoWindow();
@@ -1015,6 +1021,22 @@
               return false;
             }
           }
+
+          function markMarker(marker){
+            if(marker.isCritical == 1){
+              var cityCircle = new google.maps.Circle({
+                strokeColor: '#FF5733',
+                strokeOpacity: 0,
+                strokeWeight: 0,
+                fillColor: '#FF5733',
+                fillOpacity: 0.2,
+                map: map,
+                center: marker.getPosition(),
+                radius: Math.sqrt(marker.lossRate)
+              });
+            }
+          }
+
           var shapes = [];
           function markRegion(){
             while(markers.length > 0){
@@ -1295,6 +1317,7 @@
         return c/res.length;
       }
 
+
       function drawChart2(marker){
         curr_marker = marker;
         $.ajax({
@@ -1306,6 +1329,10 @@
             data2.addColumn('number','APP_PER');
             data2.addColumn('number', 'MAC_PER');
             data2.addColumn('number', 'RSSI');
+
+            data_corr = new google.visualization.DataTable();
+            data_corr.addColumn('date', 'TIME');
+            data_corr.addColumn('number', 'RSSI/PER')
 
             var total2 = 0;
             var current2 = 0;
@@ -1325,6 +1352,7 @@
               var data_app_per_sent = jsonData[parseInt(marker.id)][i]['APP_PER_SENT'];
               var data_app_per_lost = jsonData[parseInt(marker.id)][i]['APP_PER_LOST'];
               data2.addRow([data_time, conditionalDivision(data_app_per_lost, data_app_per_sent)*100, conditionalDivision(data_mac_tx_fail, data_mac_tx_total)*100, channel_rssi_avg]);
+              data_corr.addRow([data_time, conditionalDivision(Math.abs(channel_rssi_avg), conditionalDivision(data_mac_tx_fail, data_mac_tx_total))]);
               predict2_time.push(i);
               current2 = conditionalDivision(data_app_per_lost, data_app_per_sent);
               predict2_per.push(current2);
@@ -1397,8 +1425,8 @@
                 '<p>'+'Metric: <input type="checkbox" value="app_per" id="app_per" checked/>Application Layer PER&emsp;<input type="checkbox" value="mac_per" id="mac_per" checked/>Mac Layer PER&emsp;<input type="checkbox" value="rssi" id="rssi" checked/>RSSI'+'</p>'+
                 '</div>'+
                 '</div>'+
-                '<div><form action="javascript:update();"><input type="submit" value="Update"></form></div>'+
-                '<div><form action="javascript:drawCorr();"><input type="submit" value="View correlation"></form></div>';
+                '<div id="divleft"><form action="javascript:update();"><input type="submit" value="Update"></form></div>'+
+                '<div id="divright"><form action="javascript:drawCorr();"><input type="submit" value="View correlation"></form></div>';
 
                 var div2 = document.createElement('div');
                 div2.innerHTML = titlestring2;
@@ -1530,8 +1558,8 @@ function addMarker(location,label,active,parent){
       for(var i=0;i<jsonData[node_id].length;i++){
         var data_channel_info = jsonData[node_id][i]['CHANNEL_INFO'];
         var avg_rssi = getAvgRssi(data_channel_info);
-        var data_app_per_sent = jsonData[node_id][i]['APP_PER_SENT'];
-        var data_app_per_lost = jsonData[node_id][i]['APP_PER_LOST'];
+        var data_app_per_sent = jsonData[node_id][i]['MAC_TX_TOTAL'];
+        var data_app_per_lost = jsonData[node_id][i]['MAC_TX_FAIL'];
         array_x.push(i);
         array_y.push(conditionalDivision(data_app_per_lost, data_app_per_sent));
         app_per_sum += conditionalDivision(data_app_per_lost, data_app_per_sent);
@@ -1591,46 +1619,45 @@ function addMarker(location,label,active,parent){
       }
       var app_per_avg_network = app_per_sum_network / jsonData.length;
       var rssi_avg_network = rssi_sum_network / jsonData.length;
-    }
-  })
 
-  var marker = new google.maps.Marker({
-    map: map,
-    icon: {
-      path: google.maps.SymbolPath.CIRCLE,
-      scale: 15,
-      strokeWeight:2,
-      fillColor: '#008000',
-      fillOpacity: 1.0
-    },
-    position: location,
-    label: label,
-    id: label,
-    status: active,
-    customInfo: array,
-    customInfoTime: array_time,
-    parentInfo: parent,
-    isCritical: 0,
-    lossRate: 0,
-    batteryInfo: Math.random() * (0.8 - 0.1) + 0.1
-  });
-  markers[parseInt(label)] = marker;
-  markers_location.push(marker);
-  markerCluster1.addMarker(marker);
+      var marker = new google.maps.Marker({
+        map: map,
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 15,
+          strokeWeight:2,
+          fillColor: '#008000',
+          fillOpacity: 1.0
+        },
+        position: location,
+        label: label,
+        id: label,
+        status: active,
+        customInfo: array,
+        customInfoTime: array_time,
+        parentInfo: parent,
+        isCritical: 0,
+        lossRate: 0,
+        batteryInfo: Math.random() * (0.8 - 0.1) + 0.1
+      });
+      markers[parseInt(label)] = marker;
+      markers_location.push(marker);
+      markerCluster1.addMarker(marker);
 
-  if(predict_y>0.05){
-    marker.icon.fillColor = ' #FFA500 ';
-    marker.isCritical = 1;
-  }
-  if(app_per_avg>=0.05){
-    marker.icon.fillColor = ' #FF0000 ';
-    marker.isCritical = 1;
-    marker.lossRate = app_per_avg/0.05;
-  }
+      if(predict_y>0.05){
+        marker.icon.fillColor = ' #FFA500 ';
+        marker.isCritical = 1;
+        markMarker(marker);
+      }
+      if(app_per_avg>0.05){
+        marker.icon.fillColor = ' #FF0000 ';
+        marker.isCritical = 1;
+        marker.lossRate = Math.abs(avg_rssi);
+        markMarker(marker);
+      }
 
-  marker.addListener('click', function(){
-                // clearInterval(myinterval);
-                google.charts.setOnLoadCallback(drawChart2(this));
+      marker.addListener('click', function(){
+         // clearInterval(myinterval);
                 // // $(document).ready(function(){
                 //     // drawChart2(this);
                 //     myinterval = setInterval(function(){
@@ -1650,6 +1677,7 @@ function addMarker(location,label,active,parent){
             //     alert('draw');
             // }, 1000);
             // drawChart(this,avg,current,predict_y,fault_pbb);
+            google.charts.setOnLoadCallback(drawChart2(this));
             var sidebar = document.getElementById("demo");
             var sidebar2 = document.getElementById("demo2");
             var li = document.getElementById("newid"+label);
@@ -1662,32 +1690,27 @@ function addMarker(location,label,active,parent){
               li.scrollIntoView();
             }
           });
-
-  var link_info = generateRandom();
-  if(marker.parentInfo != '0'){
-    if(parseInt(marker.label)){
-      var parentMarker = markers[parseInt(marker.parentInfo)];
-    }else{
-      var parentMarker = markers2[parseInt(marker.parentInfo)];
+      var link_info = generateRandom();
+      var parentMarker = markers_location[parseInt(parent)];
+      var path = [
+      {lat: marker.getPosition().lat(), lng: marker.getPosition().lng()},
+      {lat: parentMarker.getPosition().lat(), lng: parentMarker.getPosition().lng()}
+      ];
+      var link = new google.maps.Polyline({
+        path: path,
+        strokeColor: '#000080',
+        strokeOpacity: 1.0,
+        strokeWeight: 1 + link_info * 100,
+        customInfo: link_info
+      });
+      links.push(link);
+      if(link_info > 0.04){
+        link.strokeColor = '#800000';
+      }
+      createInfoWindow(link, "Link traffic : " + link.customInfo);
+      link.setMap(map);
     }
-    var path = [
-    {lat: marker.getPosition().lat(), lng: marker.getPosition().lng()},
-    {lat: parentMarker.getPosition().lat(), lng: parentMarker.getPosition().lng()}
-    ];
-    var link = new google.maps.Polyline({
-      path: path,
-      strokeColor: '#000080',
-      strokeOpacity: 1.0,
-      strokeWeight: 1 + link_info * 100,
-      customInfo: link_info
-    });
-    links.push(link);
-    if(link_info > 0.04){
-      link.strokeColor = '#800000';
-    }
-    createInfoWindow(link, "Link traffic : " + link.customInfo);
-    link.setMap(map);
-  }
+  })
 }
 var legend = document.getElementById('legend');
 for (var key in icons) {
@@ -1712,7 +1735,7 @@ ctx.fillRect(2, 15, 150, 10);
 map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
 map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(mapreset);
 map.controls[google.maps.ControlPosition.LEFT_TOP].push(gateway);
-markRegion();
+// markRegion();
 
 function shapeMouse(current_shape, index){
   google.maps.event.addListener(current_shape, 'click', function(event) {

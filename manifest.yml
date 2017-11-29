@@ -4,4 +4,4 @@ applications:
    # random-route: true
    host: kilby311test
    domain: mybluemix.net
-   memory: 1024M
+   memory: 2048M

@@ -427,7 +427,7 @@ function fetchData(node_id, offset_start, offset_end){
       // 'select TS, APP_PER_SENT, APP_PER_LOST, CH11_RSSI, CH12_RSSI, CH13_RSSI, CH14_RSSI, CH15_RSSI, CH16_RSSI, CH17_RSSI, CH18_RSSI, CH19_RSSI, CH20_RSSI, CH21_RSSI, CH22_RSSI, CH23_RSSI, CH24_RSSI, CH25_RSSI from BLUADMIN.NW_DATA_SET_0 where SENSOR_ID=?'
       // 'select * from BLUADMIN.NW_DATA_SET_PER where SENSOR_ID=? limit ?,?'
       // ,[sensor_id, offset_start, offset_end], function (err, data) {
-        'select * from BLUADMIN.NW_DATA_SET_PER where SENSOR_ID=? fetch first 100 rows only'
+        'select * from BLUADMIN.NW_DATA_SET_PER where SENSOR_ID=? order by DATE desc fetch first 100 rows only'
         ,[sensor_id], function (err, data) {
           console.log('Found %d new data with id %s', data.length, node_id);
           if(data.length>0){
