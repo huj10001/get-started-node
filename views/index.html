@@ -347,9 +347,25 @@
     #divleft{
       display: inline-block;
     }
+    #divmid{
+      display: inline-block;
+      padding-left: 10px;
+    }
     #divright{
       display: inline-block;
       padding-left: 10px;
+    }
+    #myProgress {
+      width: 100%;
+      background-color: #ddd; 
+    }
+    #myBar {
+      width: 0%;
+      height: 30px;
+      background-color: #4CAF50;
+      text-align: center; /* To center it horizontally (if you want) */
+      line-height: 30px; /* To center it vertically */
+      color: white; 
     }
 
   </style>
@@ -361,8 +377,10 @@
   <div class="container">
     <h1>Network Performance Map: Noisy Zone</h1>
   </div>
+  <div id="myProgress">
+    <div id="myBar">0%</div>
+  </div>
   <div id="wrapper" class="toggled">
-    <!-- Sidebar -->
     <div id="sidebar-wrapper">
       <button onclick="topFunction()" id="myBtn" title="Go to top">&#8963;</button>
       <ul class="sidebar-nav" id="side_bar">
@@ -575,6 +593,22 @@
       return result_time;
     }
 
+    function convertTime4(date_string, time_string){
+      var date_temp_array = date_string.split('-');
+      var time_temp_array = time_string.split(':');
+      return new Date(date_temp_array[0], date_temp_array[1]-1, date_temp_array[2], time_temp_array[0], time_temp_array[1], time_temp_array[2], 0);
+    }
+
+    function conditionalDivision(a,b){
+      if(b==0){
+        return 0;
+      }else if(a>b){
+        return 1;
+      }else{
+        return a/b;
+      }
+    }
+
     var chart2; 
     var data2;
     var options2;
@@ -609,6 +643,36 @@
       chart_corr.draw(data_corr, options_corr);
       infoWindow_corr.setContent(node_corr);
       infoWindow_corr.open(curr_marker.getMap(),marker);
+    }
+
+    function compare(){
+      var comp_id1 = parseInt(curr_marker.id);
+      var comp_id2 = $('#selectcomp').val();
+      $.ajax({
+        url: "/api/sensor",
+        dataType: "json",
+        success: function(jsonData){
+          var data_comp = new google.visualization.DataTable();
+          data_comp.addColumn('date', 'TIME')
+          data_comp.addColumn('number', 'MAC_PER'+comp_id1);
+          data_comp.addColumn('number', 'MAC_PER'+comp_id2);
+          for(var i=0; i<jsonData[comp_id1].length;i++){
+            var data_comp_time = convertTime4(jsonData[comp_id1][i]['DATE'], jsonData[comp_id1][i]['TIME']);
+            var data_comp_mac_tx_total1 = jsonData[comp_id1][i]['MAC_TX_TOTAL'];
+            var data_comp_mac_tx_fail1 = jsonData[comp_id1][i]['MAC_TX_FAIL'];
+            var data_comp_mac_tx_total2 = jsonData[comp_id2][i]['MAC_TX_TOTAL'];
+            var data_comp_mac_tx_fail2 = jsonData[comp_id2][i]['MAC_TX_FAIL'];
+            data_comp.addRow([data_comp_time, conditionalDivision(data_comp_mac_tx_fail1, data_comp_mac_tx_total1)*100, conditionalDivision(data_comp_mac_tx_fail2, data_comp_mac_tx_total2)*100]);
+          }
+          var options_comp = {};
+          var node_comp = document.createElement('div');
+          var infoWindow_comp = new google.maps.InfoWindow();
+          var chart_comp = new google.visualization.AnnotatedTimeLine(node_comp);
+          chart_comp.draw(data_comp, options_comp);
+          infoWindow_comp.setContent(node_comp);
+          infoWindow_comp.open(curr_marker.getMap(), marker);
+        }
+      })
     }
 
     function selectfunction(){
@@ -933,11 +997,6 @@
             return result_time;
           }
 
-          function convertTime4(date_string, time_string){
-            var date_temp_array = date_string.split('-');
-            var time_temp_array = time_string.split(':');
-            return new Date(date_temp_array[0], date_temp_array[1]-1, date_temp_array[2], time_temp_array[0], time_temp_array[1], time_temp_array[2], 0);
-          }
           function findLineByLeastSquares(values_x, values_y) {
             var sum_x = 0;
             var sum_y = 0;
@@ -1253,16 +1312,6 @@
         infowindow.open(marker.getMap(),marker);
       }
 
-      function conditionalDivision(a,b){
-        if(b==0){
-          return 0;
-        }else if(a>b){
-          return 1;
-        }else{
-          return a/b;
-        }
-      }
-
       function loadGateway(){
         $.ajax({
           url: "/api/gateway",
@@ -1426,7 +1475,8 @@
                 '</div>'+
                 '</div>'+
                 '<div id="divleft"><form action="javascript:update();"><input type="submit" value="Update"></form></div>'+
-                '<div id="divright"><form action="javascript:drawCorr();"><input type="submit" value="View correlation"></form></div>';
+                '<div id="divmid"><form action="javascript:drawCorr();"><input type="submit" value="View correlation"></form></div>'+
+                '<div id="divright"><form action="javascript:compare();"><input type="submit" value="Compare"></form>with:<select id="selectcomp"></select></div>';
 
                 var div2 = document.createElement('div');
                 div2.innerHTML = titlestring2;
@@ -1439,6 +1489,10 @@
                 document.getElementById('chart_start_time').value = "00:00:00";
                 document.getElementById('chart_end_time').value = "23:59:59";
 
+                for(var i=0;i<markers.length;i++){
+                  $('#selectcomp').append(new Option(i, i.toString()));
+                }
+
                 google.visualization.events.addListener(chart2, 'select', selectHandler);
                 function selectHandler(e) {
                   var selected = chart2.getSelection()[0].row;
@@ -1448,11 +1502,27 @@
             });
 }
 
+var width = 10;
+function updateProgress(){
+  var elem = document.getElementById("myBar");   
+  if (width >= 100) {
+    setTimeout(function(){
+      $('#myProgress').remove();
+    }, 2000);
+  } else {
+   width+=(100/(markers.length-4));
+   if(width > 100) width = 100;
+   elem.style.width = width + '%';
+   elem.innerHTML = width.toFixed(2) * 1 + '%'; 
+ }
+}
+
 function drawTopology(){
   $.ajax({
     url: "/api/topology",
     dataType: "json",
     success: function (jsonData) {
+      markers = new Array(jsonData.length);
       for(var i=0; i<jsonData.length;i++){
         if(jsonData[i] != null){
           var newNode = new google.maps.LatLng(jsonData[i]['2'], jsonData[i]['3']);
@@ -1644,12 +1714,11 @@ function addMarker(location,label,active,parent){
       markers_location.push(marker);
       markerCluster1.addMarker(marker);
 
-      if(predict_y>0.05){
+      if(predict_y>0.2){
         marker.icon.fillColor = ' #FFA500 ';
         marker.isCritical = 1;
-        markMarker(marker);
       }
-      if(app_per_avg>0.05){
+      if(app_per_avg>0.2){
         marker.icon.fillColor = ' #FF0000 ';
         marker.isCritical = 1;
         marker.lossRate = Math.abs(avg_rssi);
@@ -1709,6 +1778,7 @@ function addMarker(location,label,active,parent){
       }
       createInfoWindow(link, "Link traffic : " + link.customInfo);
       link.setMap(map);
+      updateProgress();
     }
   })
 }
