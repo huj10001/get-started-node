@@ -1387,8 +1387,8 @@
             var current2 = 0;
             var predict2_time = [];
             var predict2_per = [];
-            var start_date = jsonData[parseInt(marker.id)][0]['DATE'];
-            var end_date = jsonData[parseInt(marker.id)][jsonData[parseInt(marker.id)].length-1]['DATE'];
+            var start_date_string = jsonData[parseInt(marker.id)][0]['DATE'];
+            var end_date_string = jsonData[parseInt(marker.id)][jsonData[parseInt(marker.id)].length-1]['DATE'];
             var start_time = jsonData[parseInt(marker.id)][0]['TIME'];
             var end_time = jsonData[parseInt(marker.id)][jsonData[parseInt(marker.id)].length-1]['TIME'];
             for(var i=0;i<jsonData[parseInt(marker.id)].length;i++){
@@ -1484,8 +1484,10 @@
                 infowindow.setContent(div2);
 
                 infowindow.open(marker.getMap(),marker);
-                document.getElementById('chart_start_date').valueAsDate = new Date(start_date);
-                document.getElementById('chart_end_date').valueAsDate = new Date(end_date);
+                start_date = new Date(start_date_string); // reverse the date by fetch order, use max/min
+                end_date = new Date(end_date_string);
+                document.getElementById('chart_start_date').valueAsDate = end_date;
+                document.getElementById('chart_end_date').valueAsDate = start_date;
                 document.getElementById('chart_start_time').value = "00:00:00";
                 document.getElementById('chart_end_time').value = "23:59:59";
 
