@@ -1714,11 +1714,11 @@ function addMarker(location,label,active,parent){
       markers_location.push(marker);
       markerCluster1.addMarker(marker);
 
-      if(predict_y>0.2){
+      if(predict_y>0.15){
         marker.icon.fillColor = ' #FFA500 ';
         marker.isCritical = 1;
       }
-      if(app_per_avg>0.2){
+      if(app_per_avg>0.15){
         marker.icon.fillColor = ' #FF0000 ';
         marker.isCritical = 1;
         marker.lossRate = Math.abs(avg_rssi);
