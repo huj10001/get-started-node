@@ -1716,11 +1716,11 @@ function addMarker(location,label,active,parent){
       markers_location.push(marker);
       markerCluster1.addMarker(marker);
 
-      if(predict_y>0.15){
+      if(predict_y>0.12){
         marker.icon.fillColor = ' #FFA500 ';
         marker.isCritical = 1;
       }
-      if(app_per_avg>0.15){
+      if(app_per_avg>0.12){
         marker.icon.fillColor = ' #FF0000 ';
         marker.isCritical = 1;
         marker.lossRate = Math.abs(avg_rssi);
