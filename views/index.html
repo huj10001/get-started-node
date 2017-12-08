@@ -971,12 +971,13 @@
 
           var markerCluster1 = new MarkerClusterer(map, markers_location,
           {
-            maxZoom: 15,
+            maxZoom: 5,
             imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
             ignoreHidden: true
           });
           loadGateway();
           drawTopology();
+          drawLink();
 
           // addNetwork(markers,1);
           addNetwork(markers2,2);
@@ -1530,21 +1531,53 @@ function drawTopology(){
           var newNode = new google.maps.LatLng(jsonData[i]['2'], jsonData[i]['3']);
           var parentid = jsonData[i]['4'];
           if(parentid != null){
-            if(getMarker(parentid)){
-              addMarker(newNode,i.toString(),"active", parentid.toString());
-            }
-            else{
-              addMarker(newNode,i.toString(),"active", '1');
-            }  
-          }
-          else{
-            addMarker(newNode,i.toString(),"active", '1');
+            addMarker(newNode,i.toString(),"active", parentid.toString());
+          }else{
+            addMarker(newNode,i.toString(),"active", '0');
           }
         }
       }
       addNetwork(markers,1);
     }
   });
+}
+
+function drawLink(){
+  $.ajax({
+    url: "/api/topology",
+    dataType: "json",
+    success: function(jsonData){
+      for(var i=1; i<jsonData.length; i++){
+        if(jsonData[i] != null){
+          var link_info = generateRandom();
+          var currentNodeLat = jsonData[i]['2'];
+          var currentNodeLng = jsonData[i]['3'];
+          var parentid = jsonData[i]['4'];
+          if(parentid != null){
+            var parentNodeLat = jsonData[parentid]['2'];
+            var parentNodeLng = jsonData[parentid]['3'];
+            var path = [
+            {lat: currentNodeLat, lng: currentNodeLng},
+            {lat: parentNodeLat, lng: parentNodeLng}
+            ];
+            var link = new google.maps.Polyline({
+              path: path,
+              strokeColor: '#000080',
+              strokeOpacity: 1.0,
+              strokeWeight: 1 + link_info * 100,
+              customInfo: link_info
+            });
+            links.push(link);
+            if(link_info > 0.04){
+              link.strokeColor = '#800000';
+            }
+            createInfoWindow(link, "Link traffic : " + link.customInfo);
+            link.setMap(map);
+          }
+        }
+      }
+    }
+  })
 }
 
 function updateGateway(){
@@ -1627,15 +1660,17 @@ function addMarker(location,label,active,parent){
     url: "/api/sensor",
     dataType: "json",
     success: function(jsonData){
-      for(var i=0;i<jsonData[node_id].length;i++){
-        var data_channel_info = jsonData[node_id][i]['CHANNEL_INFO'];
-        var avg_rssi = getAvgRssi(data_channel_info);
-        var data_app_per_sent = jsonData[node_id][i]['MAC_TX_TOTAL'];
-        var data_app_per_lost = jsonData[node_id][i]['MAC_TX_FAIL'];
-        array_x.push(i);
-        array_y.push(conditionalDivision(data_app_per_lost, data_app_per_sent));
-        app_per_sum += conditionalDivision(data_app_per_lost, data_app_per_sent);
-        rssi_sum += avg_rssi;
+      if(jsonData[node_id]){
+        for(var i=0;i<jsonData[node_id].length;i++){
+          var data_channel_info = jsonData[node_id][i]['CHANNEL_INFO'];
+          var avg_rssi = getAvgRssi(data_channel_info);
+          var data_app_per_sent = jsonData[node_id][i]['MAC_TX_TOTAL'];
+          var data_app_per_lost = jsonData[node_id][i]['MAC_TX_FAIL'];
+          array_x.push(i);
+          array_y.push(conditionalDivision(data_app_per_lost, data_app_per_sent));
+          app_per_sum += conditionalDivision(data_app_per_lost, data_app_per_sent);
+          rssi_sum += avg_rssi;
+        }
       }
       app_per_avg = app_per_sum / jsonData[node_id].length;
       rssi_avg = rssi_sum / jsonData[node_id].length;
@@ -1761,25 +1796,6 @@ function addMarker(location,label,active,parent){
               li.scrollIntoView();
             }
           });
-      var link_info = generateRandom();
-      var parentMarker = markers_location[parseInt(parent)];
-      var path = [
-      {lat: marker.getPosition().lat(), lng: marker.getPosition().lng()},
-      {lat: parentMarker.getPosition().lat(), lng: parentMarker.getPosition().lng()}
-      ];
-      var link = new google.maps.Polyline({
-        path: path,
-        strokeColor: '#000080',
-        strokeOpacity: 1.0,
-        strokeWeight: 1 + link_info * 100,
-        customInfo: link_info
-      });
-      links.push(link);
-      if(link_info > 0.04){
-        link.strokeColor = '#800000';
-      }
-      createInfoWindow(link, "Link traffic : " + link.customInfo);
-      link.setMap(map);
       updateProgress();
     }
   })
