@@ -1520,6 +1520,14 @@ function updateProgress(){
  }
 }
 
+function sortLi(){
+  var elems = $('#demo').children('li').remove();
+  elems.sort(function(a,b){
+    return parseInt(a.id) > parseInt(b.id);
+  });
+  $('#demo').append(elems);
+}
+
 function drawTopology(){
   $.ajax({
     url: "/api/topology",
@@ -1528,16 +1536,32 @@ function drawTopology(){
       markers = new Array(jsonData.length);
       for(var i=0; i<jsonData.length;i++){
         if(jsonData[i] != null){
-          var newNode = new google.maps.LatLng(jsonData[i]['2'], jsonData[i]['3']);
-          var parentid = jsonData[i]['4'];
+          var newNode = new google.maps.LatLng(jsonData[i]['GPS_LAT'], jsonData[i]['GPS_LONG']);
+          var parentid = jsonData[i]['PARENT'];
           if(parentid != null){
             addMarker(newNode,i.toString(),"active", parentid.toString());
           }else{
-            addMarker(newNode,i.toString(),"active", '0');
+            var marker = new google.maps.Marker({
+              map: map,
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 15,
+                strokeWeight:2,
+                fillColor: '#008000',
+                fillOpacity: 1.0
+              },
+              position: newNode,
+              label: i.toString(),
+              id: i
+            });
+            markers[i] = marker;
+            markers_location.push(marker);
+            markerCluster1.addMarker(marker);
           }
         }
       }
       addNetwork(markers,1);
+      sortLi();
     }
   });
 }
@@ -1550,12 +1574,12 @@ function drawLink(){
       for(var i=1; i<jsonData.length; i++){
         if(jsonData[i] != null){
           var link_info = generateRandom();
-          var currentNodeLat = jsonData[i]['2'];
-          var currentNodeLng = jsonData[i]['3'];
-          var parentid = jsonData[i]['4'];
+          var currentNodeLat = jsonData[i]['GPS_LAT'];
+          var currentNodeLng = jsonData[i]['GPS_LONG'];
+          var parentid = jsonData[i]['PARENT'];
           if(parentid != null){
-            var parentNodeLat = jsonData[parentid]['2'];
-            var parentNodeLng = jsonData[parentid]['3'];
+            var parentNodeLat = jsonData[parentid]['GPS_LAT'];
+            var parentNodeLng = jsonData[parentid]['GPS_LONG'];
             var path = [
             {lat: currentNodeLat, lng: currentNodeLng},
             {lat: parentNodeLat, lng: parentNodeLng}
@@ -1685,10 +1709,10 @@ function addMarker(location,label,active,parent){
         'html': '<a href="#infolist">Node '+label
         +'<ul>Parent: '+parent+'</ul>'
         +'<ul>Avg. PER: '+app_per_avg.toFixed(6)+'</ul>'
-        +'<ul>Avg. RSSI: '+rssi_avg.toFixed(6)+'</ul>'
-        +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
-        +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>'
-        +'<ul>Battey level: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+batteryInfo+'">'+'</meter>'+'</ul>',
+        +'<ul>Avg. RSSI: '+rssi_avg.toFixed(6)+'</ul>',
+        // +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
+        // +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>'
+        // +'<ul>Battey level: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+batteryInfo+'">'+'</meter>'+'</ul>',
         'click': function() {
           google.maps.event.trigger(marker, 'click');
           $(this).css('color','red');

@@ -196,7 +196,7 @@ app.get("/api/sensor", function (request, response) {
   /* db2 topology*/
   ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
     if(err) return console.log(err);
-    conn.query('select SENSOR_ID, min(GPS_LAT), min(GPS_LONG), max(PARENT) from BLUADMIN.TOPOLOGY_DATA group by SENSOR_ID', function (err, data) {
+    conn.query('select t.SENSOR_ID, t.GPS_LAT, t.GPS_LONG, t.PARENT from BLUADMIN.TOPOLOGY_DATA t inner join (select SENSOR_ID, max(TIME) as MaxTime from BLUADMIN.TOPOLOGY_DATA group by SENSOR_ID) tm on t.SENSOR_ID = tm.SENSOR_ID and t.TIME = tm.MaxTime', function (err, data) {
       console.log('topology data:', data);
       for(var i=0;i<data.length;i++){
         var sid = data[i]['SENSOR_ID'];
