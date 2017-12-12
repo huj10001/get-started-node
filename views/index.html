@@ -355,6 +355,10 @@
       display: inline-block;
       padding-left: 10px;
     }
+    #divcritical{
+      display: inline-block;
+      padding-left: 10px;
+    }
     #myProgress {
       width: 100%;
       background-color: #ddd; 
@@ -673,6 +677,21 @@
           infoWindow_comp.open(curr_marker.getMap(), marker);
         }
       })
+    }
+
+    var critical_time = [];
+    var critical_time_index;
+    function nextcritical(){
+      if(critical_time){
+        var current_critical_time = critical_time[critical_time_index];
+        if(critical_time_index == 0){
+          critical_time_index = critical_time.length-1;
+        }else{
+          critical_time_index --;
+        }
+        chart2.setVisibleChartRange(current_critical_time, null);
+        $('#criticaltime').val(current_critical_time);
+      }
     }
 
     function selectfunction(){
@@ -1392,6 +1411,7 @@
             var end_date_string = jsonData[parseInt(marker.id)][jsonData[parseInt(marker.id)].length-1]['DATE'];
             var start_time = jsonData[parseInt(marker.id)][0]['TIME'];
             var end_time = jsonData[parseInt(marker.id)][jsonData[parseInt(marker.id)].length-1]['TIME'];
+            critical_time = [];
             for(var i=0;i<jsonData[parseInt(marker.id)].length;i++){
               var data_time = convertTime4(jsonData[parseInt(marker.id)][i]['DATE'], jsonData[parseInt(marker.id)][i]['TIME']);
               var data_gateway = jsonData[parseInt(marker.id)][i]['GATEWAY_NAME'];
@@ -1401,6 +1421,10 @@
               var data_mac_tx_fail = jsonData[parseInt(marker.id)][i]['MAC_TX_FAIL'];
               var data_app_per_sent = jsonData[parseInt(marker.id)][i]['APP_PER_SENT'];
               var data_app_per_lost = jsonData[parseInt(marker.id)][i]['APP_PER_LOST'];
+              if(conditionalDivision(data_mac_tx_fail, data_mac_tx_total) > 0.2){
+                critical_time.push(data_time);
+              }
+              critical_time_index = critical_time.length-1;
               data2.addRow([data_time, conditionalDivision(data_app_per_lost, data_app_per_sent)*100, conditionalDivision(data_mac_tx_fail, data_mac_tx_total)*100, channel_rssi_avg]);
               data_corr.addRow([data_time, conditionalDivision(Math.abs(channel_rssi_avg), conditionalDivision(data_mac_tx_fail, data_mac_tx_total))]);
               predict2_time.push(i);
@@ -1475,9 +1499,10 @@
                 '<p>'+'Metric: <input type="checkbox" value="app_per" id="app_per" checked/>Application Layer PER&emsp;<input type="checkbox" value="mac_per" id="mac_per" checked/>Mac Layer PER&emsp;<input type="checkbox" value="rssi" id="rssi" checked/>RSSI'+'</p>'+
                 '</div>'+
                 '</div>'+
-                '<div id="divleft"><form action="javascript:update();"><input type="submit" value="Update"></form></div>'+
-                '<div id="divmid"><form action="javascript:drawCorr();"><input type="submit" value="View correlation"></form></div>'+
-                '<div id="divright"><form action="javascript:compare();"><input type="submit" value="Compare"></form>with:<select id="selectcomp"></select></div>';
+                '<div id="divleft"><form action="javascript:update();"><input type="submit" value="Update"></form></div> |'+
+                '<div id="divmid"><form action="javascript:drawCorr();"><input type="submit" value="View correlation"></form></div> |'+
+                '<div id="divright"><form action="javascript:compare();"><input type="submit" value="Compare"></form>with:<select id="selectcomp"></select></div> |'+
+                '<div id="divcritical">Critical time:<input type="text" id="criticaltime"><form action="javascript:nextcritical();"><input type="submit" value="Next"></form></div>';
 
                 var div2 = document.createElement('div');
                 div2.innerHTML = titlestring2;
@@ -1775,11 +1800,11 @@ function addMarker(location,label,active,parent){
       markers_location.push(marker);
       markerCluster1.addMarker(marker);
 
-      if(predict_y>0.12){
+      if(predict_y>0.2){
         marker.icon.fillColor = ' #FFA500 ';
         marker.isCritical = 1;
       }
-      if(app_per_avg>0.12){
+      if(app_per_avg>0.2){
         marker.icon.fillColor = ' #FF0000 ';
         marker.isCritical = 1;
         marker.lossRate = Math.abs(avg_rssi);
