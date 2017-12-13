@@ -371,6 +371,10 @@
       line-height: 30px; /* To center it vertically */
       color: white; 
     }
+    .floated {
+      float:left;
+      margin-right:5px;
+    }
 
   </style>
 
@@ -694,6 +698,11 @@
       }
     }
 
+    function chartReset(){
+      chart2.setVisibleChartRange(null, null);
+      $('#criticaltime').val('');
+    }
+
     function selectfunction(){
       var fault_val = $("#box3").val();
       array_time_all = [];
@@ -920,6 +929,7 @@
         var sum_network = 0;
         var sum_network_rssi = 0;
         var zoomChange = null;
+        var marker_critical = [];
 
 
         function initMap() {
@@ -997,6 +1007,7 @@
           loadGateway();
           drawTopology();
           drawLink();
+          // drawCritical();
 
           // addNetwork(markers,1);
           addNetwork(markers2,2);
@@ -1108,7 +1119,7 @@
                 strokeOpacity: 0,
                 strokeWeight: 0,
                 fillColor: '#FF5733',
-                fillOpacity: 0.2,
+                fillOpacity: 0,
                 map: map,
                 center: marker.getPosition(),
                 radius: Math.sqrt(marker.lossRate)
@@ -1499,10 +1510,10 @@
                 '<p>'+'Metric: <input type="checkbox" value="app_per" id="app_per" checked/>Application Layer PER&emsp;<input type="checkbox" value="mac_per" id="mac_per" checked/>Mac Layer PER&emsp;<input type="checkbox" value="rssi" id="rssi" checked/>RSSI'+'</p>'+
                 '</div>'+
                 '</div>'+
-                '<div id="divleft"><form action="javascript:update();"><input type="submit" value="Update"></form></div> |'+
-                '<div id="divmid"><form action="javascript:drawCorr();"><input type="submit" value="View correlation"></form></div> |'+
-                '<div id="divright"><form action="javascript:compare();"><input type="submit" value="Compare"></form>with:<select id="selectcomp"></select></div> |'+
-                '<div id="divcritical">Critical time:<input type="text" id="criticaltime"><form action="javascript:nextcritical();"><input type="submit" value="Next"></form></div>';
+                '<div id="divleft" class="borderdiv"><form action="javascript:update();"><input type="submit" value="Update"></form></div> |'+
+                '<div id="divmid" class="borderdiv"><form action="javascript:drawCorr();"><input type="submit" value="View correlation"></form></div> |'+
+                '<div id="divright" class="borderdiv"><form action="javascript:compare();"><input type="submit" value="Compare"></form>with:<select id="selectcomp"></select></div> |'+
+                '<div id="divcritical" class="borderdiv">Critical time:<input type="text" id="criticaltime"><form action="javascript:nextcritical();"><input type="submit" class="floated" value="Next"></form><form action="javascript:chartReset();"><input type="reset" class="floated "value="Reset"></form></div>';
 
                 var div2 = document.createElement('div');
                 div2.innerHTML = titlestring2;
@@ -1627,6 +1638,19 @@ function drawLink(){
       }
     }
   })
+}
+
+function drawCritical(){
+  var shape = new google.maps.Polygon({
+    paths: marker_critical,
+    strokeColor: ' #FF5733 ',
+    strokeOpacity: 0,
+    strokeWeight: 0,
+    fillColor: ' #FF5733 ',
+    fillOpacity: 0.1,
+    shapeType: 0,
+  });
+  shape.setMap(map);
 }
 
 function updateGateway(){
@@ -1802,13 +1826,15 @@ function addMarker(location,label,active,parent){
 
       if(predict_y>0.2){
         marker.icon.fillColor = ' #FFA500 ';
-        marker.isCritical = 1;
+        // marker.isCritical = 1;
       }
       if(app_per_avg>0.2){
         marker.icon.fillColor = ' #FF0000 ';
         marker.isCritical = 1;
         marker.lossRate = Math.abs(avg_rssi);
-        markMarker(marker);
+        // markMarker(marker);
+        marker_critical.push(marker.getPosition());
+        drawCritical();
       }
 
       marker.addListener('click', function(){
