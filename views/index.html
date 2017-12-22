@@ -1001,7 +1001,7 @@
       </script>
       <div id="gateway" style="font-size:20px; background-color: lightblue; margin-left: 10px;">
        Gateway:
-       <select id=gateway_names></select>
+       <select id="gateway_names"></select>
      </div>
      <div id="noizy">
       <div style="font-size:20px; background-color: lightsalmon;">Noizy zone</div>
@@ -1028,7 +1028,7 @@
         var links = [];
         var markers_location = [];
         var markers2 = [];
-        var sum_network = 0;
+        var sum_network_per = 0;
         var sum_network_rssi = 0;
         var zoomChange = null;
         var marker_critical = [];
@@ -1788,7 +1788,7 @@ function getSum(total, num) {
 }
 
 function addNetwork(markers,label){
-  var app_per_avg_network  = sum_network / markers.length;
+  var app_per_avg_network  = sum_network_per / markers.length;
   var rssi_avg_network  = sum_network_rssi / markers.length;
 
   if(label==1){
@@ -1796,8 +1796,8 @@ function addNetwork(markers,label){
     var sidebar_entry = $('<li/>', {
       'html': '<a href="#demo" class="btn btn-link" data-toggle="collapse">Network '+label
       +'<ul style="padding-left: 5px">Num. Nodes: '+(markers.length - 1 )+'</ul>'
-      +'<ul style="padding-left: 5px">Avg. PER: '+app_per_avg_network.toFixed(6)+'</ul>'
-      +'<ul style="padding-left: 5px">Avg. RSSI: '+rssi_avg_network.toFixed(6)+'</ul>'
+      +'<ul id="network_per" style="padding-left: 5px">Avg. PER: '+app_per_avg_network.toFixed(6)+'</ul>'
+      +'<ul id="network_rssi" style="padding-left: 5px">Avg. RSSI: '+rssi_avg_network.toFixed(6)+'</ul>'
       +'<ul style="padding-left: 5px">Energy status: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+(Math.random() * (0.8 - 0.1) + 0.1)+'">'+'</meter>'+'</ul>'
       +'<ul style="padding-left: 5px">Stability status: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+(Math.random() * (0.8 - 0.1) + 0.1)+'">'+'</meter>'+'</ul>'
       +'<ul style="padding-left: 5px">Security status: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+(Math.random() * (0.8 - 0.1) + 0.1)+'">'+'</meter>'+'</ul>',
@@ -1855,7 +1855,11 @@ function addMarker(location,label,active,parent){
         }
       }
       app_per_avg = app_per_sum / jsonData[node_id].length;
+      sum_network_per += app_per_avg;
       rssi_avg = rssi_sum / jsonData[node_id].length;
+      sum_network_rssi += rssi_avg;
+      $('#network_per').text('Avg. PER: '+(sum_network_per / markers.length).toFixed(6)); 
+      $('#network_rssi').text('Avg. RSSI: '+(sum_network_rssi / markers.length).toFixed(6));
       var current = array_y[array_y.length-1];
       var result = findLineByLeastSquares(array_x, array_y);
       var predict_y = result[1][0];
