@@ -16,6 +16,7 @@ var mydb_kilby;
 var kilby_data = [];
 var sensor_data = [];
 var topology_data = [];
+var network_stat_data = [];
 var gateway_data = [];
 var num_of_sensor = 0;
 loadNumSensor();
@@ -123,6 +124,11 @@ app.get("/api/topology", function (request, response) {
   return;
 });
 
+app.get("/api/networkstat", function (request, response) {
+  response.json(network_stat_data);
+  return;
+})
+
 app.get("/api/sensor", function (request, response) {
   response.json(sensor_data);
   return;
@@ -193,7 +199,7 @@ app.get("/api/sensor", function (request, response) {
     });
   });
 
-  /* db2 topology*/
+  /* db2 topology */
   ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
     if(err) return console.log(err);
     conn.query('select t.SENSOR_ID, t.GPS_LAT, t.GPS_LONG, t.PARENT from BLUADMIN.TOPOLOGY_DATA t inner join (select SENSOR_ID, max(TIME) as MaxTime from BLUADMIN.TOPOLOGY_DATA group by SENSOR_ID) tm on t.SENSOR_ID = tm.SENSOR_ID and t.TIME = tm.MaxTime', function (err, data) {
@@ -205,6 +211,18 @@ app.get("/api/sensor", function (request, response) {
     });
   });
 
+
+  /* db2 network stat */
+  ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
+    if(err) return console.log(err);
+    conn.query('select SENSOR_ID,AVG(NUM_PARENT_CHANGE),AVG(NUM_SYNC_LOST),AVG(AVG_DRFIT),AVG(NUM_MAC_OUT_OF_BUFFER) from BLUADMIN.NW_DATA_SET_NW_INFO group by SENSOR_ID', function (err, data) {
+      console.log('network stat data:', data);
+      for(var i=0;i<data.length;i++){
+        var sid = data[i]['SENSOR_ID'];
+        network_stat_data[sid] = data[i];
+      }
+    });
+  });
 
   /* db2  sensor*/
   // ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
