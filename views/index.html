@@ -498,13 +498,13 @@
 
     <body>
       <div class="container">
-        <h1>Network Performance Map: Noisy Zone</h1>
+        <!-- <h1>Network Performance Map: Noisy Zone</h1> -->
       </div>
       <div id="myProgress">
         <div id="myBar">0%</div>
       </div>
       <div id="wrapper" class="toggled">
-        <div id="sidebar-wrapper">
+        <!-- <div id="sidebar-wrapper">
           <button onclick="topFunction()" id="myBtn" title="Go to top">&#8963;</button>
           <ul class="sidebar-nav" id="side_bar">
             <li class="sidebar-brand" style="font-weight: bold; color: #000000;">
@@ -514,16 +514,16 @@
             <div id="demo" class="collapse"></div>
             <div id="demo2" class="collapse"></div>
           </ul>
-        </div>
+        </div> -->
         <div id="page-content-wrapper">
           <div class="container-fluid">
             <div class="row">
               <div class="col-lg-12">
-                <h1>
+                <!-- <h1>
                   <span style="font-size:50px;cursor:pointer;float:right" onclick="openNav()">&#9881;</span>
                   <a href="#menu-toggle" class="gradient-menu" id="menu-toggle"></a>
-                </h1>
-                <div id="mySidenav" class="sidenav">
+                </h1> -->
+                <!-- <div id="mySidenav" class="sidenav">
                   <h1 id="toolkit">Toolkit</h1>
                   <b>
                     <a id="close" href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
@@ -607,7 +607,7 @@
                   </div>
 
 
-                </div>
+                </div> -->
                 <div id="map"></div>
               </div>
             </div>
@@ -1683,7 +1683,9 @@ infowindow.setContent(div2);
 
 infowindow.open(marker.getMap(),marker);
                 start_date = new Date(start_date_string); // reverse the date by fetch order, use max/min
+                start_date.setDate(start_date.getDate()+1);
                 end_date = new Date(end_date_string);
+                end_date.setDate(end_date.getDate()-2);
                 document.getElementById('chart_start_date').valueAsDate = end_date;
                 document.getElementById('chart_end_date').valueAsDate = start_date;
                 document.getElementById('chart_start_time').value = "00:00:00";
