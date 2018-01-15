@@ -93,24 +93,46 @@ var ibmdb_url = "DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.da
 * }
 */
 app.post("/api/sensor", function (request, response) {
-  request.body._id = request.body._id.toString();
-  insertObj = request.body;
-  if(!mydb_kilby) {
-    console.log("No database.");
-    // response.send("Hello " + userName + "!");
-    return;
-  }
-  // insert the username as a document
-  console.log("receive new data: " + JSON.stringify(insertObj));
-  mydb_kilby.insert(
-    insertObj, 
-    function(err, body, header) {
-      if (err) {
-        return console.log('[mydb.insert] ', err.message);
-      }
-      console.log("insert new data: " + JSON.stringify(insertObj));
-    // response.send("Hello " + userName + "! I added you to the database.");
-  });
+  var start_time = request.body.startTime;
+  var end_time = request.body.endTime;
+  var marker_id = request.body.markerId;
+  console.log('start:'+start_time+' end:'+end_time+' id:'+marker_id);
+  ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
+    conn.query(
+      'select * from BLUADMIN.PER_TEST where SENSOR_ID=? and TIMESTAMP>=? and TIMESTAMP<=?'
+      ,[marker_id, start_time, end_time], function (err, data) {
+        if (err) {
+          return console.log(err.message);
+        }
+        console.log('Found %d resulted data with id %s', data.length, marker_id);
+        if(data.length>0){
+          sensor_data[parseInt(marker_id)] = [];
+          for(var i=0;i<data.length;i++){
+            sensor_data[parseInt(marker_id)].push(data[i]);
+          }
+          response.send('done');
+          return;
+        }
+      });
+});
+  // request.body._id = request.body._id.toString();
+  // insertObj = request.body;
+  // if(!mydb_kilby) {
+  //   console.log("No database.");
+  //   // response.send("Hello " + userName + "!");
+  //   return;
+  // }
+  // // insert the username as a document
+  // console.log("receive new data: " + JSON.stringify(insertObj));
+  // mydb_kilby.insert(
+  //   insertObj, 
+  //   function(err, body, header) {
+  //     if (err) {
+  //       return console.log('[mydb.insert] ', err.message);
+  //     }
+  //     console.log("insert new data: " + JSON.stringify(insertObj));
+  //   // response.send("Hello " + userName + "! I added you to the database.");
+  // });
   // console.log("new data!!" + JSON.stringify(request.body));
 });
 
@@ -245,7 +267,7 @@ app.get("/api/sensor", function (request, response) {
   //     });
   //   });
   //     });
-  /* end db2 */
+/* end db2 */
 
   // // Initialize database with credentials
   // var cloudant = Cloudant(appEnv.services['cloudantNoSQLDB'][0].credentials);
@@ -329,7 +351,7 @@ app.get("/api/sensor", function (request, response) {
   //     last_ts = ts_temp;
   //   },12000);
   // },15000);
-  /************************************************/
+/************************************************/
 
   // console.log('last ts is %s', last_ts);
 
@@ -348,25 +370,6 @@ app.get("/api/sensor", function (request, response) {
 
   // while()
   // console.log('data fetch complete');
-  // fetchData('1');
-  // fetchData('3');
-  // fetchData('4');
-  // fetchData('5');
-  // fetchData('6');
-  // fetchData('7');
-  // fetchData('8');
-  // fetchData('9');
-  // fetchData('10');
-  // fetchData('11');
-  // fetchData('12');
-  // fetchData('13');
-  // fetchData('14');
-  // fetchData('15');
-  // fetchData('16');
-  // fetchData('17');
-  // fetchData('18');
-  // fetchData('19');
-  // fetchData('20');
   // setTimeout(polynomialRegression, 12000);
   
 //   var known_x = [1, 2, 3, 4, 5];
@@ -441,11 +444,10 @@ function fetchData(node_id, offset_start, offset_end){
   ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
     if(err) return console.log(err);
     conn.query(
-      // 'select TS, APP_PER_SENT, APP_PER_LOST, CH11_RSSI, CH12_RSSI, CH13_RSSI, CH14_RSSI, CH15_RSSI from BLUADMIN.NW_DATA_SET_0 where SENSOR_ID=? fetch first 100 rows only'
-      // 'select TS, APP_PER_SENT, APP_PER_LOST, CH11_RSSI, CH12_RSSI, CH13_RSSI, CH14_RSSI, CH15_RSSI, CH16_RSSI, CH17_RSSI, CH18_RSSI, CH19_RSSI, CH20_RSSI, CH21_RSSI, CH22_RSSI, CH23_RSSI, CH24_RSSI, CH25_RSSI from BLUADMIN.NW_DATA_SET_0 where SENSOR_ID=?'
       // 'select * from BLUADMIN.NW_DATA_SET_PER where SENSOR_ID=? limit ?,?'
       // ,[sensor_id, offset_start, offset_end], function (err, data) {
-        'select * from BLUADMIN.NW_DATA_SET_PER where SENSOR_ID=? order by TIMESTAMP desc fetch first 100 rows only'
+        // 'select * from BLUADMIN.PER_TEST where SENSOR_ID=?'
+        'select * from BLUADMIN.PER_TEST where SENSOR_ID=? order by TIMESTAMP desc fetch first 10 rows only'
         ,[sensor_id], function (err, data) {
           console.log('Found %d new data with id %s', data.length, node_id);
           if(data.length>0){
@@ -680,15 +682,15 @@ function checkSimilarity(id1){
       // arrayA.filter(function(el){
       //   return arrayB.indexOf(el) >= 0;
       // }).length;
-      var matches = 0;
-      for (i=0;i<arrayA.length;i++) {
-        if (Math.abs(arrayA[i]-arrayB[i])/arrayB[i] < 0.2)
-          matches++;
-      }
-      var similarity_rate = matches/Math.min(arrayA.length, arrayB.length);
-      if(similarity_rate > 0.2){
-        similarity_dict.push([id2, similarity_rate]);
-      }
+var matches = 0;
+for (i=0;i<arrayA.length;i++) {
+  if (Math.abs(arrayA[i]-arrayB[i])/arrayB[i] < 0.2)
+    matches++;
+}
+var similarity_rate = matches/Math.min(arrayA.length, arrayB.length);
+if(similarity_rate > 0.2){
+  similarity_dict.push([id2, similarity_rate]);
+}
         // return similarity_rate;
       }
     }

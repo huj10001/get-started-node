@@ -732,70 +732,122 @@
         }
       }
 
+      function getAvgRssi(rssi_string){
+        var res = rssi_string.split('rssi');
+        var c = 0;
+        for(var i=1; i<res.length;i++){
+          var b = res[i].substring(res[i].indexOf(":")+1,res[i].indexOf(","));
+          c += Number(b);
+        }
+        return c/res.length;
+      }
+
       var chart2; 
       var data2;
       var options2;
       var curr_marker;
       var data_corr;
-      function update(){
-        chart2.hideDataColumns(0);
-        chart2.hideDataColumns(1);
-        chart2.hideDataColumns(2);
-        var chart_start_date = new Date($('#chart_start_date').val().toString());
-        var chart_end_date = new Date($('#chart_end_date').val().toString());            
-        if(document.getElementById('app_per').checked){
-          chart2.showDataColumns(0);
-        }
-        if(document.getElementById('mac_per').checked){
-          chart2.showDataColumns(1);
-        }
-        if(document.getElementById('rssi').checked){
-          chart2.showDataColumns(2);
-        }
-        chart2.draw(data2, options2);
-        if(!isNaN(chart_start_date) && !isNaN(chart_end_date)){
-          chart2.setVisibleChartRange(chart_start_date, chart_end_date);
-        } 
-      }
 
-      function drawCorr(){
-        var options_corr = {};
-        var node_corr = document.createElement('div');
-        var infoWindow_corr  = new google.maps.InfoWindow();
-        var chart_corr = new google.visualization.ScatterChart(node_corr);
-        chart_corr.draw(data_corr, options_corr);
-        infoWindow_corr.setContent(node_corr);
-        infoWindow_corr.open(curr_marker.getMap(),marker);
-      }
-
-      function compare(){
-        var comp_id1 = parseInt(curr_marker.id);
-        var comp_id2 = $('#selectcomp').val();
+      function drawChart3(marker){
         $.ajax({
           url: "/api/sensor",
           dataType: "json",
-          success: function(jsonData){
-            var data_comp = new google.visualization.DataTable();
-            data_comp.addColumn('date', 'TIME')
-            data_comp.addColumn('number', 'MAC_PER'+comp_id1);
-            data_comp.addColumn('number', 'MAC_PER'+comp_id2);
-            for(var i=0; i<jsonData[comp_id1].length;i++){
-              var data_comp_time = convertTime4(jsonData[comp_id1][i]['DATE'], jsonData[comp_id1][i]['TIME']);
-              var data_comp_mac_tx_total1 = jsonData[comp_id1][i]['MAC_TX_TOTAL'];
-              var data_comp_mac_tx_fail1 = jsonData[comp_id1][i]['MAC_TX_FAIL'];
-              var data_comp_mac_tx_total2 = jsonData[comp_id2][i]['MAC_TX_TOTAL'];
-              var data_comp_mac_tx_fail2 = jsonData[comp_id2][i]['MAC_TX_FAIL'];
-              data_comp.addRow([data_comp_time, conditionalDivision(data_comp_mac_tx_fail1, data_comp_mac_tx_total1)*100, conditionalDivision(data_comp_mac_tx_fail2, data_comp_mac_tx_total2)*100]);
+          success: function (jsonData) {
+            for(var i=0;i<jsonData[parseInt(marker.id)].length;i++){
+              var data_time = convertTime4(jsonData[parseInt(marker.id)][i]['DATE'], jsonData[parseInt(marker.id)][i]['TIME']);
+              var data_gateway = jsonData[parseInt(marker.id)][i]['GATEWAY_NAME'];
+              var data_channel_info = jsonData[parseInt(marker.id)][i]['CHANNEL_INFO'];
+              var channel_rssi_avg = getAvgRssi(data_channel_info);
+              var data_mac_tx_total = jsonData[parseInt(marker.id)][i]['MAC_TX_TOTAL'];
+              var data_mac_tx_fail = jsonData[parseInt(marker.id)][i]['MAC_TX_FAIL'];
+              var data_app_per_sent = jsonData[parseInt(marker.id)][i]['APP_PER_SENT'];
+              var data_app_per_lost = jsonData[parseInt(marker.id)][i]['APP_PER_LOST'];
+              data2.addRow([data_time, conditionalDivision(data_app_per_lost, data_app_per_sent)*100, conditionalDivision(data_mac_tx_fail, data_mac_tx_total)*100, channel_rssi_avg]);
             }
-            var options_comp = {};
-            var node_comp = document.createElement('div');
-            var infoWindow_comp = new google.maps.InfoWindow();
-            var chart_comp = new google.visualization.AnnotatedTimeLine(node_comp);
-            chart_comp.draw(data_comp, options_comp);
-            infoWindow_comp.setContent(node_comp);
-            infoWindow_comp.open(curr_marker.getMap(), marker);
+            options2 = {
+              title: 'new chart2',
+              displayAnnotations: false,
+              allowRedraw: true,
+              width: 625,
+              scaleType: 'allfixed',
+            };
+            chart2.draw(data2, options2);
+            chart2.setVisibleChartRange(null, null);
           }
-        })
+        });
+}
+
+
+function update(){
+  chart2.hideDataColumns(0);
+  chart2.hideDataColumns(1);
+  chart2.hideDataColumns(2);
+  var chart_start_date = new Date($('#chart_start_date').val().toString());
+  var chart_end_date = new Date($('#chart_end_date').val().toString());
+  var select_start = chart_start_date.getTime();
+  var select_end = chart_end_date.getTime();  
+  var id = curr_marker.id;
+  $.ajax({
+    method: "POST",
+    url: "/api/sensor",
+    data: {startTime:select_start,endTime:select_end,markerId:id},
+    success: function(data){
+      drawChart3(curr_marker);
+    }
+  })         
+  if(document.getElementById('app_per').checked){
+    chart2.showDataColumns(0);
+  }
+  if(document.getElementById('mac_per').checked){
+    chart2.showDataColumns(1);
+  }
+  if(document.getElementById('rssi').checked){
+    chart2.showDataColumns(2);
+  }
+  chart2.draw(data2, options2);
+  if(!isNaN(chart_start_date) && !isNaN(chart_end_date)){
+    chart2.setVisibleChartRange(chart_start_date, chart_end_date);
+  } 
+}
+
+function drawCorr(){
+  var options_corr = {};
+  var node_corr = document.createElement('div');
+  var infoWindow_corr  = new google.maps.InfoWindow();
+  var chart_corr = new google.visualization.ScatterChart(node_corr);
+  chart_corr.draw(data_corr, options_corr);
+  infoWindow_corr.setContent(node_corr);
+  infoWindow_corr.open(curr_marker.getMap(),marker);
+}
+
+function compare(){
+  var comp_id1 = parseInt(curr_marker.id);
+  var comp_id2 = $('#selectcomp').val();
+  $.ajax({
+    url: "/api/sensor",
+    dataType: "json",
+    success: function(jsonData){
+      var data_comp = new google.visualization.DataTable();
+      data_comp.addColumn('date', 'TIME')
+      data_comp.addColumn('number', 'MAC_PER'+comp_id1);
+      data_comp.addColumn('number', 'MAC_PER'+comp_id2);
+      for(var i=0; i<jsonData[comp_id1].length;i++){
+        var data_comp_time = convertTime4(jsonData[comp_id1][i]['DATE'], jsonData[comp_id1][i]['TIME']);
+        var data_comp_mac_tx_total1 = jsonData[comp_id1][i]['MAC_TX_TOTAL'];
+        var data_comp_mac_tx_fail1 = jsonData[comp_id1][i]['MAC_TX_FAIL'];
+        var data_comp_mac_tx_total2 = jsonData[comp_id2][i]['MAC_TX_TOTAL'];
+        var data_comp_mac_tx_fail2 = jsonData[comp_id2][i]['MAC_TX_FAIL'];
+        data_comp.addRow([data_comp_time, conditionalDivision(data_comp_mac_tx_fail1, data_comp_mac_tx_total1)*100, conditionalDivision(data_comp_mac_tx_fail2, data_comp_mac_tx_total2)*100]);
+      }
+      var options_comp = {};
+      var node_comp = document.createElement('div');
+      var infoWindow_comp = new google.maps.InfoWindow();
+      var chart_comp = new google.visualization.AnnotatedTimeLine(node_comp);
+      chart_comp.draw(data_comp, options_comp);
+      infoWindow_comp.setContent(node_comp);
+      infoWindow_comp.open(curr_marker.getMap(), marker);
+    }
+  })
 }
 
 var critical_time = [];
@@ -1900,80 +1952,80 @@ function addMarker(location,label,active,parent){
   var array_time = ['0'];
   var current = ['0'];
   var predict_y = ['0'];
-  $.ajax({
-    url: "/api/sensor",
-    dataType: "json",
-    success: function(jsonData){
-      if(jsonData[node_id]){
-        for(var i=0;i<jsonData[node_id].length;i++){
-          var data_channel_info = jsonData[node_id][i]['CHANNEL_INFO'];
-          var avg_rssi = getAvgRssi(data_channel_info);
-          var data_app_per_sent = jsonData[node_id][i]['MAC_TX_TOTAL'];
-          var data_app_per_lost = jsonData[node_id][i]['MAC_TX_FAIL'];
-          array_x.push(i);
-          array_y.push(conditionalDivision(data_app_per_lost, data_app_per_sent));
-          app_per_sum += conditionalDivision(data_app_per_lost, data_app_per_sent);
-          rssi_sum += avg_rssi;
-        }
-      }
-      app_per_avg = app_per_sum / jsonData[node_id].length;
-      sum_network_per += app_per_avg;
-      rssi_avg = rssi_sum / jsonData[node_id].length;
-      sum_network_rssi += rssi_avg;
-      $('#network_per').text('Avg. PER: '+(sum_network_per / markers.length).toFixed(6)); 
-      $('#network_rssi').text('Avg. RSSI: '+(sum_network_rssi / markers.length).toFixed(6));
-      var current = array_y[array_y.length-1];
-      var result = findLineByLeastSquares(array_x, array_y);
-      var predict_y = result[1][0];
+  // $.ajax({
+  //   url: "/api/sensor",
+  //   dataType: "json",
+  //   success: function(jsonData){
+      // if(jsonData[node_id]){
+      //   for(var i=0;i<jsonData[node_id].length;i++){
+      //     var data_channel_info = jsonData[node_id][i]['CHANNEL_INFO'];
+      //     var avg_rssi = getAvgRssi(data_channel_info);
+      //     var data_app_per_sent = jsonData[node_id][i]['MAC_TX_TOTAL'];
+      //     var data_app_per_lost = jsonData[node_id][i]['MAC_TX_FAIL'];
+      //     array_x.push(i);
+      //     array_y.push(conditionalDivision(data_app_per_lost, data_app_per_sent));
+      //     app_per_sum += conditionalDivision(data_app_per_lost, data_app_per_sent);
+      //     rssi_sum += avg_rssi;
+      //   }
+      // }
+      // app_per_avg = app_per_sum / jsonData[node_id].length;
+      // sum_network_per += app_per_avg;
+      // rssi_avg = rssi_sum / jsonData[node_id].length;
+      // sum_network_rssi += rssi_avg;
+      // $('#network_per').text('Avg. PER: '+(sum_network_per / markers.length).toFixed(6)); 
+      // $('#network_rssi').text('Avg. RSSI: '+(sum_network_rssi / markers.length).toFixed(6));
+      // var current = array_y[array_y.length-1];
+      // var result = findLineByLeastSquares(array_x, array_y);
+      // var predict_y = result[1][0];
 
-      var batteryInfo = Math.random() * (0.8 - 0.1) + 0.1;
+      // var batteryInfo = Math.random() * (0.8 - 0.1) + 0.1;
 
-      var sidebar = $('#demo');
-      var sidebar_entry = $('<li/>', {
-        'html': '<a href="#infolist">Node '+label
-        +'<ul>Parent: '+parent+'</ul>'
-        +'<ul>Avg. PER: '+app_per_avg.toFixed(6)+'</ul>'
-        +'<ul>Avg. RSSI: '+rssi_avg.toFixed(6)+'</ul>',
-        // +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
-        // +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>'
-        // +'<ul>Battey level: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+batteryInfo+'">'+'</meter>'+'</ul>',
-        'click': function() {
-          google.maps.event.trigger(marker, 'click');
-          $(this).css('color','red');
-        },
-        'mouseenter': function() {
-          $(this).css('color', 'red');
-        },
-        'mouseleave': function() {
-          $(this).css('color', '#999999');
-        },
-        'focus': function() {
-          $(this).css('color', '#FF0000');
-        },
-        function() {
-          $(this).attr("id","newid"+label);
-          $(this).addClass('network1');
-        }
-      }).appendTo(sidebar);
-if(parseFloat(predict_y) > 0.05){
-  var fault_pbb = 1;
-}else if(parseFloat(current) > 0.05 && parseFloat(current) > parseFloat(predict_y)){
-  var fault_pbb = 0;
-}else if(parseFloat(current) < 0.05 && parseFloat(current) > parseFloat(predict_y)){
-  var fault_pbb = 0;
-}else{
-  var fault_pbb = 1/((0.05-parseFloat(current))/(parseFloat(predict_y)-parseFloat(current)));
-}
+      // var sidebar = $('#demo');
+      // var sidebar_entry = $('<li/>', {
+      //   'html': '<a href="#infolist">Node '+label
+      //   +'<ul>Parent: '+parent+'</ul>'
+      //   +'<ul>Avg. PER: '+app_per_avg.toFixed(6)+'</ul>'
+      //   +'<ul>Avg. RSSI: '+rssi_avg.toFixed(6)+'</ul>',
+      //   // +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
+      //   // +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>'
+      //   // +'<ul>Battey level: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+batteryInfo+'">'+'</meter>'+'</ul>',
+      //   'click': function() {
+      //     google.maps.event.trigger(marker, 'click');
+      //     $(this).css('color','red');
+      //   },
+      //   'mouseenter': function() {
+      //     $(this).css('color', 'red');
+      //   },
+      //   'mouseleave': function() {
+      //     $(this).css('color', '#999999');
+      //   },
+      //   'focus': function() {
+      //     $(this).css('color', '#FF0000');
+      //   },
+      //   function() {
+      //     $(this).attr("id","newid"+label);
+      //     $(this).addClass('network1');
+      //   }
+      // }).appendTo(sidebar);
+// if(parseFloat(predict_y) > 0.05){
+//   var fault_pbb = 1;
+// }else if(parseFloat(current) > 0.05 && parseFloat(current) > parseFloat(predict_y)){
+//   var fault_pbb = 0;
+// }else if(parseFloat(current) < 0.05 && parseFloat(current) > parseFloat(predict_y)){
+//   var fault_pbb = 0;
+// }else{
+//   var fault_pbb = 1/((0.05-parseFloat(current))/(parseFloat(predict_y)-parseFloat(current)));
+// }
 
-var app_per_sum_network = 0;
-var rssi_sum_network = 0;
-var num_channel = 0;
-for(var i=0;i<jsonData.length;i++){
-  app_per_sum_network = conditionalAdd(app_per_sum_network, app_per_avg);
-  rssi_sum_network = conditionalAdd(rssi_sum_network, rssi_avg);
-}
-var app_per_avg_network = app_per_sum_network / jsonData.length;
-var rssi_avg_network = rssi_sum_network / jsonData.length;
+// var app_per_sum_network = 0;
+// var rssi_sum_network = 0;
+// var num_channel = 0;
+// for(var i=0;i<jsonData.length;i++){
+//   app_per_sum_network = conditionalAdd(app_per_sum_network, app_per_avg);
+//   rssi_sum_network = conditionalAdd(rssi_sum_network, rssi_avg);
+// }
+// var app_per_avg_network = app_per_sum_network / jsonData.length;
+// var rssi_avg_network = rssi_sum_network / jsonData.length;
 
 var marker = new google.maps.Marker({
   map: map,
@@ -1999,19 +2051,19 @@ markers[parseInt(label)] = marker;
 markers_location.push(marker);
 markerCluster1.addMarker(marker);
 
-if(predict_y>0.2){
-  marker.icon.fillColor = ' #FFA500 ';
-        // marker.isCritical = 1;
-      }
-      if(app_per_avg>0.2){
-        marker.icon.fillColor = ' #FF0000 ';
-        marker.isCritical = 1;
-        marker.lossRate = Math.abs(avg_rssi);
-        // markMarker(marker);
-        marker_critical.push(marker.getPosition());
-      }
+// if(predict_y>0.2){
+//   marker.icon.fillColor = ' #FFA500 ';
+//         // marker.isCritical = 1;
+//       }
+//       if(app_per_avg>0.2){
+//         marker.icon.fillColor = ' #FF0000 ';
+//         marker.isCritical = 1;
+//         marker.lossRate = Math.abs(avg_rssi);
+//         // markMarker(marker);
+//         marker_critical.push(marker.getPosition());
+//       }
 
-      marker.addListener('click', function(){
+marker.addListener('click', function(){
          // clearInterval(myinterval);
                 // // $(document).ready(function(){
                 //     // drawChart2(this);
@@ -2033,21 +2085,21 @@ if(predict_y>0.2){
             // }, 1000);
             // drawChart(this,avg,current,predict_y,fault_pbb);
             google.charts.setOnLoadCallback(drawChart2(this));
-            var sidebar = document.getElementById("demo");
-            var sidebar2 = document.getElementById("demo2");
-            var li = document.getElementById("newid"+label);
-            if(li != null){
-              var color = li.style.backgroundColor;
-              li.style.backgroundColor = " #5499c7 ";
-              setTimeout(function(){
-                li.style.backgroundColor=color;
-              }, 2000);
-              li.scrollIntoView();
-            }
+            // var sidebar = document.getElementById("demo");
+            // var sidebar2 = document.getElementById("demo2");
+            // var li = document.getElementById("newid"+label);
+            // if(li != null){
+            //   var color = li.style.backgroundColor;
+            //   li.style.backgroundColor = " #5499c7 ";
+            //   setTimeout(function(){
+            //     li.style.backgroundColor=color;
+            //   }, 2000);
+            //   li.scrollIntoView();
+            // }
           });
 updateProgress();
-}
-})
+// }
+// })
 }
 var legend = document.getElementById('legend');
 for (var key in icons) {
