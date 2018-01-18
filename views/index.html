@@ -1718,8 +1718,13 @@ var titlestring2 = '<div id="content">'+
 '<p><b>Current PER: </b>'+(current2*100).toFixed(2)+'%'+'</p>'+
 '<p><b>Predicted PER: </b>'+(predict2*100).toFixed(2)+'%'+'</p>'+
 '<p><b>Fault probability: </b>'+(fault_pbb2*100).toFixed(2)+'%'+'</p>'+
-'<p>'+'Start date: <input type="date" id="chart_start_date" />'+'&emsp;Start time: <input type="time" id="chart_start_time" step="1"/>'+'</p>'+
-'<p>'+'End date: <input type="date" id="chart_end_date" />'+'&emsp;End time: <input type="time" id="chart_end_time" step="1"/>'+'</p>'+
+'<p>'+'Start date: <input type="date" id="chart_start_date" />'+
+// '&emsp;Start time: <input type="time" id="chart_start_time" step="1"/>'+
+'&emsp;End date: <input type="date" id="chart_end_date" />'+
+'</p>'+
+// '<p>'+'End date: <input type="date" id="chart_end_date" />'+
+// '&emsp;End time: <input type="time" id="chart_end_time" step="1"/>'+
+// '</p>'+
 '<p>'+'Metric: <input type="checkbox" value="app_per" id="app_per" checked/>Application Layer PER&emsp;<input type="checkbox" value="mac_per" id="mac_per" checked/>Mac Layer PER&emsp;<input type="checkbox" value="rssi" id="rssi" checked/>RSSI'+'</p>'+
 '</div>'+
 '</div>'+
@@ -1858,7 +1863,7 @@ function drawLink(){
 function updateGateway(){
   $('#gateway_names').change(function(){
     markers.forEach(function(marker){
-      if($('#gateway_names').val() == 'TEST'){
+      if($('#gateway_names').val().indexOf('TEST') != -1){
         markerCluster1.clearMarkers();
       }
       else{
@@ -1866,7 +1871,7 @@ function updateGateway(){
       }
     });
     links.forEach(function(link){
-      if($('#gateway_names').val() == 'TEST'){
+      if($('#gateway_names').val().indexOf('TEST') != -1){
         link.setVisible(false);
       }
       else{
