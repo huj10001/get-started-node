@@ -1075,24 +1075,48 @@ function getGateway(){
           map.setCenter(new google.maps.LatLng(41.850033, -87.6500523));
         }
 
+        var network_stat_data_plus = [];
+        function getStatPlus(){
+          $.ajax({
+            url: "/api/networkstatplus",
+            dataType: "json",
+            success: function(jsonData){
+              for(var i=0;i<jsonData.length;i++){
+                if(jsonData[i]){
+                  network_stat_data_plus[i] = jsonData[i];
+                }
+              }
+            }
+          })
+        }
+
+
         function drawStat(){
+          getStatPlus();
           $.ajax({
             url: "/api/networkstat",
             dataType: "json",
             success: function(jsonData){
               var network_stat_data = new google.visualization.DataTable();
               network_stat_data.addColumn('number', 'SENSOR ID');
-              network_stat_data.addColumn('number', 'NUM PARENT CHANGE');
-              network_stat_data.addColumn('number', 'NUM SYNC LOST');
-              network_stat_data.addColumn('number', 'AVG DRIFT');
-              network_stat_data.addColumn('number', 'NUM MAC OUT OF BUFFER');
+              // network_stat_data.addColumn('number', 'NUM PARENT CHANGE');
+              // network_stat_data.addColumn('number', 'NUM SYNC LOST');
+              // network_stat_data.addColumn('number', 'AVG DRIFT');
+              // network_stat_data.addColumn('number', 'NUM MAC OUT OF BUFFER');
+              network_stat_data.addColumn('number', 'LATENCY');
+              network_stat_data.addColumn('number', 'MAC PER');
+              network_stat_data.addColumn('number', 'APP PER');
+              network_stat_data.addColumn('string', ' ');
               for(var i=0; i<jsonData.length; i++){
-                if(jsonData[i] != null){
-                  network_stat_data.addRow([jsonData[i]['SENSOR_ID'], jsonData[i]['2'], jsonData[i]['3'], jsonData[i]['4'], jsonData[i]['5']]);
+                if(jsonData[i] && network_stat_data_plus[i]){
+                  // network_stat_data.addRow([jsonData[i]['SENSOR_ID'], jsonData[i]['2'], jsonData[i]['3'], jsonData[i]['4'], jsonData[i]['5']]);
+                  network_stat_data.addRow([jsonData[i]['SENSOR_ID'], jsonData[i]['2'], conditionalDivision(network_stat_data_plus[i]['3'], network_stat_data_plus[i]['2']), conditionalDivision(network_stat_data_plus[i]['5'], network_stat_data_plus[i]['4']), ' ']);
                 }
               }
               var node_stat = document.createElement('div');
-              var infoWindow_stat  = new google.maps.InfoWindow();
+              var infoWindow_stat  = new google.maps.InfoWindow({
+                // pixelOffset: new google.maps.Size(200,0)
+              });
               var network_stat_table = new google.visualization.Table(node_stat);
               network_stat_table.draw(network_stat_data, {width: '100%', height: '100%'});
               google.visualization.events.addListener(network_stat_table, 'select', selectHandler);
@@ -1107,6 +1131,7 @@ function getGateway(){
             }
           })
 }
+
 </script>
 <div id="gateway" style="font-size:20px; background-color: lightblue; margin-left: 10px;">
  Gateway:
@@ -1218,8 +1243,8 @@ function getGateway(){
       ignoreHidden: true
     });
     loadGateway();
-    drawTopology();
-    drawLink();
+    drawTopology(null);
+    drawLink(null);
 
           // addNetwork(markers,1);
           addNetwork(markers2,2);
@@ -1603,11 +1628,15 @@ function getGateway(){
 function getAvgRssi(rssi_string){
   var res = rssi_string.split('rssi');
   var c = 0;
+  var num_of_channel = 0;
   for(var i=1; i<res.length;i++){
     var b = res[i].substring(res[i].indexOf(":")+1,res[i].indexOf(","));
-    c += Number(b);
+    if(Number(b) != 0){
+      c += Number(b);
+      num_of_channel ++;
+    }
   }
-  return c/res.length;
+  return c/num_of_channel;
 }
 
 
@@ -1745,8 +1774,8 @@ infowindow.open(marker.getMap(),marker);
                 end_date.setDate(end_date.getDate()-2);
                 document.getElementById('chart_start_date').valueAsDate = end_date;
                 document.getElementById('chart_end_date').valueAsDate = start_date;
-                document.getElementById('chart_start_time').value = "00:00:00";
-                document.getElementById('chart_end_time').value = "23:59:59";
+                // document.getElementById('chart_start_time').value = "00:00:00";
+                // document.getElementById('chart_end_time').value = "23:59:59";
 
                 for(var i=0;i<markers.length;i++){
                   $('#selectcomp').append(new Option(i, i.toString()));
@@ -1784,7 +1813,7 @@ function sortLi(){
   $('#demo').append(elems);
 }
 
-function drawTopology(){
+function drawTopology(gateway){
   $.ajax({
     url: "/api/topology",
     dataType: "json",
@@ -1794,25 +1823,54 @@ function drawTopology(){
         if(jsonData[i] != null){
           var newNode = new google.maps.LatLng(jsonData[i]['GPS_LAT'], jsonData[i]['GPS_LONG']);
           var parentid = jsonData[i]['PARENT'];
-          if(parentid != null){
-            addMarker(newNode,i.toString(),"active", parentid.toString());
-          }else{
-            var marker = new google.maps.Marker({
-              map: map,
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 15,
-                strokeWeight:2,
-                fillColor: '#008000',
-                fillOpacity: 1.0
-              },
-              position: newNode,
-              label: i.toString(),
-              id: i
-            });
-            markers[i] = marker;
-            markers_location.push(marker);
-            markerCluster1.addMarker(marker);
+          var gateway_name = jsonData[i]['GATEWAY_NAME'];
+          if(gateway){
+            if(gateway == gateway_name){
+              if(parentid != null){
+                addMarker(newNode,i.toString(),"active", parentid.toString(), gateway_name);
+              }else{
+                var marker = new google.maps.Marker({
+                  map: map,
+                  icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 15,
+                    strokeWeight:2,
+                    fillColor: '#008000',
+                    fillOpacity: 1.0
+                  },
+                  position: newNode,
+                  label: i.toString(),
+                  id: i,
+                  gateway_id: gateway_name
+                });
+                markers[i] = marker;
+                markers_location.push(marker);
+                markerCluster1.addMarker(marker);
+              }
+            }
+          }
+          else{
+            if(parentid != null){
+              addMarker(newNode,i.toString(),"active", parentid.toString(), gateway_name);
+            }else{
+              var marker = new google.maps.Marker({
+                map: map,
+                icon: {
+                  path: google.maps.SymbolPath.CIRCLE,
+                  scale: 15,
+                  strokeWeight:2,
+                  fillColor: '#008000',
+                  fillOpacity: 1.0
+                },
+                position: newNode,
+                label: i.toString(),
+                id: i,
+                gateway_id: gateway_name
+              });
+              markers[i] = marker;
+              markers_location.push(marker);
+              markerCluster1.addMarker(marker);
+            }
           }
         }
       }
@@ -1822,7 +1880,7 @@ function drawTopology(){
   });
 }
 
-function drawLink(){
+function drawLink(gateway){
   $.ajax({
     url: "/api/topology",
     dataType: "json",
@@ -1833,26 +1891,54 @@ function drawLink(){
           var currentNodeLat = jsonData[i]['GPS_LAT'];
           var currentNodeLng = jsonData[i]['GPS_LONG'];
           var parentid = jsonData[i]['PARENT'];
-          if(parentid != null){
-            var parentNodeLat = jsonData[parentid]['GPS_LAT'];
-            var parentNodeLng = jsonData[parentid]['GPS_LONG'];
-            var path = [
-            {lat: currentNodeLat, lng: currentNodeLng},
-            {lat: parentNodeLat, lng: parentNodeLng}
-            ];
-            var link = new google.maps.Polyline({
-              path: path,
-              strokeColor: '#000080',
-              strokeOpacity: 1.0,
-              strokeWeight: 1 + link_info * 100,
-              customInfo: link_info
-            });
-            links.push(link);
-            if(link_info > 0.04){
-              link.strokeColor = '#800000';
+          var gateway_name = jsonData[i]['GATEWAY_NAME'];
+          if(gateway){
+            if(gateway == gateway_name && gateway == jsonData[parentid]['GATEWAY_NAME']){
+              if(parentid != null){
+                var parentNodeLat = jsonData[parentid]['GPS_LAT'];
+                var parentNodeLng = jsonData[parentid]['GPS_LONG'];
+                var path = [
+                {lat: currentNodeLat, lng: currentNodeLng},
+                {lat: parentNodeLat, lng: parentNodeLng}
+                ];
+                var link = new google.maps.Polyline({
+                  path: path,
+                  strokeColor: '#000080',
+                  strokeOpacity: 1.0,
+                  strokeWeight: 1 + link_info * 100,
+                  customInfo: link_info
+                });
+                links.push(link);
+                if(link_info > 0.04){
+                  link.strokeColor = '#800000';
+                }
+                createInfoWindow(link, "Link traffic : " + link.customInfo);
+                link.setMap(map);
+              }
             }
-            createInfoWindow(link, "Link traffic : " + link.customInfo);
-            link.setMap(map);
+          }
+          else{
+            if(parentid != null){
+              var parentNodeLat = jsonData[parentid]['GPS_LAT'];
+              var parentNodeLng = jsonData[parentid]['GPS_LONG'];
+              var path = [
+              {lat: currentNodeLat, lng: currentNodeLng},
+              {lat: parentNodeLat, lng: parentNodeLng}
+              ];
+              var link = new google.maps.Polyline({
+                path: path,
+                strokeColor: '#000080',
+                strokeOpacity: 1.0,
+                strokeWeight: 1 + link_info * 100,
+                customInfo: link_info
+              });
+              links.push(link);
+              if(link_info > 0.04){
+                link.strokeColor = '#800000';
+              }
+              createInfoWindow(link, "Link traffic : " + link.customInfo);
+              link.setMap(map);
+            }
           }
         }
       }
@@ -1862,22 +1948,13 @@ function drawLink(){
 
 function updateGateway(){
   $('#gateway_names').change(function(){
-    markers.forEach(function(marker){
-      if($('#gateway_names').val().indexOf('TEST') != -1){
-        markerCluster1.clearMarkers();
-      }
-      else{
-        markerCluster1.addMarker(marker);
-      }
-    });
+    markerCluster1.clearMarkers();
     links.forEach(function(link){
-      if($('#gateway_names').val().indexOf('TEST') != -1){
-        link.setVisible(false);
-      }
-      else{
-        link.setVisible(true);
-      }
+      link.setMap(null);
     });
+    var current_gateway = $('#gateway_names').val();
+    drawTopology(current_gateway);
+    drawLink(current_gateway)
   });
 }
 
@@ -1945,7 +2022,7 @@ function conditionalAdd(a, b){
 }
 
 var myinterval = null;
-function addMarker(location,label,active,parent){
+function addMarker(location,label,active,parent,gateway_id){
   var node_id = parseInt(label);
   var app_per_sum = 0;
   var rssi_sum = 0;
@@ -2044,6 +2121,7 @@ var marker = new google.maps.Marker({
   position: location,
   label: label,
   id: label,
+  gateway_id: gateway_id,
   status: active,
   customInfo: array,
   customInfoTime: array_time,
