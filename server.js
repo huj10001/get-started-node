@@ -100,7 +100,7 @@ app.post("/api/sensor", function (request, response) {
   console.log('start:'+start_time+' end:'+end_time+' id:'+marker_id);
   ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
     conn.query(
-      'select * from BLUADMIN.LOCATIONING_TEST_NETWORK where SENSOR_ID=? and TIMESTAMP>=? and TIMESTAMP<=?'
+      'select * from BLUADMIN.PER_TEST where SENSOR_ID=? and TIMESTAMP>=? and TIMESTAMP<=?'
       ,[marker_id, start_time, end_time], function (err, data) {
         if (err) {
           return console.log(err.message);
@@ -252,7 +252,7 @@ app.get("/api/sensor", function (request, response) {
         }
       });
 
-      conn.query('select SENSOR_ID,AVG(MAC_TX_TOTAL), AVG(MAC_TX_FAIL), AVG(APP_PER_SENT), AVG(APP_PER_LOST) from BLUADMIN.LOCATIONING_TEST_NETWORK group by SENSOR_ID', function (err, data) {
+      conn.query('select SENSOR_ID,AVG(MAC_TX_TOTAL), AVG(MAC_TX_FAIL), AVG(APP_PER_SENT), AVG(APP_PER_LOST) from BLUADMIN.PER_TEST group by SENSOR_ID', function (err, data) {
         console.log('network stat data plus:', data);
         for(var i=0;i<data.length;i++){
           var sid = data[i]['SENSOR_ID'];
@@ -461,7 +461,7 @@ function fetchData(node_id, offset_start, offset_end){
     conn.query(
       // 'select * from BLUADMIN.NW_DATA_SET_PER where SENSOR_ID=? limit ?,?'
       // ,[sensor_id, offset_start, offset_end], function (err, data) {
-        'select * from BLUADMIN.LOCATIONING_TEST_NETWORK where SENSOR_ID=? order by TIMESTAMP desc fetch first 10 rows only'
+        'select * from BLUADMIN.PER_TEST where SENSOR_ID=? order by TIMESTAMP desc fetch first 10 rows only'
         // 'select * from BLUADMIN.NW_DATA_SET_PER where SENSOR_ID=? order by TIMESTAMP desc fetch first 10 rows only'
         ,[sensor_id], function (err, data) {
           console.log('Found %d new data with id %s', data.length, node_id);

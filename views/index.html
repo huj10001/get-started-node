@@ -1108,15 +1108,13 @@ function getGateway(){
               network_stat_data.addColumn('number', 'APP PER');
               network_stat_data.addColumn('string', ' ');
               for(var i=0; i<jsonData.length; i++){
-                if(jsonData[i] && network_stat_data_plus[i]){
+                if(jsonData[i] != null){
                   // network_stat_data.addRow([jsonData[i]['SENSOR_ID'], jsonData[i]['2'], jsonData[i]['3'], jsonData[i]['4'], jsonData[i]['5']]);
                   network_stat_data.addRow([jsonData[i]['SENSOR_ID'], jsonData[i]['2'], conditionalDivision(network_stat_data_plus[i]['3'], network_stat_data_plus[i]['2']), conditionalDivision(network_stat_data_plus[i]['5'], network_stat_data_plus[i]['4']), ' ']);
                 }
               }
               var node_stat = document.createElement('div');
-              var infoWindow_stat  = new google.maps.InfoWindow({
-                // pixelOffset: new google.maps.Size(200,0)
-              });
+              var infoWindow_stat  = new google.maps.InfoWindow();
               var network_stat_table = new google.visualization.Table(node_stat);
               network_stat_table.draw(network_stat_data, {width: '100%', height: '100%'});
               google.visualization.events.addListener(network_stat_table, 'select', selectHandler);
