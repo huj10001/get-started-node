@@ -1075,6 +1075,7 @@ function getGateway(){
           map.setCenter(new google.maps.LatLng(41.850033, -87.6500523));
         }
 
+        
         var network_stat_data_plus = [];
         function getStatPlus(){
           $.ajax({
@@ -1090,6 +1091,8 @@ function getGateway(){
           })
         }
 
+        google.charts.load('current', {'packages':['table']});
+        google.charts.setOnLoadCallback(drawStat);
 
         function drawStat(){
           getStatPlus();
@@ -1099,24 +1102,22 @@ function getGateway(){
             success: function(jsonData){
               var network_stat_data = new google.visualization.DataTable();
               network_stat_data.addColumn('number', 'SENSOR ID');
-              // network_stat_data.addColumn('number', 'NUM PARENT CHANGE');
-              // network_stat_data.addColumn('number', 'NUM SYNC LOST');
-              // network_stat_data.addColumn('number', 'AVG DRIFT');
-              // network_stat_data.addColumn('number', 'NUM MAC OUT OF BUFFER');
               network_stat_data.addColumn('number', 'LATENCY');
               network_stat_data.addColumn('number', 'MAC PER');
               network_stat_data.addColumn('number', 'APP PER');
               network_stat_data.addColumn('string', ' ');
               for(var i=0; i<jsonData.length; i++){
-                if(jsonData[i] != null){
-                  // network_stat_data.addRow([jsonData[i]['SENSOR_ID'], jsonData[i]['2'], jsonData[i]['3'], jsonData[i]['4'], jsonData[i]['5']]);
+                if(jsonData[i] && network_stat_data_plus[i]){
                   network_stat_data.addRow([jsonData[i]['SENSOR_ID'], jsonData[i]['2'], conditionalDivision(network_stat_data_plus[i]['3'], network_stat_data_plus[i]['2']), conditionalDivision(network_stat_data_plus[i]['5'], network_stat_data_plus[i]['4']), ' ']);
                 }
               }
-              var node_stat = document.createElement('div');
-              var infoWindow_stat  = new google.maps.InfoWindow();
-              var network_stat_table = new google.visualization.Table(node_stat);
-              network_stat_table.draw(network_stat_data, {width: '100%', height: '100%'});
+              var network_stat_table = new google.visualization.Table(document.getElementById('networkstat'));
+              var network_stat_options = {
+                "title": "Network Statistics",
+                width: "100%",
+                height: "100%"
+              };
+              network_stat_table.draw(network_stat_data, network_stat_options);
               google.visualization.events.addListener(network_stat_table, 'select', selectHandler);
               function selectHandler(){
                 var selection = network_stat_table.getSelection();
@@ -1124,8 +1125,6 @@ function getGateway(){
                 var sid = network_stat_data.getValue(item, 0);
                 google.maps.event.trigger(markers[sid], 'click');
               }
-              infoWindow_stat.setContent(node_stat);
-              infoWindow_stat.open(map);
             }
           })
 }
@@ -1146,7 +1145,10 @@ function getGateway(){
   </div>
 </div>
 
-<div id="networkstat" style="padding:10px"><button class="button buttonblue" onclick="drawStat()">Network Stats</button></div>
+<div id="networkstatblock" style="padding:10px; height:80%; background-color: lightblue; margin-left:10px">
+  <div id="networkstattitle" style="padding-left:10px; font-size:20px;">Network Statistics</div>
+  <div id="networkstat" style="padding-left:10px; height:96%"></div>
+</div>
 
 <div id="mapreset">
   <button id="mapresetbtn" type="button" onclick="mapReset()">&#8634;</button>
@@ -1891,7 +1893,7 @@ function drawLink(gateway){
           var parentid = jsonData[i]['PARENT'];
           var gateway_name = jsonData[i]['GATEWAY_NAME'];
           if(gateway){
-            if(gateway == gateway_name && gateway == jsonData[parentid]['GATEWAY_NAME']){
+            if((gateway == gateway_name) || (gateway == jsonData[parentid]['GATEWAY_NAME'])){
               if(parentid != null){
                 var parentNodeLat = jsonData[parentid]['GPS_LAT'];
                 var parentNodeLng = jsonData[parentid]['GPS_LONG'];
@@ -1952,7 +1954,7 @@ function updateGateway(){
     });
     var current_gateway = $('#gateway_names').val();
     drawTopology(current_gateway);
-    drawLink(current_gateway)
+    drawLink(current_gateway);
   });
 }
 
@@ -2206,7 +2208,7 @@ map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
 map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(mapreset);
 map.controls[google.maps.ControlPosition.LEFT_TOP].push(gateway);
 map.controls[google.maps.ControlPosition.RIGHT_TOP].push(noizy);
-map.controls[google.maps.ControlPosition.LEFT_TOP].push(networkstat);
+map.controls[google.maps.ControlPosition.LEFT_TOP].push(networkstatblock);
 // markRegion();
 
 function shapeMouse(current_shape, index){
