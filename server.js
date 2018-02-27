@@ -21,78 +21,13 @@ var network_stat_data_plus = [];
 var gateway_data = [];
 var num_of_sensor = 0;
 loadNumSensor();
-// for(var j=0;j<50;j++){
-//   kilby_data[j] = [];
-//   sensor_data[j] = [];
-//   topology_data[j] = [];
-// }
+
 var kilby_all= [];
 var myurl = "https://89c13691-0906-4a2b-98ef-801692e3590a-bluemix:4e714e8e0d041063bd2a4e439f057e60c034dd4afdee04224e3e6f4f8441bf55@89c13691-0906-4a2b-98ef-801692e3590a-bluemix.cloudant.com";
 var ibmdb_url = "DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4";
 
 
-// if (typeof localStorage === "undefined" || localStorage === null) {
-//   var LocalStorage = require('node-localstorage').LocalStorage;
-//   localStorage = new LocalStorage('./scratch');
-// }
 
-// localStorage.setItem('test', 100);
-// console.log("local storage : "+localStorage);
-// console.log("test : "+localStorage.getItem('test'));
-// localStorage.setItem("test",test);
-// console.log(localStorage.getItem("test"));
-// localStorage.setItem('favoriteflavor','vanilla');  
-
-// var GoogleMapsAPI = require('googlemaps');
-// var gmAPI = new GoogleMapsAPI();
-// var params = {
-//   center: '444 W Main St Lock Haven PA',
-//   zoom: 15,
-//   size: '500x400',
-//   maptype: 'roadmap',
-//   markers: [
-//     {
-//       location: '300 W Main St Lock Haven, PA',
-//       label   : 'A',
-//       color   : 'green',
-//       shadow  : true
-//     },
-//     {
-//       location: '444 W Main St Lock Haven, PA',
-//       icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=cafe%7C996600'
-//     }
-//   ],
-//   style: [
-//     {
-//       feature: 'road',
-//       element: 'all',
-//       rules: {
-//         hue: '0x00ff00'
-//       }
-//     }
-//   ],
-//   path: [
-//     {
-//       color: '0x0000ff',
-//       weight: '5',
-//       points: [
-//         '41.139817,-77.454439',
-//         '41.138621,-77.451596'
-//       ]
-//     }
-//   ]
-// };
-// gmAPI.staticMap(params); // return static map URL 
-// gmAPI.staticMap(params, function(err, binaryImage) {
-//   // fetch asynchronously the binary image 
-// });
-
-/* Endpoint to greet and add a new visitor to database.
-* Send a POST request to localhost:3000/api/visitors with body
-* {
-* 	"name": "Bob"
-* }
-*/
 app.post("/api/sensor", function (request, response) {
   var start_time = request.body.startTime;
   var end_time = request.body.endTime;
@@ -116,25 +51,6 @@ app.post("/api/sensor", function (request, response) {
         }
       });
   });
-  // request.body._id = request.body._id.toString();
-  // insertObj = request.body;
-  // if(!mydb_kilby) {
-  //   console.log("No database.");
-  //   // response.send("Hello " + userName + "!");
-  //   return;
-  // }
-  // // insert the username as a document
-  // console.log("receive new data: " + JSON.stringify(insertObj));
-  // mydb_kilby.insert(
-  //   insertObj, 
-  //   function(err, body, header) {
-  //     if (err) {
-  //       return console.log('[mydb.insert] ', err.message);
-  //     }
-  //     console.log("insert new data: " + JSON.stringify(insertObj));
-  //   // response.send("Hello " + userName + "! I added you to the database.");
-  // });
-  // console.log("new data!!" + JSON.stringify(request.body));
 });
 
 app.get("/api/gateway", function (request, response) {
@@ -162,104 +78,52 @@ app.get("/api/sensor", function (request, response) {
   return;
 });
 
-// var googleMapsClient = require('@google/maps').createClient({
-//   key:  'AIzaSyAjPWQR-VcoynKYktMgVVPHHvWUM-8ZhGs'
-// });
-// // Geocode an address.
-// googleMapsClient.geocode({
-//   address: '1600 Amphitheatre Parkway, Mountain View, CA'
-// }, function(err, response) {
-//   if (!err) {
-//     console.log(response.json.results);
-//   }
-// });
 
-// load local VCAP configuration  and service credentials
-// var vcapLocal;
-// try {
-//   vcapLocal = require('./vcap-local.json');
-//   console.log("Loaded local VCAP", vcapLocal);
-// } catch (e) { }
+var Cloudant = require('cloudant');
 
-// const appEnvOpts = vcapLocal ? { vcap: vcapLocal} : {}
+/* db2 gateway */
+ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
+  if(err) return console.log(err);
+  conn.query('select distinct GATEWAY_NAME from BLUADMIN.TOPOLOGY_DATA', function (err, data) {
+    console.log('gateway:', data);
+    for(var i=0;i<data.length;i++){
+      gateway_data.push(data[i]);
+    }
+  });
+});
 
-// const appEnv = cfenv.getAppEnv(appEnvOpts);
-
-
-// /* insert */
-// if (appEnv.services['DB2']) {
-//   // Load the Cloudant library.
-//   var Cloudant = require('cloudant');
-
-//   // Initialize database with credentials
-//   var cloudant = Cloudant(appEnv.services['DB2'][0].credentials);
-//   // cloudant = Cloudant({url: myurl, plugin:'retry', retryAttempts:5, retryTimeout:10000 });
-
-//   //database name
-//   var dbName = 'mydb';
-
-//   // Create a new "mydb" database.
-//   cloudant.db.create(dbName, function(err, data) {
-//     if(!err) //err if database doesn't already exists
-//       console.log("Created database: " + dbName);
-//   });
-
-//   // Specify the database we are going to use (mydb)...
-//   mydb = cloudant.db.use(dbName);
-// }
-/*  ******/
+/* db2 topology */
+ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
+  if(err) return console.log(err);
+  conn.query('select t.SENSOR_ID, t.GPS_LAT, t.GPS_LONG, t.PARENT, t.GATEWAY_NAME from BLUADMIN.TOPOLOGY_DATA t inner join (select SENSOR_ID, max(TIMESTAMP) as MaxTime from BLUADMIN.TOPOLOGY_DATA group by SENSOR_ID) tm on t.SENSOR_ID = tm.SENSOR_ID and t.TIMESTAMP = tm.MaxTime', function (err, data) {
+    console.log('topology data:', data);
+    for(var i=0;i<data.length;i++){
+      var sid = data[i]['SENSOR_ID'];
+      topology_data[sid] = data[i];
+    }
+  });
+});
 
 
-
-/* read */
-// if (appEnv.services['DB2']) {
-  // Load the Cloudant library.
-  var Cloudant = require('cloudant');
-
-  /* db2 gateway */
-  ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
-    if(err) return console.log(err);
-    conn.query('select distinct GATEWAY_NAME from BLUADMIN.TOPOLOGY_DATA', function (err, data) {
-      console.log('gateway:', data);
-      for(var i=0;i<data.length;i++){
-        gateway_data.push(data[i]);
-      }
-    });
+/* db2 network stat */
+ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
+  if(err) return console.log(err);
+  conn.query('select SENSOR_ID,AVG(RTT) from BLUADMIN.NW_DATA_SET_LATENCY group by SENSOR_ID', function (err, data) {
+    console.log('network stat data:', data);
+    for(var i=0;i<data.length;i++){
+      var sid = data[i]['SENSOR_ID'];
+      network_stat_data[sid] = data[i];
+    }
   });
 
-  /* db2 topology */
-  ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
-    if(err) return console.log(err);
-    conn.query('select t.SENSOR_ID, t.GPS_LAT, t.GPS_LONG, t.PARENT, t.GATEWAY_NAME from BLUADMIN.TOPOLOGY_DATA t inner join (select SENSOR_ID, max(TIMESTAMP) as MaxTime from BLUADMIN.TOPOLOGY_DATA group by SENSOR_ID) tm on t.SENSOR_ID = tm.SENSOR_ID and t.TIMESTAMP = tm.MaxTime', function (err, data) {
-      console.log('topology data:', data);
-      for(var i=0;i<data.length;i++){
-        var sid = data[i]['SENSOR_ID'];
-        topology_data[sid] = data[i];
-      }
-    });
+  conn.query('select SENSOR_ID,AVG(MAC_TX_TOTAL), AVG(MAC_TX_FAIL), AVG(APP_PER_SENT), AVG(APP_PER_LOST) from BLUADMIN.NW_DATA_SET_PER_02202018_WHOLEWEEK group by SENSOR_ID', function (err, data) {
+    console.log('network stat data plus:', data);
+    for(var i=0;i<data.length;i++){
+      var sid = data[i]['SENSOR_ID'];
+      network_stat_data_plus[sid] = data[i];
+    }
   });
-
-
-  /* db2 network stat */
-  ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
-    if(err) return console.log(err);
-    // conn.query('select SENSOR_ID,AVG(NUM_PARENT_CHANGE),AVG(NUM_SYNC_LOST),AVG(AVG_DRFIT),AVG(NUM_MAC_OUT_OF_BUFFER) from BLUADMIN.NW_DATA_SET_NW_INFO group by SENSOR_ID', function (err, data) {
-      conn.query('select SENSOR_ID,AVG(RTT) from BLUADMIN.NW_DATA_SET_LATENCY group by SENSOR_ID', function (err, data) {
-        console.log('network stat data:', data);
-        for(var i=0;i<data.length;i++){
-          var sid = data[i]['SENSOR_ID'];
-          network_stat_data[sid] = data[i];
-        }
-      });
-
-      conn.query('select SENSOR_ID,AVG(MAC_TX_TOTAL), AVG(MAC_TX_FAIL), AVG(APP_PER_SENT), AVG(APP_PER_LOST) from BLUADMIN.NW_DATA_SET_PER_02202018_WHOLEWEEK group by SENSOR_ID', function (err, data) {
-        console.log('network stat data plus:', data);
-        for(var i=0;i<data.length;i++){
-          var sid = data[i]['SENSOR_ID'];
-          network_stat_data_plus[sid] = data[i];
-        }
-      });
-    });
+});
 
 
 var num_of_rows = 0;

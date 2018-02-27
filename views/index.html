@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>IoT</title>
 
-  <!-- Bootstrap -->
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
   <link href="styles.css" rel="stylesheet">
 
@@ -15,766 +14,596 @@
   <meta charset="utf-8">
   <title>Simple markers</title>
   <style>
-      /* Always set the map height explicitly to define the size of the div
-      * element that contains the map. */
-      #map {
-        height: 100%;
-      }
-      #legend {
-        font-family: Arial, sans-serif;
-        background: #fff;
-        padding: 10px;
-        margin: 10px;
-        border: 3px solid #000;
-      }
-      #legend h3 {
-        margin-top: 0;
-      }
-      #legend img {
-        vertical-align: middle;
-      }
+  #map {
+    height: 100%;
+  }
+  #legend {
+    font-family: Arial, sans-serif;
+    background: #fff;
+    padding: 10px;
+    margin: 10px;
+    border: 3px solid #000;
+  }
+  #legend h3 {
+    margin-top: 0;
+  }
+  #legend img {
+    vertical-align: middle;
+  }
 
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-      #map,
-      #wrapper,
-      #page-content-wrapper {
-        height: 100%;
-        width: 100%;
-      }
-      .container-fluid,
-      .row,
-      .col-lg-12 {
-        height: 100%;
-        width: 100%;
-      }
-    }
-    /* hamburger menu pseudo element */
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  #map,
+  #wrapper,
+  #page-content-wrapper {
+    height: 100%;
+    width: 100%;
+  }
+  .container-fluid,
+  .row,
+  .col-lg-12 {
+    height: 100%;
+    width: 100%;
+  }
+}
 
-    .box-shadow-menu {
-      position: relative;
-      padding-left: 1.25em;
-    }
-    .box-shadow-menu:before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0.25em;
-      width: 1em;
-      height: 0.15em;
-      background: black;
-      box-shadow: 0 0.25em 0 0 black, 0 0.5em 0 0 black;
-    }
-    /* hamburger menu pseudo element gradient */
+.box-shadow-menu {
+  position: relative;
+  padding-left: 1.25em;
+}
+.box-shadow-menu:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.25em;
+  width: 1em;
+  height: 0.15em;
+  background: black;
+  box-shadow: 0 0.25em 0 0 black, 0 0.5em 0 0 black;
+}
 
-    .gradient-menu {
-      padding-left: 1.25em;
-      position: relative;
-    }
-    .gradient-menu:before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0.21em;
-      bottom: 0.21em;
-      width: 1em;
-      background: linear-gradient(to bottom, black, black 20%, white 20%, white 40%, black 40%, black 60%, white 60%, white 80%, black 80%, black 100%);
-    }
-    /* http://www.jqueryscript.net/demo/Bootstrap-Sidebar-Extension-With-jQuery-CSS-CSS3/ */
+.gradient-menu {
+  padding-left: 1.25em;
+  position: relative;
+}
+.gradient-menu:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.21em;
+  bottom: 0.21em;
+  width: 1em;
+  background: linear-gradient(to bottom, black, black 20%, white 20%, white 40%, black 40%, black 60%, white 60%, white 80%, black 80%, black 100%);
+}
 
-    /*!
-     * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
-     * Code licensed under the Apache License v2.0.
-     * For details, see http://www.apache.org/licenses/LICENSE-2.0.
-     */
+.nav-tabs>li {
+  float: none;
+}
+.nav-tabs {
+  border-bottom: 0;
+}
+.nav-tabs>li.active>a,
+.nav-tabs>li.active>a:focus,
+.nav-tabs>li.active>a:hover {
+  margin: 0;
+  border-radius: 0;
+}
+#wrapper {
+  padding-left: 0;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+#wrapper.toggled {
+  padding-left: 250px;
+}
+#sidebar-wrapper {
+  z-index: 1000;
+  position: fixed;
+  left: 250px;
+  width: 0;
+  height: 100%;
+  margin-left: -250px;
+  overflow-y: auto;
+  background: #a9cce3;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+#wrapper.toggled #sidebar-wrapper {
+  width: 250px;
+}
+#page-content-wrapper {
+  width: 100%;
+  position: absolute;
+  padding: 15px;
+}
+#wrapper.toggled #page-content-wrapper {
+  position: absolute;
+  margin-right: -250px;
+}
 
-     /* Toggle Styles */
+.sidebar-nav {
+  position: absolute;
+  top: 0;
+  width: 250px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sidebar-nav li {
+  text-indent: 20px;
+  line-height: 40px;
+}
+.sidebar-nav li a {
+  display: block;
+  text-decoration: none;
+  color: #000000;
+}
+.sidebar-nav li a:hover {
+  text-decoration: none;
+  color: #000080;
+  background: rgba(255, 255, 255, 0.2);
+}
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+  text-decoration: none;
+}
+.sidebar-nav > .sidebar-brand {
+  height: 65px;
+  font-size: 18px;
+  line-height: 60px;
+}
+.sidebar-nav > .sidebar-brand a {
+  color: #999999;
+}
+.sidebar-nav > .sidebar-brand a:hover {
+  color: #fff;
+  background: none;
+}
+@media(min-width:768px) {
+  #wrapper {
+    padding-left: 250px;
+  }
+  #wrapper.toggled {
+    padding-left: 0;
+  }
+  #sidebar-wrapper {
+    width: 250px;
+  }
+  #wrapper.toggled #sidebar-wrapper {
+    width: 0;
+  }
+  #page-content-wrapper {
+    padding: 20px;
+    position: relative;
+  }
+  #wrapper.toggled #page-content-wrapper {
+    position: relative;
+    margin-right: 0;
+  }
+}
+ul {
+  text-align: left;
+}
+.ulleft {
+  display: inline;
+  float: left;
+}
+.ulright {
+  display: inline;
+  float: right;
+}
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  filter:alpha(opacity=50);
+  -moz-opacity:0.5;
+  -khtml-opacity: 0.5;
+  opacity: 0.8;
+  z-index: 10000;
+}
+#confirm{
+  color: black;
+}
+#text{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 50px;
+  color: white;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+}
+#myBtn {
+  display: none;
+  position: fixed;
+  bottom: 5px;
+  left: 250px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50px;
+  font-size: 40px;
+  height: 50px;
+  width: 50px;
+}
 
-     .nav-tabs>li {
-      float: none;
-    }
-    .nav-tabs {
-      border-bottom: 0;
-    }
-    .nav-tabs>li.active>a,
-    .nav-tabs>li.active>a:focus,
-    .nav-tabs>li.active>a:hover {
-      margin: 0;
-      border-radius: 0;
-    }
-    #wrapper {
-      padding-left: 0;
-      -webkit-transition: all 0.5s ease;
-      -moz-transition: all 0.5s ease;
-      -o-transition: all 0.5s ease;
-      transition: all 0.5s ease;
-    }
-    #wrapper.toggled {
-      padding-left: 250px;
-    }
-    #sidebar-wrapper {
-      z-index: 1000;
-      position: fixed;
-      left: 250px;
-      width: 0;
-      height: 100%;
-      margin-left: -250px;
-      overflow-y: auto;
-      background: #a9cce3;
-      -webkit-transition: all 0.5s ease;
-      -moz-transition: all 0.5s ease;
-      -o-transition: all 0.5s ease;
-      transition: all 0.5s ease;
-    }
-    #wrapper.toggled #sidebar-wrapper {
-      width: 250px;
-    }
-    #page-content-wrapper {
-      width: 100%;
-      position: absolute;
-      padding: 15px;
-    }
-    #wrapper.toggled #page-content-wrapper {
-      position: absolute;
-      margin-right: -250px;
-    }
-    /* Sidebar Styles */
+#myBtn:hover {
+  background-color: #555;
+}
 
-    .sidebar-nav {
-      position: absolute;
-      top: 0;
-      width: 250px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-    .sidebar-nav li {
-      text-indent: 20px;
-      line-height: 40px;
-    }
-    .sidebar-nav li a {
-      display: block;
-      text-decoration: none;
-      color: #000000;
-    }
-    .sidebar-nav li a:hover {
-      text-decoration: none;
-      color: #000080;
-      background: rgba(255, 255, 255, 0.2);
-    }
-    .sidebar-nav li a:active,
-    .sidebar-nav li a:focus {
-      text-decoration: none;
-      /*display: inline-block;*/
-    }
-    .sidebar-nav > .sidebar-brand {
-      height: 65px;
-      font-size: 18px;
-      line-height: 60px;
-    }
-    .sidebar-nav > .sidebar-brand a {
-      color: #999999;
-    }
-    .sidebar-nav > .sidebar-brand a:hover {
-      color: #fff;
-      background: none;
-    }
-    @media(min-width:768px) {
-      #wrapper {
-        padding-left: 250px;
-      }
-      #wrapper.toggled {
-        padding-left: 0;
-      }
-      #sidebar-wrapper {
-        width: 250px;
-      }
-      #wrapper.toggled #sidebar-wrapper {
-        width: 0;
-      }
-      #page-content-wrapper {
-        padding: 20px;
-        position: relative;
-      }
-      #wrapper.toggled #page-content-wrapper {
-        position: relative;
-        margin-right: 0;
-      }
-    }
-    ul {
-      text-align: left;
-      /*display:inline-block;*/
-      /*box-sizing:border-box;*/
-      /*padding-left: 5px;*/
-    }
-    .ulleft {
-      display: inline;
-      float: left;
-    }
-    .ulright {
-      display: inline;
-      float: right;
-    }
-    #overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #000;
-      filter:alpha(opacity=50);
-      -moz-opacity:0.5;
-      -khtml-opacity: 0.5;
-      opacity: 0.8;
-      z-index: 10000;
-    }
-    #confirm{
-      color: black;
-    }
-    #text{
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      font-size: 50px;
-      color: white;
-      transform: translate(-50%,-50%);
-      -ms-transform: translate(-50%,-50%);
-    }
-    #myBtn {
-      display: none;
-      position: fixed;
-      bottom: 5px;
-      left: 250px;
-      z-index: 99;
-      border: none;
-      outline: none;
-      background-color: black;
-      color: white;
-      cursor: pointer;
-      padding: 5px;
-      border-radius: 50px;
-      font-size: 40px;
-      height: 50px;
-      width: 50px;
-    }
+#mapresetbtn {
+  bottom: 5px;
+  left: 250px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50px;
+  font-size: 40px;
+  height: 50px;
+  width: 50px;
+  margin: 10px;
+}
+#mapresetbtn:hover{
+  background-color: #555;
+}
 
-    #myBtn:hover {
-      background-color: #555;
-    }
+hr {
+  display: block;
+  border: 2px solid;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0; 
+  border-color: #000000;
+}
+#container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  background-color: #a9cce3;
+  overflow-x: hidden;
+  transition: 0.5s;
+}
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
 
-    #mapresetbtn {
-      /*position: fixed;*/
-      bottom: 5px;
-      left: 250px;
-      z-index: 99;
-      border: none;
-      outline: none;
-      background-color: black;
-      color: white;
-      cursor: pointer;
-      padding: 5px;
-      border-radius: 50px;
-      font-size: 40px;
-      height: 50px;
-      width: 50px;
-      margin: 10px;
-    }
-    #mapresetbtn:hover{
-      background-color: #555;
-    }
-
-    hr {
-      display: block;
-      border: 2px solid;
-      border-top: 1px solid #ccc;
-      margin: 1em 0;
-      padding: 0; 
-      border-color: #000000;
-    }
-    #container {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-    .sidenav {
-      height: 100%;
-      width: 0;
-      position: fixed;
-      z-index: 1;
-      top: 0;
-      right: 0;
-      background-color: #a9cce3;
-      overflow-x: hidden;
-      transition: 0.5s;
-      /*padding-top: 60px;*/
-    }
-    .sidenav a {
-      padding: 8px 8px 8px 32px;
-      text-decoration: none;
-      font-size: 25px;
-      color: #818181;
-      display: block;
-      transition: 0.3s;
-    }
-
-    .sidenav a:hover, .offcanvas a:focus{
-      color: #f1f1f1;
-    }
+.sidenav a:hover, .offcanvas a:focus{
+  color: #f1f1f1;
+}
 
 
-    .sidenav .closebtn {
-      /*position: absolute;*/
-      top: 0;
-      right: 25px;
-      font-size: 46px;
-      /*margin-left: 50px;*/
-    }
-    @media screen and (max-height: 450px) {
-      .sidenav {padding-top: 15px;}
-      .sidenav a {font-size: 18px;}
-    }
-    #toolkit {
-      display: inline-block;
-      padding-left: 50px;
-    }
-    #close{
-      float: right;
-    }
-    #divleft{
-      display: inline-block;
-    }
-    #divmid{
-      display: inline-block;
-      padding-left: 10px;
-    }
-    #divright{
-      display: inline-block;
-      padding-left: 10px;
-    }
-    #divcritical{
-      display: inline-block;
-      padding-left: 10px;
-    }
-    #myProgress {
-      width: 100%;
-      background-color: #ddd; 
-    }
-    #myBar {
-      width: 0%;
-      height: 30px;
-      background-color: #4CAF50;
-      text-align: center; /* To center it horizontally (if you want) */
-      line-height: 30px; /* To center it vertically */
-      color: white; 
-    }
-    .floated {
-      float:left;
-      margin-right:5px;
-    }
-    /*.switch {
-      position: relative;
-      display: inline-block;
-      width: 60px;
-      height: 34px;
-    }
+.sidenav .closebtn {
+  top: 0;
+  right: 25px;
+  font-size: 46px;
+}
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+#toolkit {
+  display: inline-block;
+  padding-left: 50px;
+}
+#close{
+  float: right;
+}
+#divleft{
+  display: inline-block;
+}
+#divmid{
+  display: inline-block;
+  padding-left: 10px;
+}
+#divright{
+  display: inline-block;
+  padding-left: 10px;
+}
+#divcritical{
+  display: inline-block;
+  padding-left: 10px;
+}
+#myProgress {
+  width: 100%;
+  background-color: #ddd; 
+}
+#myBar {
+  width: 0%;
+  height: 30px;
+  background-color: #4CAF50;
+  text-align: center;
+  line-height: 30px;
+  color: white; 
+}
+.floated {
+  float:left;
+  margin-right:5px;
+}
+.onoffswitch {
+  position: relative; width: 90px;
+  -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+  display: none;
+}
+.onoffswitch-label {
+  display: block; overflow: hidden; cursor: pointer;
+  border: 2px solid #999999; border-radius: 20px;
+}
+.onoffswitch-inner {
+  display: block; width: 200%; margin-left: -100%;
+  transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+  display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
+  font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+  box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+  content: "ON";
+  padding-left: 10px;
+  background-color: #34A7C1; color: #FFFFFF;
+}
+.onoffswitch-inner:after {
+  content: "OFF";
+  padding-right: 10px;
+  background-color: #EEEEEE; color: #999999;
+  text-align: right;
+}
+.onoffswitch-switch {
+  display: block; width: 18px; margin: 6px;
+  background: #FFFFFF;
+  position: absolute; top: 0; bottom: 0;
+  right: 56px;
+  border: 2px solid #999999; border-radius: 20px;
+  transition: all 0.3s ease-in 0s; 
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+  margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+  right: 0px; 
+}
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;class="button button1"
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+.buttonblue {
+  background-color: white; 
+  color: black; 
+  border: 2px solid #008CBA;
+}
 
-    .switch input {display:none;}
+.buttonblue:hover {
+  background-color: #008CBA;
+  color: white;
+}
 
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ccc;
-      -webkit-transition: .4s;
-      transition: .4s;
-    }
-
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      -webkit-transition: .4s;
-      transition: .4s;
-    }
-
-    input:checked + .slider {
-      background-color: #2196F3;
-    }
-
-    input:focus + .slider {
-      box-shadow: 0 0 1px #2196F3;
-    }
-
-    input:checked + .slider:before {
-      -webkit-transform: translateX(26px);
-      -ms-transform: translateX(26px);
-      transform: translateX(26px);
-      }*/
-      .onoffswitch {
-        position: relative; width: 90px;
-        -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
-      }
-      .onoffswitch-checkbox {
-        display: none;
-      }
-      .onoffswitch-label {
-        display: block; overflow: hidden; cursor: pointer;
-        border: 2px solid #999999; border-radius: 20px;
-      }
-      .onoffswitch-inner {
-        display: block; width: 200%; margin-left: -100%;
-        transition: margin 0.3s ease-in 0s;
-      }
-      .onoffswitch-inner:before, .onoffswitch-inner:after {
-        display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
-        font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
-        box-sizing: border-box;
-      }
-      .onoffswitch-inner:before {
-        content: "ON";
-        padding-left: 10px;
-        background-color: #34A7C1; color: #FFFFFF;
-      }
-      .onoffswitch-inner:after {
-        content: "OFF";
-        padding-right: 10px;
-        background-color: #EEEEEE; color: #999999;
-        text-align: right;
-      }
-      .onoffswitch-switch {
-        display: block; width: 18px; margin: 6px;
-        background: #FFFFFF;
-        position: absolute; top: 0; bottom: 0;
-        right: 56px;
-        border: 2px solid #999999; border-radius: 20px;
-        transition: all 0.3s ease-in 0s; 
-      }
-      .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
-        margin-left: 0;
-      }
-      .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
-        right: 0px; 
-      }
-      .button {
-        background-color: #4CAF50; /* Green */
-        border: none;
-        color: white;
-        padding: 16px 32px;
-        text-align: center;class="button button1"
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        -webkit-transition-duration: 0.4s; /* Safari */
-        transition-duration: 0.4s;
-        cursor: pointer;
-      }
-      .buttonblue {
-        background-color: white; 
-        color: black; 
-        border: 2px solid #008CBA;
-      }
-
-      .buttonblue:hover {
-        background-color: #008CBA;
-        color: white;
-      }
-
-      </style>
+</style>
 
 
-    </head>
+</head>
 
-    <body>
-      <div class="container">
-        <!-- <h1>Network Performance Map: Noisy Zone</h1> -->
-      </div>
-      <div id="myProgress">
-        <div id="myBar">0%</div>
-      </div>
-      <div id="wrapper" class="toggled">
-        <!-- <div id="sidebar-wrapper">
-          <button onclick="topFunction()" id="myBtn" title="Go to top">&#8963;</button>
-          <ul class="sidebar-nav" id="side_bar">
-            <li class="sidebar-brand" style="font-weight: bold; color: #000000;">
-              <h1>Summary</h1>
-            </li>
-            <hr>
-            <div id="demo" class="collapse"></div>
-            <div id="demo2" class="collapse"></div>
-          </ul>
-        </div> -->
-        <div id="page-content-wrapper">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-lg-12">
-                <!-- <h1>
-                  <span style="font-size:50px;cursor:pointer;float:right" onclick="openNav()">&#9881;</span>
-                  <a href="#menu-toggle" class="gradient-menu" id="menu-toggle"></a>
-                </h1> -->
-                <!-- <div id="mySidenav" class="sidenav">
-                  <h1 id="toolkit">Toolkit</h1>
-                  <b>
-                    <a id="close" href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                  </b>
-                  <hr>
-
-                  <div style="padding:30px">Choose analytic task:
-                    <p>
-                      <select id="box1" name="task" style="max-width:90%;">
-                        <option selected disabled>Choose one</option>
-                        <optgroup label="Node aspect">
-                          <option value="health">Health monitoring</option>
-                          <option value="fault">Fault detection</option>
-                          <option value="maintenance">Maintenance recommendation</option>
-                        </optgroup>
-                        <optgroup label="Node aspect">
-                          <option value="topology">Topology comparision and optimization</option>
-                          <option value="network">Network reliability</option>
-                          <option value="giwsns">GIWSNs</option>
-                        </optgroup>
-                        <optgroup label="Environment aspect">
-                          <option value="noisy">Spatial-temporal noisy zone detection</option>
-                          <option value="intervention">Surrounding intervention</option>
-                        </optgroup>
-                      </select>
-                    </p>
-                  </div>
-
-                  <div style="padding:30px">Choose target: 
-                    <p>
-                      <select id="box2" name="target" style="max-width:90%;">
-                        <option selected disabled>Choose one</option>
-                        <option value="network1">Network 1</option>
-                        <option value="network2">Network 2</option>
-                        <option value="network3">Network 3</option>
-                        <option value="network4">Network 4</option>
-                      </select>
-                    </p>
-                  </div>
-
-                  <div style="padding:30px">
-                    <form action="javascript:analyze();">
-                      <input type="submit" value="Run">
-                    </form>
-                  </div>
-
-                  <hr>
-
-                  <div id="numbox" style="padding: 10px; display: none">
-                    <p>
-                      <select id="box3" name="num" style="max-width:90%;" onchange="selectfunction()">
-                        <option selected="selected" value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                        <option value="13">13</option>
-                        <option value="14">14</option>
-                        <option value="15">15</option>
-                        <option value="16">16</option>
-                        <option value="17">17</option>
-                        <option value="18">18</option>
-                      </select>
-                    </p>
-                  </div>
-
-                  <div id="result" style="padding:10px; width: 450px; height: 240px;">
-                    <textarea id="mytext" rows="20" cols="35">Result goes here.</textarea>  
-                  </div>
-
-                  <div id="reset" style="padding:10px; position: absolute; bottom: 0; right: 0">
-                    <input type="button" value="Reset" onclick="javascript:eraseText();"> 
-                  </div>
-
-
-                </div> -->
-                <div id="map"></div>
-              </div>
-            </div>
+<body>
+  <div class="container">
+  </div>
+  <div id="myProgress">
+    <div id="myBar">0%</div>
+  </div>
+  <div id="wrapper" class="toggled">
+    <div id="page-content-wrapper">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <div id="map"></div>
           </div>
         </div>
       </div>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-      <script src="antixss.js" type="text/javascript"></script>
-      <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-      <script src="//cdn.jsdelivr.net/webshim/1.14.5/polyfiller.js"></script>
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="antixss.js" type="text/javascript"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <script src="//cdn.jsdelivr.net/webshim/1.14.5/polyfiller.js"></script>
 
-      <script type="text/javascript">
-      function openNav() {
-        document.getElementById("mySidenav").style.width = "450px";
+  <script type="text/javascript">
+  function openNav() {
+    document.getElementById("mySidenav").style.width = "450px";
+  }
+
+  function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+  }
+
+  function eraseText(){
+    document.getElementById('mytext').value = "";
+  }
+
+  function viewchart(marker){
+    var node_id = parseInt(marker.label);
+    var node_data = getCustomInfo(marker);
+    var node_time = getCustomInfoTime(marker);
+    var data = new google.visualization.DataTable();
+    data.addColumn('date','TIME');
+    data.addColumn('number','PER');
+    data.addColumn('number','RSSI');
+    var temp_length = node_data.length;
+    for(var i=0;i<node_data.length;i++){
+      var time_data = convertTime(node_time[i]);
+      if(parseFloat(node_data[i][0]) != 0){
+        var avg_per_data = parseFloat(node_data[i][1]) / parseFloat(node_data[i][0]) * 100;
+      }else{
+        var avg_per_data = 1;
       }
-
-      function closeNav() {
-        document.getElementById("mySidenav").style.width = "0";
+      var sum_rssi_data = 0;
+      for(var j=2; j<node_data[i].length;j++){
+        sum_rssi_data += parseFloat(node_data[i][j]);
       }
+      var avg_rssi_data = sum_rssi_data / (node_data[i].length -2);    
 
-      function eraseText(){
-        document.getElementById('mytext').value = "";
-      }
+      data.addRow([time_data, avg_per_data, avg_rssi_data]);
+    }
+    var node = document.createElement('div');
+    node.setAttribute('id', 'node');
+    node.style.height = "250px";
+    var chart = new google.visualization.AnnotatedTimeLine(node);
+    var chart_start_date = $("#chart_start_date").val();
+    var chart_end_date = $("#chart_end_date").val();
+    var options = {
+      title: '',
+      width: 600,
+      legend: { position: 'none' },
+      displayAnnotations: true,
+      scaleType:'allfixed',
+    };
+    chart.draw(data, options);
+  }
 
-      function viewchart(marker){
-        var node_id = parseInt(marker.label);
-        var node_data = getCustomInfo(marker);
-        var node_time = getCustomInfoTime(marker);
-        var data = new google.visualization.DataTable();
-        data.addColumn('date','TIME');
-        data.addColumn('number','PER');
-        data.addColumn('number','RSSI');
-        var temp_length = node_data.length;
-        for(var i=0;i<node_data.length;i++){
-          var time_data = convertTime(node_time[i]);
-          if(parseFloat(node_data[i][0]) != 0){
-            var avg_per_data = parseFloat(node_data[i][1]) / parseFloat(node_data[i][0]) * 100;
-          }else{
-            var avg_per_data = 1;
-          }
-          var sum_rssi_data = 0;
-          for(var j=2; j<node_data[i].length;j++){
-            sum_rssi_data += parseFloat(node_data[i][j]);
-          }
-          var avg_rssi_data = sum_rssi_data / (node_data[i].length -2);    
+  function confirm(){
+    window.location = window.location + '#loaded';
+    window.location.reload();
+  }
 
-          data.addRow([time_data, avg_per_data, avg_rssi_data]);
+  function analyze(){
+    if($("#box1").val()=="giwsns" && $("#box2").val()=="network1"){
+      var similarity_string = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 Event similarity \n\n";
+      for(var i=3;i<21;i++){
+        similarity_string += "Node" + i + ": \n"
+        var curr_dict = checkSimilarity(i);
+        for(var j=0;j<curr_dict.length;j++){
+          curr_dict.sort(compare_rate);
+          similarity_string += "\xa0\xa0 Node " + curr_dict[j][0] + "\xa0\xa0\xa0\xa0\xa0\xa0 similarity rate " + (curr_dict[j][1]*100).toFixed(2) + "% \n";
         }
-        var node = document.createElement('div');
-        node.setAttribute('id', 'node');
-        node.style.height = "250px";
-        var chart = new google.visualization.AnnotatedTimeLine(node);
-        var chart_start_date = $("#chart_start_date").val();
-        var chart_end_date = $("#chart_end_date").val();
-        var options = {
-          title: '',
-          width: 600,
-          legend: { position: 'none' },
-          displayAnnotations: true,
-          scaleType:'allfixed',
+        similarity_string += "\n";
+      }
+      document.getElementById('mytext').value = similarity_string;
+    }
+    else if($("#box1").val()=="fault" && $("#box2").val()=="network1"){
+      document.getElementById('numbox').style.display = "block";
+      var fault_val = $("#box3").val();
+      faultDetection(parseInt(fault_val));
+      var time_string = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 Fault time period \n\n";
+      for(var i=0;i<array_time.length;i++){
+        var current_string = convertTime2(array_time[i][0]) + " - " + convertTime2(array_time[i][1]) + "\n";
+        time_string += current_string;
+      }
+      google.charts.load('current', {'packages':['annotatedtimeline']});
+      google.charts.setOnLoadCallback(drawHistogram);
+
+    }
+  }
+
+  function convertTimeView(raw_time){
+    var date_array = raw_time.split("-");
+    var year = date_array[0];
+    var month = date_array[1];
+    var day = date_array[2];
+    var result_time = new Date(year, month, day);
+    return result_time;
+  }
+
+  function convertTime4(date_string, time_string){
+    var date_temp_array = date_string.split('-');
+    var time_temp_array = time_string.split(':');
+    return new Date(date_temp_array[0], date_temp_array[1]-1, date_temp_array[2], time_temp_array[0], time_temp_array[1], time_temp_array[2], 0);
+  }
+
+  function conditionalDivision(a,b){
+    if(b==0){
+      return 0;
+    }else if(a>b){
+      return 1;
+    }else{
+      return a/b;
+    }
+  }
+
+  function getAvgRssi(rssi_string){
+    var res = rssi_string.split('rssi');
+    var c = 0;
+    for(var i=1; i<res.length;i++){
+      var b = res[i].substring(res[i].indexOf(":")+1,res[i].indexOf(","));
+      c += Number(b);
+    }
+    return c/res.length;
+  }
+
+  var chart2; 
+  var data2;
+  var options2;
+  var curr_marker;
+  var data_corr;
+
+  function drawChart3(marker){
+    $.ajax({
+      url: "/api/sensor",
+      dataType: "json",
+      success: function (jsonData) {
+        for(var i=0;i<jsonData[parseInt(marker.id)].length;i++){
+          var data_time = convertTime4(jsonData[parseInt(marker.id)][i]['DATE'], jsonData[parseInt(marker.id)][i]['TIME']);
+          var data_gateway = jsonData[parseInt(marker.id)][i]['GATEWAY_NAME'];
+          var data_channel_info = jsonData[parseInt(marker.id)][i]['CHANNEL_INFO'];
+          var channel_rssi_avg = getAvgRssi(data_channel_info);
+          var data_mac_tx_total = jsonData[parseInt(marker.id)][i]['MAC_TX_TOTAL'];
+          var data_mac_tx_fail = jsonData[parseInt(marker.id)][i]['MAC_TX_FAIL'];
+          var data_app_per_sent = jsonData[parseInt(marker.id)][i]['APP_PER_SENT'];
+          var data_app_per_lost = jsonData[parseInt(marker.id)][i]['APP_PER_LOST'];
+          data2.addRow([data_time, conditionalDivision(data_app_per_lost, data_app_per_sent)*100, conditionalDivision(data_mac_tx_fail, data_mac_tx_total)*100, channel_rssi_avg]);
+        }
+        options2 = {
+          title: 'new chart2',
+          displayAnnotations: false,
+          allowRedraw: true,
+          width: 625,
+          scaleType: 'allfixed',
         };
-        chart.draw(data, options);
+        chart2.draw(data2, options2);
+        chart2.setVisibleChartRange(null, null);
       }
-
-      function confirm(){
-        window.location = window.location + '#loaded';
-        window.location.reload();
-      }
-
-      function analyze(){
-        if($("#box1").val()=="giwsns" && $("#box2").val()=="network1"){
-          var similarity_string = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 Event similarity \n\n";
-          for(var i=3;i<21;i++){
-            similarity_string += "Node" + i + ": \n"
-            var curr_dict = checkSimilarity(i);
-            for(var j=0;j<curr_dict.length;j++){
-              curr_dict.sort(compare_rate);
-              similarity_string += "\xa0\xa0 Node " + curr_dict[j][0] + "\xa0\xa0\xa0\xa0\xa0\xa0 similarity rate " + (curr_dict[j][1]*100).toFixed(2) + "% \n";
-            }
-            similarity_string += "\n";
-          }
-          document.getElementById('mytext').value = similarity_string;
-        }
-        else if($("#box1").val()=="fault" && $("#box2").val()=="network1"){
-          document.getElementById('numbox').style.display = "block";
-          var fault_val = $("#box3").val();
-          faultDetection(parseInt(fault_val));
-          var time_string = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 Fault time period \n\n";
-          for(var i=0;i<array_time.length;i++){
-            var current_string = convertTime2(array_time[i][0]) + " - " + convertTime2(array_time[i][1]) + "\n";
-            time_string += current_string;
-          }
-          google.charts.load('current', {'packages':['annotatedtimeline']});
-          google.charts.setOnLoadCallback(drawHistogram);
-
-        }
-      }
-
-      function convertTimeView(raw_time){
-        var date_array = raw_time.split("-");
-        var year = date_array[0];
-        var month = date_array[1];
-        var day = date_array[2];
-        var result_time = new Date(year, month, day);
-        return result_time;
-      }
-
-      function convertTime4(date_string, time_string){
-        var date_temp_array = date_string.split('-');
-        var time_temp_array = time_string.split(':');
-        return new Date(date_temp_array[0], date_temp_array[1]-1, date_temp_array[2], time_temp_array[0], time_temp_array[1], time_temp_array[2], 0);
-      }
-
-      function conditionalDivision(a,b){
-        if(b==0){
-          return 0;
-        }else if(a>b){
-          return 1;
-        }else{
-          return a/b;
-        }
-      }
-
-      function getAvgRssi(rssi_string){
-        var res = rssi_string.split('rssi');
-        var c = 0;
-        for(var i=1; i<res.length;i++){
-          var b = res[i].substring(res[i].indexOf(":")+1,res[i].indexOf(","));
-          c += Number(b);
-        }
-        return c/res.length;
-      }
-
-      var chart2; 
-      var data2;
-      var options2;
-      var curr_marker;
-      var data_corr;
-
-      function drawChart3(marker){
-        $.ajax({
-          url: "/api/sensor",
-          dataType: "json",
-          success: function (jsonData) {
-            for(var i=0;i<jsonData[parseInt(marker.id)].length;i++){
-              var data_time = convertTime4(jsonData[parseInt(marker.id)][i]['DATE'], jsonData[parseInt(marker.id)][i]['TIME']);
-              var data_gateway = jsonData[parseInt(marker.id)][i]['GATEWAY_NAME'];
-              var data_channel_info = jsonData[parseInt(marker.id)][i]['CHANNEL_INFO'];
-              var channel_rssi_avg = getAvgRssi(data_channel_info);
-              var data_mac_tx_total = jsonData[parseInt(marker.id)][i]['MAC_TX_TOTAL'];
-              var data_mac_tx_fail = jsonData[parseInt(marker.id)][i]['MAC_TX_FAIL'];
-              var data_app_per_sent = jsonData[parseInt(marker.id)][i]['APP_PER_SENT'];
-              var data_app_per_lost = jsonData[parseInt(marker.id)][i]['APP_PER_LOST'];
-              data2.addRow([data_time, conditionalDivision(data_app_per_lost, data_app_per_sent)*100, conditionalDivision(data_mac_tx_fail, data_mac_tx_total)*100, channel_rssi_avg]);
-            }
-            options2 = {
-              title: 'new chart2',
-              displayAnnotations: false,
-              allowRedraw: true,
-              width: 625,
-              scaleType: 'allfixed',
-            };
-            chart2.draw(data2, options2);
-            chart2.setVisibleChartRange(null, null);
-          }
-        });
+    });
 }
 
 
@@ -995,25 +824,6 @@ function faultDetection(num){
 </script>
 
 <script>
-    	//Submit data when enter key is pressed
-        // $('#user_name').keydown(function(e) {
-        // 	var name = $('#user_name').val();
-        //     if (e.which == 13 && name.length > 0) { //catch Enter key
-        //     	//POST request to API to create a new visitor entry in the database
-        //         $.ajax({
-        //           method: "POST",
-        //           url: "./api/sensor",
-        //           contentType: "application/json",
-        //           data: JSON.stringify({name: name })
-        //       })
-        //         .done(function(data) {
-        //             $('#response').html(AntiXSS.sanitizeInput(data));
-        //             $('#nameInput').hide();
-        //             getNames();
-        //         });
-        //     }
-        // });
-
 var data_gateway_test = [];
 function getGateway(){
   $.get("./api/gateway")
@@ -1030,103 +840,102 @@ function getGateway(){
 }
 
 
-        //Retreive all the visitors from the database
-        var sensorComplete = false;
-        var data_test = [];
-        function getSensor(){
-          $.get("./api/sensor")
-          .done(function(data) {
-            for(var i=0;i<data.length;i++){
-              data_test[i] = data[i];
-            }
-            sensorComplete = true;
-            if(data.length > 0) {
-              data.forEach(function(element, index) {
-                data[index] = AntiXSS.sanitizeInput(element)
-              });
-            }
-          });
+var sensorComplete = false;
+var data_test = [];
+function getSensor(){
+  $.get("./api/sensor")
+  .done(function(data) {
+    for(var i=0;i<data.length;i++){
+      data_test[i] = data[i];
+    }
+    sensorComplete = true;
+    if(data.length > 0) {
+      data.forEach(function(element, index) {
+        data[index] = AntiXSS.sanitizeInput(element)
+      });
+    }
+  });
+}
+
+var data_topo_test = [];
+function getTopology(){
+  $.get("./api/topology")
+  .done(function(data){
+    for(var i=0;i<data.length;i++){
+      data_topo_test[i] = data[i];
+    }
+    if(data.length>0){
+      data.forEach(function(element, index){
+        data[index] = AntiXSS.sanitizeInput(element)
+      });
+    }
+  });
+}
+
+</script>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+<script type="text/javascript">
+var map;
+function mapReset(){
+  map.setZoom(5);
+  map.setCenter(new google.maps.LatLng(41.850033, -87.6500523));
+}
+
+
+var network_stat_data_plus = [];
+function getStatPlus(){
+  $.ajax({
+    url: "/api/networkstatplus",
+    dataType: "json",
+    success: function(jsonData){
+      for(var i=0;i<jsonData.length;i++){
+        if(jsonData[i]){
+          network_stat_data_plus[i] = jsonData[i];
         }
+      }
+    }
+  })
+}
 
-        var data_topo_test = [];
-        function getTopology(){
-          $.get("./api/topology")
-          .done(function(data){
-            for(var i=0;i<data.length;i++){
-              data_topo_test[i] = data[i];
-            }
-            if(data.length>0){
-              data.forEach(function(element, index){
-                data[index] = AntiXSS.sanitizeInput(element)
-              });
-            }
-          });
+google.charts.load('current', {'packages':['table']});
+google.charts.setOnLoadCallback(drawStat);
+
+function drawStat(){
+  getStatPlus();
+  $.ajax({
+    url: "/api/networkstat",
+    dataType: "json",
+    success: function(jsonData){
+      var network_stat_data = new google.visualization.DataTable();
+      network_stat_data.addColumn('number', 'SENSOR ID');
+      network_stat_data.addColumn('number', 'LATENCY');
+      network_stat_data.addColumn('number', 'MAC PER');
+      network_stat_data.addColumn('number', 'APP PER');
+      network_stat_data.addColumn('string', ' ');
+      for(var i=0; i<jsonData.length; i++){
+        if(jsonData[i] && network_stat_data_plus[i]){
+          network_stat_data.addRow([jsonData[i]['SENSOR_ID'], jsonData[i]['2'], conditionalDivision(network_stat_data_plus[i]['3'], network_stat_data_plus[i]['2']), conditionalDivision(network_stat_data_plus[i]['5'], network_stat_data_plus[i]['4']), ' ']);
         }
-
-        </script>
-
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-        <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
-        <script type="text/javascript">
-        var map;
-        function mapReset(){
-          map.setZoom(5);
-          map.setCenter(new google.maps.LatLng(41.850033, -87.6500523));
-        }
-
-        
-        var network_stat_data_plus = [];
-        function getStatPlus(){
-          $.ajax({
-            url: "/api/networkstatplus",
-            dataType: "json",
-            success: function(jsonData){
-              for(var i=0;i<jsonData.length;i++){
-                if(jsonData[i]){
-                  network_stat_data_plus[i] = jsonData[i];
-                }
-              }
-            }
-          })
-        }
-
-        google.charts.load('current', {'packages':['table']});
-        google.charts.setOnLoadCallback(drawStat);
-
-        function drawStat(){
-          getStatPlus();
-          $.ajax({
-            url: "/api/networkstat",
-            dataType: "json",
-            success: function(jsonData){
-              var network_stat_data = new google.visualization.DataTable();
-              network_stat_data.addColumn('number', 'SENSOR ID');
-              network_stat_data.addColumn('number', 'LATENCY');
-              network_stat_data.addColumn('number', 'MAC PER');
-              network_stat_data.addColumn('number', 'APP PER');
-              network_stat_data.addColumn('string', ' ');
-              for(var i=0; i<jsonData.length; i++){
-                if(jsonData[i] && network_stat_data_plus[i]){
-                  network_stat_data.addRow([jsonData[i]['SENSOR_ID'], jsonData[i]['2'], conditionalDivision(network_stat_data_plus[i]['3'], network_stat_data_plus[i]['2']), conditionalDivision(network_stat_data_plus[i]['5'], network_stat_data_plus[i]['4']), ' ']);
-                }
-              }
-              var network_stat_table = new google.visualization.Table(document.getElementById('networkstat'));
-              var network_stat_options = {
-                "title": "Network Statistics",
-                width: "100%",
-                height: "100%"
-              };
-              network_stat_table.draw(network_stat_data, network_stat_options);
-              google.visualization.events.addListener(network_stat_table, 'select', selectHandler);
-              function selectHandler(){
-                var selection = network_stat_table.getSelection();
-                var item = selection[0].row;
-                var sid = network_stat_data.getValue(item, 0);
-                google.maps.event.trigger(markers[sid], 'click');
-              }
-            }
-          })
+      }
+      var network_stat_table = new google.visualization.Table(document.getElementById('networkstat'));
+      var network_stat_options = {
+        "title": "Network Statistics",
+        width: "100%",
+        height: "100%"
+      };
+      network_stat_table.draw(network_stat_data, network_stat_options);
+      google.visualization.events.addListener(network_stat_table, 'select', selectHandler);
+      function selectHandler(){
+        var selection = network_stat_table.getSelection();
+        var item = selection[0].row;
+        var sid = network_stat_data.getValue(item, 0);
+        google.maps.event.trigger(markers[sid], 'click');
+      }
+    }
+  })
 }
 
 </script>
@@ -1706,88 +1515,57 @@ function drawChart2(marker){
         allowRedraw: true,
         width: 625,
         scaleType: 'allfixed',
-                    // zoomStartTime: d
-                  };
+      };
 
-                  var node2 = document.createElement('div');
-                  node2.style.height = "250px";
-                  chart2 = new google.visualization.AnnotatedTimeLine(node2);
+      var node2 = document.createElement('div');
+      node2.style.height = "250px";
+      chart2 = new google.visualization.AnnotatedTimeLine(node2);
 
-                // chart2.setVisibleChartRange();
-                // var range = chart2.getVisibleChartRange();
-                // if(chart2.getVisibleChartRange()){
-                //     var range = chart2.getVisibleChartRange();
-                //     chart2.setVisibleChartRange(range['start'], range['end']);
-                // }
-                // google.visualization.events.addListener(chart2, 'rangechange', function(){
-                //     // var range = chart2.getVisibleChartRange();
-                //     // var d = new Date();
-                //     // d.setHours(d.getHours() - 2);
-                //     // chart2.setVisibleChartRange(d, null);
-                //     // var range2 = chart2.getVisibleChartRange();
-                //     // chart2.setVisibleChartRange(range2['start'], null);
-                // });
-chart2.draw(data2, options2);
-                // getVisibleChartRange()
-                // if(chart2.getVisibleChartRange()){
-                //     var range = chart2.getVisibleChartRange();
-                //     chart2.setVisibleChartRange(range['start'], range['end']);
-                // }
+      chart2.draw(data2, options2);
 
-                // chart2.getAction('alertAction');
-                
-                // setInterval(function(){
-                //     chart2.draw(data2, options2);
-                // },1000);
 
-var titlestring2 = '<div id="content">'+
-'<h1 id="firstHeading" class="firstHeading">Node '+parseInt(marker.id)+' | PER vs. RSSI</h1>'+
-'<div id="bodyContent">'+
-'<p><b>Average PER: </b>'+(avg2*100).toFixed(2)+'%'+'</p>'+
-'<p><b>Current PER: </b>'+(current2*100).toFixed(2)+'%'+'</p>'+
-'<p><b>Predicted PER: </b>'+(predict2*100).toFixed(2)+'%'+'</p>'+
-'<p><b>Fault probability: </b>'+(fault_pbb2*100).toFixed(2)+'%'+'</p>'+
-'<p>'+'Start date: <input type="date" id="chart_start_date" />'+
-// '&emsp;Start time: <input type="time" id="chart_start_time" step="1"/>'+
-'&emsp;End date: <input type="date" id="chart_end_date" />'+
-'</p>'+
-// '<p>'+'End date: <input type="date" id="chart_end_date" />'+
-// '&emsp;End time: <input type="time" id="chart_end_time" step="1"/>'+
-// '</p>'+
-'<p>'+'Metric: <input type="checkbox" value="app_per" id="app_per" checked/>Application Layer PER&emsp;<input type="checkbox" value="mac_per" id="mac_per" checked/>Mac Layer PER&emsp;<input type="checkbox" value="rssi" id="rssi" checked/>RSSI'+'</p>'+
-'</div>'+
-'</div>'+
-'<div id="divleft" class="borderdiv"><form action="javascript:update();"><input type="submit" value="Update"></form></div> |'+
-'<div id="divmid" class="borderdiv"><form action="javascript:drawCorr();"><input type="submit" value="View correlation"></form></div> |'+
-'<div id="divright" class="borderdiv"><form action="javascript:compare();"><input type="submit" value="Compare"></form>with:<select id="selectcomp"></select></div> |'+
-'<div id="divcritical" class="borderdiv">Critical time:<input type="text" id="criticaltime"><form action="javascript:nextcritical();"><input type="submit" class="floated" value="Next"><input type="button" class="floated" value="Reset" onclick="javascript:chartReset();"></div>';
+      var titlestring2 = '<div id="content">'+
+      '<h1 id="firstHeading" class="firstHeading">Node '+parseInt(marker.id)+' | PER vs. RSSI</h1>'+
+      '<div id="bodyContent">'+
+      '<p><b>Average PER: </b>'+(avg2*100).toFixed(2)+'%'+'</p>'+
+      '<p><b>Current PER: </b>'+(current2*100).toFixed(2)+'%'+'</p>'+
+      '<p><b>Predicted PER: </b>'+(predict2*100).toFixed(2)+'%'+'</p>'+
+      '<p><b>Fault probability: </b>'+(fault_pbb2*100).toFixed(2)+'%'+'</p>'+
+      '<p>'+'Start date: <input type="date" id="chart_start_date" />'+
+      '&emsp;End date: <input type="date" id="chart_end_date" />'+
+      '</p>'+
+      '<p>'+'Metric: <input type="checkbox" value="app_per" id="app_per" checked/>Application Layer PER&emsp;<input type="checkbox" value="mac_per" id="mac_per" checked/>Mac Layer PER&emsp;<input type="checkbox" value="rssi" id="rssi" checked/>RSSI'+'</p>'+
+      '</div>'+
+      '</div>'+
+      '<div id="divleft" class="borderdiv"><form action="javascript:update();"><input type="submit" value="Update"></form></div> |'+
+      '<div id="divmid" class="borderdiv"><form action="javascript:drawCorr();"><input type="submit" value="View correlation"></form></div> |'+
+      '<div id="divright" class="borderdiv"><form action="javascript:compare();"><input type="submit" value="Compare"></form>with:<select id="selectcomp"></select></div> |'+
+      '<div id="divcritical" class="borderdiv">Critical time:<input type="text" id="criticaltime"><form action="javascript:nextcritical();"><input type="submit" class="floated" value="Next"><input type="button" class="floated" value="Reset" onclick="javascript:chartReset();"></div>';
 
-var div2 = document.createElement('div');
-div2.innerHTML = titlestring2;
-div2.appendChild(node2);
-infowindow.setContent(div2);
+      var div2 = document.createElement('div');
+      div2.innerHTML = titlestring2;
+      div2.appendChild(node2);
+      infowindow.setContent(div2);
 
-infowindow.open(marker.getMap(),marker);
-                start_date = new Date(start_date_string); // reverse the date by fetch order, use max/min
-                start_date.setDate(start_date.getDate()+1);
-                end_date = new Date(end_date_string);
-                end_date.setDate(end_date.getDate()-2);
-                document.getElementById('chart_start_date').valueAsDate = end_date;
-                document.getElementById('chart_end_date').valueAsDate = start_date;
-                // document.getElementById('chart_start_time').value = "00:00:00";
-                // document.getElementById('chart_end_time').value = "23:59:59";
+      infowindow.open(marker.getMap(),marker);
+      start_date = new Date(start_date_string);
+      start_date.setDate(start_date.getDate()+1);
+      end_date = new Date(end_date_string);
+      end_date.setDate(end_date.getDate()-2);
+      document.getElementById('chart_start_date').valueAsDate = end_date;
+      document.getElementById('chart_end_date').valueAsDate = start_date;
 
-                for(var i=0;i<markers.length;i++){
-                  $('#selectcomp').append(new Option(i, i.toString()));
-                }
+      for(var i=0;i<markers.length;i++){
+        $('#selectcomp').append(new Option(i, i.toString()));
+      }
 
-                google.visualization.events.addListener(chart2, 'select', selectHandler);
-                function selectHandler(e) {
-                  var selected = chart2.getSelection()[0].row;
-                  drawChannelRssi(selected, marker);
-                }
-              }
-            });
+      google.visualization.events.addListener(chart2, 'select', selectHandler);
+      function selectHandler(e) {
+        var selected = chart2.getSelection()[0].row;
+        drawChannelRssi(selected, marker);
+      }
+    }
+  });
 }
 
 var width = 10;
@@ -2034,155 +1812,38 @@ function addMarker(location,label,active,parent,gateway_id){
   var array_time = ['0'];
   var current = ['0'];
   var predict_y = ['0'];
-  // $.ajax({
-  //   url: "/api/sensor",
-  //   dataType: "json",
-  //   success: function(jsonData){
-      // if(jsonData[node_id]){
-      //   for(var i=0;i<jsonData[node_id].length;i++){
-      //     var data_channel_info = jsonData[node_id][i]['CHANNEL_INFO'];
-      //     var avg_rssi = getAvgRssi(data_channel_info);
-      //     var data_app_per_sent = jsonData[node_id][i]['MAC_TX_TOTAL'];
-      //     var data_app_per_lost = jsonData[node_id][i]['MAC_TX_FAIL'];
-      //     array_x.push(i);
-      //     array_y.push(conditionalDivision(data_app_per_lost, data_app_per_sent));
-      //     app_per_sum += conditionalDivision(data_app_per_lost, data_app_per_sent);
-      //     rssi_sum += avg_rssi;
-      //   }
-      // }
-      // app_per_avg = app_per_sum / jsonData[node_id].length;
-      // sum_network_per += app_per_avg;
-      // rssi_avg = rssi_sum / jsonData[node_id].length;
-      // sum_network_rssi += rssi_avg;
-      // $('#network_per').text('Avg. PER: '+(sum_network_per / markers.length).toFixed(6)); 
-      // $('#network_rssi').text('Avg. RSSI: '+(sum_network_rssi / markers.length).toFixed(6));
-      // var current = array_y[array_y.length-1];
-      // var result = findLineByLeastSquares(array_x, array_y);
-      // var predict_y = result[1][0];
+  
 
-      // var batteryInfo = Math.random() * (0.8 - 0.1) + 0.1;
+  var marker = new google.maps.Marker({
+    map: map,
+    icon: {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 15,
+      strokeWeight:2,
+      fillColor: '#008000',
+      fillOpacity: 1.0
+    },
+    position: location,
+    label: label,
+    id: label,
+    gateway_id: gateway_id,
+    status: active,
+    customInfo: array,
+    customInfoTime: array_time,
+    parentInfo: parent,
+    isCritical: 0,
+    lossRate: 0,
+    batteryInfo: Math.random() * (0.8 - 0.1) + 0.1
+  });
+  markers[parseInt(label)] = marker;
+  markers_location.push(marker);
+  markerCluster1.addMarker(marker);
 
-      // var sidebar = $('#demo');
-      // var sidebar_entry = $('<li/>', {
-      //   'html': '<a href="#infolist">Node '+label
-      //   +'<ul>Parent: '+parent+'</ul>'
-      //   +'<ul>Avg. PER: '+app_per_avg.toFixed(6)+'</ul>'
-      //   +'<ul>Avg. RSSI: '+rssi_avg.toFixed(6)+'</ul>',
-      //   // +'<ul>Num. Parent Change: '+(Math.round(Math.random()*5) + 0)+'</ul>'
-      //   // +'<ul>Num. Reconnection: '+(Math.round(Math.random()*5) + 0)+'</ul>'
-      //   // +'<ul>Battey level: '+'<meter min="0" low="0.2" high="0.5" optimum="1.0" max="1.0" value="'+batteryInfo+'">'+'</meter>'+'</ul>',
-      //   'click': function() {
-      //     google.maps.event.trigger(marker, 'click');
-      //     $(this).css('color','red');
-      //   },
-      //   'mouseenter': function() {
-      //     $(this).css('color', 'red');
-      //   },
-      //   'mouseleave': function() {
-      //     $(this).css('color', '#999999');
-      //   },
-      //   'focus': function() {
-      //     $(this).css('color', '#FF0000');
-      //   },
-      //   function() {
-      //     $(this).attr("id","newid"+label);
-      //     $(this).addClass('network1');
-      //   }
-      // }).appendTo(sidebar);
-// if(parseFloat(predict_y) > 0.05){
-//   var fault_pbb = 1;
-// }else if(parseFloat(current) > 0.05 && parseFloat(current) > parseFloat(predict_y)){
-//   var fault_pbb = 0;
-// }else if(parseFloat(current) < 0.05 && parseFloat(current) > parseFloat(predict_y)){
-//   var fault_pbb = 0;
-// }else{
-//   var fault_pbb = 1/((0.05-parseFloat(current))/(parseFloat(predict_y)-parseFloat(current)));
-// }
 
-// var app_per_sum_network = 0;
-// var rssi_sum_network = 0;
-// var num_channel = 0;
-// for(var i=0;i<jsonData.length;i++){
-//   app_per_sum_network = conditionalAdd(app_per_sum_network, app_per_avg);
-//   rssi_sum_network = conditionalAdd(rssi_sum_network, rssi_avg);
-// }
-// var app_per_avg_network = app_per_sum_network / jsonData.length;
-// var rssi_avg_network = rssi_sum_network / jsonData.length;
-
-var marker = new google.maps.Marker({
-  map: map,
-  icon: {
-    path: google.maps.SymbolPath.CIRCLE,
-    scale: 15,
-    strokeWeight:2,
-    fillColor: '#008000',
-    fillOpacity: 1.0
-  },
-  position: location,
-  label: label,
-  id: label,
-  gateway_id: gateway_id,
-  status: active,
-  customInfo: array,
-  customInfoTime: array_time,
-  parentInfo: parent,
-  isCritical: 0,
-  lossRate: 0,
-  batteryInfo: Math.random() * (0.8 - 0.1) + 0.1
-});
-markers[parseInt(label)] = marker;
-markers_location.push(marker);
-markerCluster1.addMarker(marker);
-
-// if(predict_y>0.2){
-//   marker.icon.fillColor = ' #FFA500 ';
-//         // marker.isCritical = 1;
-//       }
-//       if(app_per_avg>0.2){
-//         marker.icon.fillColor = ' #FF0000 ';
-//         marker.isCritical = 1;
-//         marker.lossRate = Math.abs(avg_rssi);
-//         // markMarker(marker);
-//         marker_critical.push(marker.getPosition());
-//       }
-
-marker.addListener('click', function(){
-         // clearInterval(myinterval);
-                // // $(document).ready(function(){
-                //     // drawChart2(this);
-                //     myinterval = setInterval(function(){
-                //         drawChart2(marker);
-                //     },3000);
-                // });
-                // google.charts.load('current', {'packages':['annotatedtimeline']});
-                // google.charts.setOnLoadCallback(function(){
-                //     drawChart2(marker);
-                //     myinterval = setInterval(function(){
-                //         drawChart2(marker);
-                //     },5000); // refresh chart per 5 sec.
-                // });
-                // google.charts.setOnLoadCallback(drawChart(this,avg,current,predict_y,fault_pbb));
-            // setInterval(function(){
-            //     drawChart(this,avg,current,predict_y,fault_pbb);
-            //     alert('draw');
-            // }, 1000);
-            // drawChart(this,avg,current,predict_y,fault_pbb);
-            google.charts.setOnLoadCallback(drawChart2(this));
-            // var sidebar = document.getElementById("demo");
-            // var sidebar2 = document.getElementById("demo2");
-            // var li = document.getElementById("newid"+label);
-            // if(li != null){
-            //   var color = li.style.backgroundColor;
-            //   li.style.backgroundColor = " #5499c7 ";
-            //   setTimeout(function(){
-            //     li.style.backgroundColor=color;
-            //   }, 2000);
-            //   li.scrollIntoView();
-            // }
-          });
-updateProgress();
-// }
-// })
+  marker.addListener('click', function(){
+    google.charts.setOnLoadCallback(drawChart2(this));
+  });
+  updateProgress();
 }
 var legend = document.getElementById('legend');
 for (var key in icons) {
@@ -2209,7 +1870,6 @@ map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(mapreset);
 map.controls[google.maps.ControlPosition.LEFT_TOP].push(gateway);
 map.controls[google.maps.ControlPosition.RIGHT_TOP].push(noizy);
 map.controls[google.maps.ControlPosition.LEFT_TOP].push(networkstatblock);
-// markRegion();
 
 function shapeMouse(current_shape, index){
   google.maps.event.addListener(current_shape, 'click', function(event) {
@@ -2253,21 +1913,19 @@ function createAreaInfo(){
 createAreaInfo();
 }
 
-  // google.load('visualization', '1.0', {'packages':['corechart']});
-  google.charts.load('current', {'packages':['annotatedtimeline']});
+google.charts.load('current', {'packages':['annotatedtimeline']});
 
-  var elmnt = document.getElementById("sidebar-wrapper");
-  elmnt.onscroll = function() {scrollFunction()};
+var elmnt = document.getElementById("sidebar-wrapper");
+elmnt.onscroll = function() {scrollFunction()};
 
-  function scrollFunction() {
-    if (elmnt.scrollTop > 20) {
-      document.getElementById("myBtn").style.display = "block";
-    } else {
-      document.getElementById("myBtn").style.display = "none";
-    }
+function scrollFunction() {
+  if (elmnt.scrollTop > 20) {
+    document.getElementById("myBtn").style.display = "block";
+  } else {
+    document.getElementById("myBtn").style.display = "none";
   }
+}
 
-// When the user clicks on the button, scroll to the top of the document
 function topFunction() {
   elmnt.scrollTop = 0;
 }
@@ -2281,34 +1939,11 @@ var downloadTimer = setInterval(function(){
       clearInterval(downloadTimer);
   },1000);
 
-  // if(!window.location.hash){
-  //   var overlay = jQuery('<div id="overlay"><div id="text">Gateways: <form action="javascript:confirm();"><input type="checkbox">'+
-  //    data_gateway_test[0]['GATEWAY_NAME']+
-  //    '<br><input type="checkbox">'+
-  //    data_gateway_test[1]['GATEWAY_NAME']+
-  //    '<br><input type="checkbox">'+
-  //    data_gateway_test[2]['GATEWAY_NAME']+
-  //    '<br><input type="checkbox">'+
-  //    data_gateway_test[3]['GATEWAY_NAME']+
-  //    '<br><input id="confirm" type="submit" value="Confirm"></form>'+
-  //     // '<span id="countdowntimer">5 </span> seconds'+
-  //     '</div></div>');
-  //   overlay.appendTo(document.body)
-  // }
 
-// window.onload = setTimeout(function(){ 
-//     if(!window.location.hash) {
-//         window.location = window.location + '#loaded';
-//         window.location.reload();
-//     }
-// }, 5000);
-
-  // alert("Loading...");
-
-  </script>
-  <script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpPgcU1vPIge5zzD50cfVkL7DVpIVKac0&callback=initMap">
-  </script>
+</script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpPgcU1vPIge5zzD50cfVkL7DVpIVKac0&callback=initMap">
+</script>
 
 
 
