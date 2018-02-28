@@ -1613,11 +1613,14 @@ function drawTopology(gateway){
                     path: google.maps.SymbolPath.CIRCLE,
                     scale: 15,
                     strokeWeight:2,
-                    fillColor: '#008000',
+                    fillColor: '#493D26',
                     fillOpacity: 1.0
                   },
                   position: newNode,
-                  label: i.toString(),
+                  label: {
+                    text: i.toString(),
+                    color: 'white'
+                  },
                   id: i,
                   gateway_id: gateway_name
                 });
@@ -1637,11 +1640,14 @@ function drawTopology(gateway){
                   path: google.maps.SymbolPath.CIRCLE,
                   scale: 15,
                   strokeWeight:2,
-                  fillColor: '#008000',
+                  fillColor: '#493D26',
                   fillOpacity: 1.0
                 },
                 position: newNode,
-                label: i.toString(),
+                label: {
+                  text: i.toString(),
+                  color: 'white'
+                },
                 id: i,
                 gateway_id: gateway_name
               });
@@ -1665,7 +1671,7 @@ function drawLink(gateway){
     success: function(jsonData){
       for(var i=1; i<jsonData.length; i++){
         if(jsonData[i] != null){
-          var link_info = generateRandom();
+          var link_info = 0.01;
           var currentNodeLat = jsonData[i]['GPS_LAT'];
           var currentNodeLng = jsonData[i]['GPS_LONG'];
           var parentid = jsonData[i]['PARENT'];
