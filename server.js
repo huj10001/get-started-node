@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-
+/* allocate data memory */
 var ibmdb = require('ibm_db');
 var mydb;
 var mydb_kilby;
@@ -27,7 +27,7 @@ var myurl = "https://89c13691-0906-4a2b-98ef-801692e3590a-bluemix:4e714e8e0d0410
 var ibmdb_url = "DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4";
 
 
-
+/* fetch periodic sensor data */
 app.post("/api/sensor", function (request, response) {
   var start_time = request.body.startTime;
   var end_time = request.body.endTime;
@@ -53,26 +53,31 @@ app.post("/api/sensor", function (request, response) {
   });
 });
 
+/* fetch gateway name */
 app.get("/api/gateway", function (request, response) {
   response.json(gateway_data);
   return;
 });
 
+/* fetch topology */
 app.get("/api/topology", function (request, response) {
   response.json(topology_data);
   return;
 });
 
+/* fetch latency */
 app.get("/api/networkstat", function (request, response) {
   response.json(network_stat_data);
   return;
 });
 
+/* fetch app_per and mac_per */
 app.get("/api/networkstatplus", function (request, response) {
   response.json(network_stat_data_plus);
   return;
 });
 
+/* fetch sampling sensor data */
 app.get("/api/sensor", function (request, response) {
   response.json(sensor_data);
   return;
@@ -81,7 +86,7 @@ app.get("/api/sensor", function (request, response) {
 
 var Cloudant = require('cloudant');
 
-/* db2 gateway */
+/* query gateway names */
 ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
   if(err) return console.log(err);
   conn.query('select distinct GATEWAY_NAME from BLUADMIN.TOPOLOGY_DATA', function (err, data) {
@@ -92,7 +97,7 @@ ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.blu
   });
 });
 
-/* db2 topology */
+/* query topology data */
 ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
   if(err) return console.log(err);
   conn.query('select t.SENSOR_ID, t.GPS_LAT, t.GPS_LONG, t.PARENT, t.GATEWAY_NAME from BLUADMIN.TOPOLOGY_DATA t inner join (select SENSOR_ID, max(TIMESTAMP) as MaxTime from BLUADMIN.TOPOLOGY_DATA group by SENSOR_ID) tm on t.SENSOR_ID = tm.SENSOR_ID and t.TIMESTAMP = tm.MaxTime', function (err, data) {
@@ -105,7 +110,7 @@ ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.blu
 });
 
 
-/* db2 network stat */
+/* query network stat: latency, app_per and mac_per */
 ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
   if(err) return console.log(err);
   conn.query('select SENSOR_ID,AVG(RTT) from BLUADMIN.NW_DATA_SET_LATENCY group by SENSOR_ID', function (err, data) {
@@ -129,6 +134,7 @@ ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.blu
 var num_of_rows = 0;
 query1();
 
+/* query sensor data by node id */
 function fetchData(node_id, offset_start, offset_end){
   var sensor_id = parseInt(node_id);
   ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
@@ -153,20 +159,7 @@ function fetchData(node_id, offset_start, offset_end){
   });
 }
 
-
-function convertTime(timestamp_string){
-  var timestamp = parseInt(timestamp_string);
-  var date = new Date(timestamp);
-  var year = date.getFullYear();
-  var month = date.getMonth();
-  var day = date.getDate();
-  var hours = date.getHours();
-  var minutes = "0" + date.getMinutes();
-  var seconds = "0" + date.getSeconds();
-  var formattedTime = year + '/' + month + '/' + day + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-  return formattedTime;
-}
-
+/* pre-check num of sensors */
 function loadNumSensor(){
   ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function(err, conn) {
     if(err) return console.log(err);
@@ -177,6 +170,7 @@ function loadNumSensor(){
   });
 }
 
+/* query all sensor data */
 function query1(){
   ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
     if(err) return console.log(err);
@@ -199,116 +193,7 @@ function query1(){
   });
 }
 
-function checkSimilarity(id1){
-  var similarity_dict = [];
-  var sorted = [];
-  for(var id2 = 3;id2<21;id2++){
-    if(kilby_data[id1] && kilby_data[id2] && id2!=id1){
-      var arrayA = [];
-      var arrayB = [];
-      for(var i=0;i<kilby_data[id1].length;i++){
-        arrayA[i] = kilby_data[id1][i][1];
-      }
-      for(var j=0;j<kilby_data[id2].length;j++){
-        arrayB[j] = kilby_data[id2][j][1];
-      }
-
-      var matches = 0;
-      for (i=0;i<arrayA.length;i++) {
-        if (Math.abs(arrayA[i]-arrayB[i])/arrayB[i] < 0.2)
-          matches++;
-      }
-      var similarity_rate = matches/Math.min(arrayA.length, arrayB.length);
-      if(similarity_rate > 0.2){
-        similarity_dict.push([id2, similarity_rate]);
-      }
-
-    }
-  }
-  return similarity_dict;
-}
-
-function compare_rate(a,b){
-  return a[1] - b[1];
-}
-
-function findLineByLeastSquares(values_x, values_y) {
-  var sum_x = 0;
-  var sum_y = 0;
-  var sum_xy = 0;
-  var sum_xx = 0;
-  var count = 0;
-  var x = 0;
-  var y = 0;
-  var values_length = values_x != null ? values_x.length : 0;
-
-  if (values_length === 0) {
-    return [ [], [] ];
-  }
-
-  for (var v = 0; v < values_length; v++) {
-    x = values_x[v];
-    y = values_y[v];
-    sum_x += x;
-    sum_y += y;
-    sum_xx += x*x;
-    sum_xy += x*y;
-    count++;
-  }
-
-  var m = (count*sum_xy - sum_x*sum_y) / (count*sum_xx - sum_x*sum_x);
-  var b = (sum_y/count) - (m*sum_x)/count;
-  var result_values_x = [];
-  var result_values_y = [];
-
-  for (var v = 0; v < values_length; v++) {
-    x = values_x[v];
-    y = x * m + b;
-    result_values_x.push(x);
-    result_values_y.push(y);
-  }
-
-  return [result_values_x, result_values_y];
-}
-
-function linearRegression(y,x){
-  var lr = {};
-  var n = y.length;
-  var sum_x = 0;
-  var sum_y = 0;
-  var sum_xy = 0;
-  var sum_xx = 0;
-  var sum_yy = 0;
-  
-  for (var i = 0; i < y.length; i++) {
-
-    sum_x += x[i];
-    sum_y += y[i];
-    sum_xy += (x[i]*y[i]);
-    sum_xx += (x[i]*x[i]);
-    sum_yy += (y[i]*y[i]);
-  } 
-  
-  lr['slope'] = (n * sum_xy - sum_x * sum_y) / (n*sum_xx - sum_x * sum_x);
-  lr['intercept'] = (sum_y - lr.slope * sum_x)/n;
-  lr['r2'] = Math.pow((n*sum_xy - sum_x*sum_y)/Math.sqrt((n*sum_xx-sum_x*sum_x)*(n*sum_yy-sum_y*sum_y)),2);
-  
-  return lr;
-}
-
-function polynomialRegression(){
-  var data = kilby_data[15];
-  var regression = require("regression");
-  const result = regression.polynomial(data, { order: 8 });
-  var last = data.length-1;
-  var last_time = parseInt(data[last][0]);
-  console.log("current: " + data[last]);
-  console.log("next: "+ result.predict(last_time+1));
-}
-
 app.use(express.static(__dirname + '/views'));
-
-
 
 var port = process.env.PORT || 3000
 app.listen(port, function() {
