@@ -421,6 +421,53 @@ hr {
   color: white;
 }
 
+.toggle {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 62px;
+  height: 32px;
+  display: inline-block;
+  position: relative;
+  border-radius: 50px;
+  overflow: hidden;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background-color: #707070;
+  transition: background-color ease 0.3s;
+}
+
+.toggle:before {
+  content: "on off";
+  display: block;
+  position: absolute;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  background: #fff;
+  left: 2px;
+  top: 2px;
+  border-radius: 50%;
+  font: 10px/28px Helvetica;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-indent: -22px;
+  word-spacing: 37px;
+  color: #fff;
+  text-shadow: -1px -1px rgba(0,0,0,0.15);
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  transition: all cubic-bezier(0.3, 1.5, 0.7, 1) 0.3s;
+}
+
+.toggle:checked {
+  background-color: #4CD964;
+}
+
+.toggle:checked:before {
+  left: 32px;
+}
+
 </style>
 
 
@@ -689,6 +736,7 @@ function drawStat(){
       }
     }
   })
+$('#networkstatblock').hide();
 }
 
 </script>
@@ -696,6 +744,7 @@ function drawStat(){
  Gateway:
  <select id="gateway_names"></select>
 </div>
+<div id="networkstatblockcontrol"><label style="font-size:20px;"><input id="statcontrolswitch" class="toggle" type="checkbox" />Network Statistics</label></div>
 <div id="noizy">
   <div style="font-size:20px; background-color: lightsalmon;">Noizy zone</div>
   <div class="onoffswitch">
@@ -708,7 +757,6 @@ function drawStat(){
 </div>
 
 <div id="networkstatblock" style="padding:10px; height:80%; background-color: lightblue; margin-left:10px">
-  <div id="networkstattitle" style="padding-left:10px; font-size:20px;">Network Statistics</div>
   <div id="networkstat" style="padding-left:10px; height:96%"></div>
 </div>
 
@@ -791,6 +839,7 @@ function drawStat(){
     addNetwork(markers2,2);
 
     updateGateway();
+    controlStat();
     drawCritical();
 
     /* PER value prediction */
@@ -1253,6 +1302,17 @@ function updateGateway(){
   });
 }
 
+/* draw network stat */
+function controlStat(){
+  $('#statcontrolswitch').change(function(){
+    if($('#statcontrolswitch').is(':checked')){
+      $('#networkstatblock').show();
+    }else{
+      $('#networkstatblock').hide();
+    }
+  })
+}
+
 /* draw critial area on map */
 var shape;
 function drawCritical(){
@@ -1377,8 +1437,9 @@ ctx.fillRect(2, 15, 150, 10);
 map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
 map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(mapreset);
 map.controls[google.maps.ControlPosition.LEFT_TOP].push(gateway);
-map.controls[google.maps.ControlPosition.RIGHT_TOP].push(noizy);
+map.controls[google.maps.ControlPosition.LEFT_TOP].push(networkstatblockcontrol);
 map.controls[google.maps.ControlPosition.LEFT_TOP].push(networkstatblock);
+map.controls[google.maps.ControlPosition.RIGHT_TOP].push(noizy);
 }
 
 google.charts.load('current', {'packages':['annotatedtimeline']});
