@@ -833,8 +833,8 @@ $('#networkstatblock').hide();
       ignoreHidden: true
     });
     loadGateway();
-    drawTopology(null);
-    drawLink(null);
+    drawTopology("TEST1");
+    drawLink("TEST1");
 
     addNetwork(markers2,2);
 
@@ -1161,10 +1161,11 @@ function drawTopology(gateway){
           var newNode = new google.maps.LatLng(jsonData[i]['GPS_LAT'], jsonData[i]['GPS_LONG']);
           var parentid = jsonData[i]['PARENT'];
           var gateway_name = jsonData[i]['GATEWAY_NAME'];
+          var sensor_id = jsonData[i]['SENSOR_ID'];
           if(gateway){
             if(gateway == gateway_name){
               if(parentid != null){
-                addMarker(newNode,i.toString(),"active", parentid.toString(), gateway_name);
+                addMarker(newNode,sensor_id.toString(),"active", parentid.toString(), gateway_name);
               }else{
                 var marker = new google.maps.Marker({
                   map: map,
@@ -1177,7 +1178,7 @@ function drawTopology(gateway){
                   },
                   position: newNode,
                   label: {
-                    text: i.toString(),
+                    text: sensor_id.toString(),
                     color: 'white'
                   },
                   id: i,
@@ -1191,7 +1192,7 @@ function drawTopology(gateway){
           }
           else{
             if(parentid != null){
-              addMarker(newNode,i.toString(),"active", parentid.toString(), gateway_name);
+              addMarker(newNode,sensor_id.toString(),"active", parentid.toString(), gateway_name);
             }else{
               var marker = new google.maps.Marker({
                 map: map,
@@ -1204,7 +1205,7 @@ function drawTopology(gateway){
                 },
                 position: newNode,
                 label: {
-                  text: i.toString(),
+                  text: sensor_id.toString(),
                   color: 'white'
                 },
                 id: i,
@@ -1234,12 +1235,15 @@ function drawLink(gateway){
           var currentNodeLat = jsonData[i]['GPS_LAT'];
           var currentNodeLng = jsonData[i]['GPS_LONG'];
           var parentid = jsonData[i]['PARENT'];
+          var parentidindex = jsonData.findIndex((v) => {
+            return v.SENSOR_ID == parentid;
+          });
           var gateway_name = jsonData[i]['GATEWAY_NAME'];
           if(gateway){
-            if((gateway == gateway_name) || (gateway == jsonData[parentid]['GATEWAY_NAME'])){
+            if(gateway == gateway_name){
               if(parentid != null){
-                var parentNodeLat = jsonData[parentid]['GPS_LAT'];
-                var parentNodeLng = jsonData[parentid]['GPS_LONG'];
+                var parentNodeLat = jsonData[parentidindex]['GPS_LAT'];
+                var parentNodeLng = jsonData[parentidindex]['GPS_LONG'];
                 var path = [
                 {lat: currentNodeLat, lng: currentNodeLng},
                 {lat: parentNodeLat, lng: parentNodeLng}

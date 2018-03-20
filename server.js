@@ -85,6 +85,7 @@ app.get("/api/sensor", function (request, response) {
 
 
 var Cloudant = require('cloudant');
+var gateway_list = ['TEST1', 'TEST_SG', 'UCONN_GW', 'i3-kilby', 'i3-kilby-sg', 'range_test'];
 
 /* query gateway names */
 ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
@@ -98,15 +99,22 @@ ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.blu
 });
 
 /* query topology data */
+
 ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
   if(err) return console.log(err);
-  conn.query('select t.SENSOR_ID, t.GPS_LAT, t.GPS_LONG, t.PARENT, t.GATEWAY_NAME from BLUADMIN.TOPOLOGY_DATA t inner join (select SENSOR_ID, max(TIMESTAMP) as MaxTime from BLUADMIN.TOPOLOGY_DATA group by SENSOR_ID) tm on t.SENSOR_ID = tm.SENSOR_ID and t.TIMESTAMP = tm.MaxTime', function (err, data) {
-    console.log('topology data:', data);
-    for(var i=0;i<data.length;i++){
-      var sid = data[i]['SENSOR_ID'];
-      topology_data[sid] = data[i];
-    }
-  });
+  for(var j=0;j<gateway_list.length;j++){
+    var gateway_current = gateway_list[j];
+    conn.query(
+      "select t.SENSOR_ID, t.GPS_LAT, t.GPS_LONG, t.PARENT, t.GATEWAY_NAME from BLUADMIN.TOPOLOGY_DATA t inner join (select SENSOR_ID, max(TIMESTAMP) as MaxTime from BLUADMIN.TOPOLOGY_DATA where GATEWAY_NAME = ? and TIMESTAMP >= (select max(TIMESTAMP) from BLUADMIN.TOPOLOGY_DATA where SENSOR_ID = 1 and GATEWAY_NAME = ? ) group by SENSOR_ID) tm on t.SENSOR_ID = tm.SENSOR_ID and t.TIMESTAMP = tm.MaxTime"
+      , [gateway_current, gateway_current],function (err, data) {
+        if(data.length > 0){
+          console.log('topology data:', data);
+          for(var i=0;i<data.length;i++){
+            topology_data.push(data[i]);
+          }
+        }
+      });
+  }
 });
 
 
