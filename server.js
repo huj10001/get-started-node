@@ -32,7 +32,7 @@ app.post("/api/sensor", function (request, response) {
   var start_time = request.body.startTime;
   var end_time = request.body.endTime;
   var marker_id = request.body.markerId;
-  console.log('start:'+start_time+' end:'+end_time+' id:'+marker_id);
+  //console.log('start:'+start_time+' end:'+end_time+' id:'+marker_id);
   ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
     conn.query(
       'select * from BLUADMIN.NW_DATA_SET_PER_02202018_WHOLEWEEK where SENSOR_ID=? and TIMESTAMP>=? and TIMESTAMP<=?'
@@ -40,7 +40,7 @@ app.post("/api/sensor", function (request, response) {
         if (err) {
           return console.log(err.message);
         }
-        console.log('Found %d resulted data with id %s', data.length, marker_id);
+        //console.log('Found %d resulted data with id %s', data.length, marker_id);
         if(data.length>0){
           sensor_data[parseInt(marker_id)] = [];
           for(var i=0;i<data.length;i++){
@@ -91,7 +91,7 @@ var gateway_list = ['TEST1', 'TEST_SG', 'UCONN_GW', 'i3-kilby', 'i3-kilby-sg', '
 ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
   if(err) return console.log(err);
   conn.query('select distinct GATEWAY_NAME from BLUADMIN.TOPOLOGY_DATA', function (err, data) {
-    console.log('gateway:', data);
+    //console.log('gateway:', data);
     for(var i=0;i<data.length;i++){
       gateway_data.push(data[i]);
     }
@@ -109,8 +109,23 @@ ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.blu
       , [gateway_current, gateway_current],function (err, data) {
         if(data.length > 0){
           console.log('topology data:', data);
-          for(var i=0;i<data.length;i++){
-            topology_data.push(data[i]);
+          for(var i=0;i<data.length;i++)
+          {
+            /* this part is to filter out those nodes whose parents are not in the array*/
+            //node 1 doesn't have parent
+            if(data[i]['SENSOR_ID'] != 1){
+              //check if the node's parent is in the array
+              for(var j=0;j<data.length;j++){
+                if(data[j]['SENSOR_ID'] == data[i]['PARENT']){
+                  topology_data.push(data[i]);    //find the parent, break out
+                  break;
+                }
+              }
+            }
+            else{
+              topology_data.push(data[i]);    //push node 1 directly
+            }           
+            //topology_data.push(data[i]);  
           }
         }
       });
@@ -122,7 +137,7 @@ ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.blu
 ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
   if(err) return console.log(err);
   conn.query('select SENSOR_ID,AVG(RTT) from BLUADMIN.NW_DATA_SET_LATENCY group by SENSOR_ID', function (err, data) {
-    console.log('network stat data:', data);
+    //console.log('network stat data:', data);
     for(var i=0;i<data.length;i++){
       var sid = data[i]['SENSOR_ID'];
       network_stat_data[sid] = data[i];
@@ -130,7 +145,7 @@ ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.blu
   });
 
   conn.query('select SENSOR_ID,AVG(MAC_TX_TOTAL), AVG(MAC_TX_FAIL), AVG(APP_PER_SENT), AVG(APP_PER_LOST) from BLUADMIN.NW_DATA_SET_PER_02202018_WHOLEWEEK group by SENSOR_ID', function (err, data) {
-    console.log('network stat data plus:', data);
+    //console.log('network stat data plus:', data);
     for(var i=0;i<data.length;i++){
       var sid = data[i]['SENSOR_ID'];
       network_stat_data_plus[sid] = data[i];
@@ -150,7 +165,7 @@ function fetchData(node_id, offset_start, offset_end){
     conn.query(
       'select * from BLUADMIN.NW_DATA_SET_PER_02202018_WHOLEWEEK where SENSOR_ID=? order by TIMESTAMP desc fetch first 10 rows only'
       ,[sensor_id], function (err, data) {
-        console.log('Found %d new data with id %s', data.length, node_id);
+        //console.log('Found %d new data with id %s', data.length, node_id);
         if(data.length>0){
           for(var i=0;i<data.length;i++){
             if(sensor_data[parseInt(node_id)] == null){
@@ -161,7 +176,7 @@ function fetchData(node_id, offset_start, offset_end){
               sensor_data[parseInt(node_id)].push(data[i]);
             }  
           }
-          console.log(sensor_data[parseInt(node_id)]);
+          //console.log(sensor_data[parseInt(node_id)]);
         }
       });
   });
@@ -172,7 +187,7 @@ function loadNumSensor(){
   ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function(err, conn) {
     if(err) return console.log(err);
     conn.query('select MAX(SENSOR_ID) from BLUADMIN.TOPOLOGY_DATA', function (err, data) {
-      console.log('Num of sensors: '+data[0]['1']);
+      //console.log('Num of sensors: '+data[0]['1']);
       num_of_sensor = data[0]['1']+1;
     })
   });
@@ -183,11 +198,11 @@ function query1(){
   ibmdb.open("DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-dal10-21.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MTAwMGZhZmMxYTc4;", function (err,conn) {
     if(err) return console.log(err);
     conn.query('select count(*) from BLUADMIN.NW_DATA_SET_PER', function (err, data) {
-      console.log('Num of rows: '+data[0]['1']);
+      //console.log('Num of rows: '+data[0]['1']);
       if(data[0]['1'] > num_of_rows){
         var offset_start = num_of_rows;
         var offset_end = data[0]['1'] - num_of_rows;
-        console.log('start offset: '+offset_start+', end offset: '+offset_end);
+        //console.log('start offset: '+offset_start+', end offset: '+offset_end);
         conn.query('select distinct SENSOR_ID from BLUADMIN.NW_DATA_SET_PER', function (err, data) {
           for(var i=0;i<data.length;i++){
             fetchData(data[i]['SENSOR_ID'].toString(), offset_start, offset_end);
@@ -195,7 +210,7 @@ function query1(){
         });
         num_of_rows = data[0]['1'];
       }else{
-        console.log('No new data.');
+        //console.log('No new data.');
       }
     });
   });
@@ -205,5 +220,5 @@ app.use(express.static(__dirname + '/views'));
 
 var port = process.env.PORT || 3000
 app.listen(port, function() {
-  console.log("To view your app, open this link in your browser: http://localhost:" + port);
+  //console.log("To view your app, open this link in your browser: http://localhost:" + port);
 });
