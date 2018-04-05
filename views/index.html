@@ -695,20 +695,23 @@ function getStatPlus(){
           network_stat_data_plus[i] = jsonData[i];
         }
       }
+      //console.log('first',jsonData);
+      drawStat();
     }
   })
+
 }
 
 google.charts.load('current', {'packages':['table']});
-google.charts.setOnLoadCallback(drawStat);
+google.charts.setOnLoadCallback(getStatPlus);
 
 /* fetch network stat data: latency, app_per, mac_per */
 function drawStat(){
-  getStatPlus();
   $.ajax({
     url: "/api/networkstat",
     dataType: "json",
     success: function(jsonData){
+      //console.log('second',jsonData);
       var network_stat_data = new google.visualization.DataTable();
       network_stat_data.addColumn('number', 'SENSOR ID');
       network_stat_data.addColumn('number', 'LATENCY');
@@ -1235,22 +1238,21 @@ function drawLink(gateway){
           var currentNodeLat = jsonData[i]['GPS_LAT'];
           var currentNodeLng = jsonData[i]['GPS_LONG'];
           var parentid = jsonData[i]['PARENT'];
-      /*
+          /*
           var parentidindex = jsonData.findIndex((v) => {
             return v.SENSOR_ID == parentid;
           });
-      */
-      //find the parent index, in current gateway
-      var parentidindex = 0;
-      for (var j=1;j<jsonData.length; j++){
-      if (jsonData[j]['GATEWAY_NAME'] == gateway){
-        if(jsonData[j]['SENSOR_ID'] == parentid)
-          parentidindex = j;
-      }
-      }
-      
+          */
+          var parentidindex = 0;
+          for (var j=1;j<jsonData.length; j++){
+            if (jsonData[j]['GATEWAY_NAME'] == gateway){
+              if(jsonData[j]['SENSOR_ID'] == parentid){
+                parentidindex = j;
+              }
+            }
+          }
+          
           var gateway_name = jsonData[i]['GATEWAY_NAME'];
-      
           if(gateway){
             if(gateway == gateway_name){
               if(parentid != null){
